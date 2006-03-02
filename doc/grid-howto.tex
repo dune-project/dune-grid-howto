@@ -1,0 +1,342 @@
+\documentclass[11pt,a4paper,headinclude,footinclude,DIV14,BCOR8.25mm,titlepage,twoside,openright,normalheadings]{scrreprt}
+\usepackage[automark]{scrpage2}
+\usepackage[ansinew]{inputenc}
+%\usepackage{german}
+%\usepackage{bibgerm}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{theorem}
+\usepackage{color}
+\usepackage{listings}
+\lstset{language=C++, basicstyle=\ttfamily, 
+  keywordstyle=\color{black}\bfseries, tabsize=4,
+  stringstyle=\ttfamily, commentstyle=\it, extendedchars=true}
+\usepackage{hyperref}
+\usepackage{psfrag}
+\usepackage{leftidx}
+
+\newif\ifpdf
+\ifx\pdfoutput\undefined
+\pdffalse % we are not running PDFLaTeX
+\else
+\pdfoutput=1 % we are running PDFLaTeX
+\pdftrue
+\fi
+
+\ifpdf
+\usepackage[pdftex]{graphicx}
+\else
+\usepackage{graphicx}
+\fi
+
+\ifpdf
+\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
+\else
+\DeclareGraphicsExtensions{.eps, .jpg}
+\fi
+
+\newcommand{\C}{\mathbb{C}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\N}{\mathbb{N}}
+\newcommand{\Z}{\mathbb{Z}}
+\newcommand{\Q}{\mathbb{Q}}
+\newcommand{\Dune}{{\sf\bfseries DUNE}}
+
+%The theorems
+\theorembodyfont{\upshape}
+\theoremheaderfont{\sffamily\bfseries}
+\newtheorem{exc}{Excercise}[chapter]
+\newtheorem{rem}[exc]{Remark}
+\newtheorem{lst}{Listing}
+
+\pagestyle{scrheadings}
+
+\title{The Distributed and Unified Numerics Environment (DUNE) Grid
+  Interface HOWTO}
+\author{Peter Bastian}
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\tableofcontents
+\cleardoublepage
+
+\chapter{Introduction}
+
+\section{What is DUNE anyway?}
+
+\section{Download and installation}
+
+get dune
+
+get dune-tutorial
+
+and install them both
+
+The purpose of this document is to get You started with the
+``Distributed and Unified Numerics Environment'', in short DUNE. The
+main web site for DUNE can be found at
+%
+\begin{center}
+\href{http://hal.iwr.uni-heidelberg.de/dune/index.html}%
+{\texttt{http://hal.iwr.uni-heidelberg.de/dune/index.html}}
+\end{center}
+%
+We try to copy as little information as possible to avoid
+inconsistencies. So for the installation of the DUNE software and
+further packages that may be needed you should look at
+\begin{center}
+\href{http://hal.iwr.uni-heidelberg.de/dune/doc/installation-notes.html}%
+{\texttt{http://hal.iwr.uni-heidelberg.de/dune/doc/installation-notes.html}}
+\end{center}
+
+\section{Code documentation}
+
+Documentation of the files and classes in DUNE is provided in code and
+can be extracted using the
+doxygen\footnote{\href{http://www.stack.nl/~dimitri/doxygen/}{\texttt{http://www.stack.nl/$\sim$dimitri/doxygen/}}}
+software available elsewhere. The in code documentation can either be built
+on your machine or its latest version is available at
+\begin{center}
+\href{http://hal.iwr.uni-heidelberg.de/dune/doc/}%
+{\texttt{http://hal.iwr.uni-heidelberg.de/dune/doc/}}
+\end{center}
+
+\section{How to start a new DUNE project}
+
+\section{Licence}
+
+\section{Contributing to DUNE}
+
+
+
+\chapter{Getting started}
+
+In this section we will take a quick tour through the abstract
+grid interface provided by \Dune. This should give you an overview of
+the different classes before we go into the details.
+
+\section{Creating your first grid}
+
+Let us start out with a replacement of the famous ``hello world''
+program. If the listing is from a file that comes with this tutorial
+its name is printed in the frame before the listing.
+
+\begin{lst}[dune-grid-howto/gettingstarted.cc] \mbox{}
+
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../gettingstarted.cc}
+\end{lst}
+
+This program is quite simple. It starts with some includes in lines
+4-6. The file \lstinline!config.h! has been produced by the
+\lstinline!configure! script in the application's build system. It contains the
+current configuration and can be used to compile different versions of
+your code depending on the configuration selected. It is important
+that this file is include before any other \Dune\ header files. The
+next file \lstinline!dune/grid/sgrid.hh! includes the headers for the
+\lstinline!SGrid! class which provides a special implementation of the
+\Dune\ grid interface with an equidistant structured mesh in a cube in
+any space dimension. Then \lstinline!dune/grid/common/gridinfo.hh!
+loads the headers of some functions which print useful information
+about a grid.
+
+Since the dimension will be used as a template parameter in many
+places below we define it as a constant in line number 11.
+The \lstinline!SGrid! class template takes two template
+parameters which are the dimensionality of the grid (its dimension)
+and the dimension of the space where the grid is embedded (its world
+dimension). The \lstinline!SGrid! class does only support the case
+where dimension and world dimension are equal. For easy of writing we
+define in line 12 the type \lstinline!GridType! using the selected value for the dimension.
+Lines 13-15 prepare the arguments for the construction of an
+\lstinline!SGrid! object. These arguments use the class template
+\lstinline!FieldVector<T,n>! which is a vector with \lstinline!n!
+components of type \lstinline!T!. You can either assign the same value
+to all components in the constructor (as is done here) or you could
+use \lstinline!operator[]! to assign values to individual components.
+The variable \lstinline!N! defines the number of cells or elements to
+be used in the respective dimension of the grid. \lstinline!L! defines
+the coordinates of the lower left corner of the cube and \lstinline!H!
+defines the extend of the cube in each space dimension. Finally in
+line 16 we are now able to instantiate the \lstinline!SGrid!
+object.
+
+The only thing we do with the grid in this little example is printing
+some information about it. After successfully running the executable
+\lstinline!gettingstarted! you should see an output like this:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+=> SGrid(dim=3,dimworld=3)
+level 0 codim[0]=27 codim[1]=108 codim[2]=144 codim[3]=64
+leaf    codim[0]=27 codim[1]=108 codim[2]=144 codim[3]=64
+leaf dim=3 geomTypes=((cube,3)[0]=27,(cube,2)[1]=108,(cube,1)[2]=144,(cube,0)[3]=64)
+\end{lstlisting}
+
+The first line tells you that you are looking at an \lstinline!SGrid!
+object of the given dimensions. The \Dune\ grid interface supports
+unstructured, locally refined, logically nested grids. The coarsest
+grid is called level-0-grid or macro grid. Elements can be
+individually refined into a number of smaller elements. Each element
+of the macro grid and all its descendents obtained from refinement
+form a tree structure. All elements at depth $n$ of a refinement tree
+form the level-$n$-grid. All elements which are leafs of a refinement
+tree together form the so-called leaf grid. The second line of the
+output tells us that this grid object consists only of a single level
+(level $0$) while the next line tells us that that level 0 coincides
+also with the leaf grid in this case. Each line reports about the
+number of grid entities which make up the grid. We see that there are
+27 elements (codimension 0), 108 faces (codimension 1), 144 edges
+(codimension 2) and 64 vertices (codimension 3) in the grid. The last
+line reports on the different types of entities making up the grid. In
+this case all entities are of type ``cube''.
+
+\begin{exc} Try to play around with different grid sizes by assigning
+  different values to the \lstinline!N! parameter. You can also change
+  the dimension of the grid by varying \lstinline!dim!. Don't be
+  modest. Also try dimensions 4 and 5!
+\end{exc}
+
+\section{Traversing a grid --- A first look at the grid interface}
+
+After looking at very first simple example we are now ready to go on
+to a more complicated example. Here it is:
+
+\begin{lst}[dune-tutorial/traversal.cc] \mbox{}
+
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../traversal.cc}
+\end{lst}
+
+The \lstinline!main! function is pretty similar to previous one except
+that we use a 2d grid that is refined once in line 115. This means
+that we have a grid with two levels. The main work is done in a
+call to the function \lstinline!traversal! in line 118. This function
+is given in lines 13-101.
+
+The function \lstinline!traversal! is a function template that is
+parameterized by a class \lstinline!G! that implements the \Dune\ grid
+interface. Thus it works on \textit{any} grid available in \Dune\
+without any changes. 
+
+The algorithm should work in any dimension so we extract the grid's
+dimension and world dimension in lines 16 and 17. Next, each \Dune\
+grid defines a type that it uses to represent positions. This type is
+extracted in line 21 for ease of writing. 
+
+A grid is considered to be a container of ``entities'' which are
+abstractions for geometric objects like vertices, edges,
+quadrilaterals, tetrahedra, and so on. This is very similar to the
+standard template library (STL) which is part of any C++ system. A key
+difference is, however, that there is not just one type of entity but
+several. As in the STL the elements of any container can be accessed
+with iterators which are generalized pointers. Again, a \Dune\ grid
+knows several different iterators which provide access to the
+different kinds of entities and which also provide different patterns
+of access. 
+
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+*** Traverse codim 0 leafs
+visiting leaf (cube, 2) with first vertex at -1 -1
+visiting leaf (cube, 2) with first vertex at 0 -1
+visiting leaf (cube, 2) with first vertex at -1 0
+visiting leaf (cube, 2) with first vertex at 0 0
+there are/is 4 leaf element(s)
+
+*** Traverse codim 0 level-wise
+visiting (cube, 2) with first vertex at -1 -1
+there are/is 1 element(s) on level 0
+
+visiting (cube, 2) with first vertex at -1 -1
+visiting (cube, 2) with first vertex at 0 -1
+visiting (cube, 2) with first vertex at -1 0
+visiting (cube, 2) with first vertex at 0 0
+there are/is 4 element(s) on level 1
+
+
+*** Traverse codim dim level-wise
+visiting (cube, 0) at -1 -1
+visiting (cube, 0) at 1 -1
+visiting (cube, 0) at -1 1
+visiting (cube, 0) at 1 1
+there are/is 4 vertices(s) on level 0
+
+visiting (cube, 0) at -1 -1
+visiting (cube, 0) at 0 -1
+visiting (cube, 0) at 1 -1
+visiting (cube, 0) at -1 0
+visiting (cube, 0) at 0 0
+visiting (cube, 0) at 1 0
+visiting (cube, 0) at -1 1
+visiting (cube, 0) at 0 1
+visiting (cube, 0) at 1 1
+there are/is 9 vertices(s) on level 1
+\end{lstlisting}
+
+\begin{rem} Define the end iterator for efficiency. 
+\end{rem}
+
+\chapter{Main classes in the DUNE grid interface}
+
+\section{Grid}
+
+\section{Iterators}
+
+\section{Entity}
+
+\section{Geometry}
+
+
+
+\chapter{Using different grids}
+
+\section{Yasp}
+
+\section{OneD}
+
+\section{Alberta}
+
+\section{UG}
+
+\section{Alu3d}
+
+\section{Using configuration information provided by configure}
+
+
+
+\chapter{Reference elements}
+
+\chapter{Quadrature rules}
+
+\begin{lst}[dune-grid-howto/integrate.hh] \mbox{}
+
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../integrate.hh}
+\end{lst}
+
+\begin{lst}[dune-grid-howto/integration.cc] \mbox{}
+
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../integration.cc}
+\end{lst}
+
+
+\chapter{Attaching user data to a grid}
+
+\chapter{Adaptivity}
+
+\chapter{Parallelism}
+
+\chapter{Input and output}
+
+
+
+
+
+\bibliographystyle{plain}
+\bibliography{grid-howto.bib}
+
+\end{document}
