@@ -13,7 +13,7 @@
   stringstyle=\ttfamily, commentstyle=\it, extendedchars=true}
 \usepackage{hyperref}
 \usepackage{psfrag}
-\usepackage{leftidx}
+\usepackage{makeidx}
 
 \newif\ifpdf
 \ifx\pdfoutput\undefined
@@ -55,6 +55,8 @@
   Interface HOWTO}
 \author{Peter Bastian}
 \date{\today}
+
+\makeindex
 
 \begin{document}
 
@@ -120,11 +122,10 @@ the different classes before we go into the details.
 
 \section{Creating your first grid}
 
-Let us start out with a replacement of the famous ``hello world''
-program. If the listing is from a file that comes with this tutorial
-its name is printed in the frame before the listing.
+Let us start with a replacement of the famous ``hello world''
+program given below.
 
-\begin{lst}[dune-grid-howto/gettingstarted.cc] \mbox{}
+\begin{lst}[File dune-grid-howto/gettingstarted.cc] \mbox{}
 
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../gettingstarted.cc}
@@ -150,7 +151,10 @@ parameters which are the dimensionality of the grid (its dimension)
 and the dimension of the space where the grid is embedded (its world
 dimension). The \lstinline!SGrid! class does only support the case
 where dimension and world dimension are equal. For easy of writing we
-define in line 12 the type \lstinline!GridType! using the selected value for the dimension.
+define in line 12 the type \lstinline!GridType! using the selected
+value for the dimension. All identifiers of the \Dune\
+framework are within the \lstinline!Dune! namespace.
+
 Lines 13-15 prepare the arguments for the construction of an
 \lstinline!SGrid! object. These arguments use the class template
 \lstinline!FieldVector<T,n>! which is a vector with \lstinline!n!
@@ -168,12 +172,15 @@ The only thing we do with the grid in this little example is printing
 some information about it. After successfully running the executable
 \lstinline!gettingstarted! you should see an output like this:
 
+\begin{lst}[Output of gettingstarted] \mbox{}
+
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 => SGrid(dim=3,dimworld=3)
 level 0 codim[0]=27 codim[1]=108 codim[2]=144 codim[3]=64
 leaf    codim[0]=27 codim[1]=108 codim[2]=144 codim[3]=64
 leaf dim=3 geomTypes=((cube,3)[0]=27,(cube,2)[1]=108,(cube,1)[2]=144,(cube,0)[3]=64)
 \end{lstlisting}
+\end{lst}
 
 The first line tells you that you are looking at an \lstinline!SGrid!
 object of the given dimensions. The \Dune\ grid interface supports
@@ -202,49 +209,130 @@ this case all entities are of type ``cube''.
 \section{Traversing a grid --- A first look at the grid interface}
 
 After looking at very first simple example we are now ready to go on
-to a more complicated example. Here it is:
+to a more complicated one. Here it is:
 
-\begin{lst}[dune-tutorial/traversal.cc] \mbox{}
-
+\begin{lst}[File dune-tutorial/traversal.cc] \mbox{}
+\nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../traversal.cc}
 \end{lst}
 
-The \lstinline!main! function is pretty similar to previous one except
-that we use a 2d grid that is refined once in line 115. This means
-that we have a grid with two levels. The main work is done in a
-call to the function \lstinline!traversal! in line 118. This function
-is given in lines 13-101.
+The \lstinline!main! function near the end of the listing
+is pretty similar to previous one except
+that we use a 2d grid for the unit square that just consists of one
+cell. In line 106 this cell is refined once using the standard method
+of grid refinement of the implementation. Here, the cell is refined
+into four smaller cells. The main work is done in a
+call to the function \lstinline!traversal! in line 109. 
+This function is given in lines 12-92.
 
 The function \lstinline!traversal! is a function template that is
-parameterized by a class \lstinline!G! that implements the \Dune\ grid
-interface. Thus it works on \textit{any} grid available in \Dune\
-without any changes. 
+parameterized by a class \lstinline!G! that is assumed to
+implement the \Dune\ grid interface. 
+Thus, it will work on \textit{any} grid available in \Dune\
+without any changes. We now go into the details of this function.
 
 The algorithm should work in any dimension so we extract the grid's
-dimension and world dimension in lines 16 and 17. Next, each \Dune\
+dimension in line 16. Next, each \Dune\
 grid defines a type that it uses to represent positions. This type is
-extracted in line 21 for ease of writing. 
+extracted in line 20 for later use. 
 
 A grid is considered to be a container of ``entities'' which are
 abstractions for geometric objects like vertices, edges,
 quadrilaterals, tetrahedra, and so on. This is very similar to the
-standard template library (STL) which is part of any C++ system. A key
-difference is, however, that there is not just one type of entity but
+standard template library (STL), see e.~g.~\cite{Stroustrup},
+which is part of any C++ system. 
+A key difference is, however, that there is not just one type of entity but
 several. As in the STL the elements of any container can be accessed
 with iterators which are generalized pointers. Again, a \Dune\ grid
 knows several different iterators which provide access to the
 different kinds of entities and which also provide different patterns
 of access. 
 
+Line 29 extracts the type of an iterator from the grid
+class. \lstinline!Codim! is a \lstinline!struct! within the grid class
+that takes an integer template parameter specifying the codimension
+over which to iterate. Within the \lstinline!Codim! structure the type
+\lstinline!LeafIterator! is defined. Since we specified codimension 0
+this iterator is used to iterate
+over the elements which are not refined any further, i.~e.~which are
+the leaves of the refinement trees.
+
+The \lstinline!for!-loop in lines 33-34 now visits every such
+element. The \lstinline!leafbegin! and \lstinline!leafend! on the grid
+class deliver the first leaf element and one past the last leaf
+element. Note that the \lstinline!template! keyword must be used and
+template parameters are passed explicitely. Within the loop body in
+lines 35-41 the iterator \lstinline!it! acts like a pointer to an entity of
+dimension \lstinline!dim! and codimension 0. The exact type would be
+\lstinline!typename G::template Codim<0>::Entity! just to mention
+it.
+
+An important part of an entity is its geometrical shape and
+position. All geometrical information is factored out into a
+sub-object that can be accessed via the \lstinline!geometry()!
+method. The geometry object is in general a mapping from a $d$-dimensional
+polyhedral reference element to $w$ dimensional space. Here we have
+$d=$ \lstinline!G::dimension! and $w=$
+\lstinline!G::dimensionworld!. This mapping is also called the ``local to
+global'' mapping.
+The corresponding reference element has a certain type which is
+extracted in line 36. Since the reference elements are polyhedra they
+consist of a finite number of corners. The images of the corners under
+the local to global map can be accessed via an
+\lstinline!operator[]!. Lines 37-39 print the geometry type and the
+position of the first corner of the element. Then line 40 just counts
+the number of elements visited.
+
+Suppose now that we wanted to iterate over the vertices of the leaf
+grid instead of the elements. Now vertices have the codimension
+\lstinline!dim! in a \lstinline!dim!-dimensional grid and a
+corresponding iterator is provided by each grid class. It is extracted
+in line 51 for later use. The \lstinline!for!-loop starting in line 55
+is very similar to the first one except that it now uses the
+\lstinline!VertexLeafIterator!.  
+As you can see the different entities can be accessed with the same
+methods. We will see later that codimensions 0 and \lstinline!dim! are
+specializations with an extended interface compared to all other
+codimensions. You can also access the codimensions between 0 and
+\lstinline!dim!. However, currently not all implementations of the
+grid interface support these intermediate codimensions (though this
+does not restrict the implementation of finite element methods with
+degrees of freedom associated to, say, faces).
+
+Finally, we show in lines 73-91 how the hierarchic structure of the
+mesh can be accessed. To that end a \lstinline!LevelIterator! is
+used. It provides access to all entities of a given codimension (here
+0) on a given grid level. The coarsest grid level (the initial macro
+grid) has number zero and the number of the finest grid level is
+returned by the \lstinline!maxLevel()! method of the grid. 
+The methods \lstinline!lbegin()! and \lstinline!lend()! on the grid
+deliver iterators to the first and one-past-the-last entity of a given
+grid level supplied as an integer argument to these methods. 
+
+The following listing shows the output of the program.
+
+\begin{lst}[Output of traversal] \mbox{}
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-*** Traverse codim 0 leafs
+*** Traverse codim 0 leaves
 visiting leaf (cube, 2) with first vertex at -1 -1
 visiting leaf (cube, 2) with first vertex at 0 -1
 visiting leaf (cube, 2) with first vertex at -1 0
 visiting leaf (cube, 2) with first vertex at 0 0
 there are/is 4 leaf element(s)
+
+*** Traverse codim 2 leaves
+visiting (cube, 0) at -1 -1
+visiting (cube, 0) at 0 -1
+visiting (cube, 0) at 1 -1
+visiting (cube, 0) at -1 0
+visiting (cube, 0) at 0 0
+visiting (cube, 0) at 1 0
+visiting (cube, 0) at -1 1
+visiting (cube, 0) at 0 1
+visiting (cube, 0) at 1 1
+there are/is 9 leaf vertices(s)
 
 *** Traverse codim 0 level-wise
 visiting (cube, 2) with first vertex at -1 -1
@@ -255,33 +343,291 @@ visiting (cube, 2) with first vertex at 0 -1
 visiting (cube, 2) with first vertex at -1 0
 visiting (cube, 2) with first vertex at 0 0
 there are/is 4 element(s) on level 1
-
-
-*** Traverse codim dim level-wise
-visiting (cube, 0) at -1 -1
-visiting (cube, 0) at 1 -1
-visiting (cube, 0) at -1 1
-visiting (cube, 0) at 1 1
-there are/is 4 vertices(s) on level 0
-
-visiting (cube, 0) at -1 -1
-visiting (cube, 0) at 0 -1
-visiting (cube, 0) at 1 -1
-visiting (cube, 0) at -1 0
-visiting (cube, 0) at 0 0
-visiting (cube, 0) at 1 0
-visiting (cube, 0) at -1 1
-visiting (cube, 0) at 0 1
-visiting (cube, 0) at 1 1
-there are/is 9 vertices(s) on level 1
 \end{lstlisting}
+\end{lst}
 
 \begin{rem} Define the end iterator for efficiency. 
 \end{rem}
 
-\chapter{Main classes in the DUNE grid interface}
+\begin{exc} Play with different dimensions, codimension
+  (\lstinline!SGrid! supports all codimenions) and refinements.
+\end{exc}
+
+\begin{exc} The method \lstinline!corners()! of the geometry returns
+  the number of corners of an entity. Modify the code such that the
+  positions of all corners are printed.
+\end{exc}
+
+\chapter{The DUNE grid interface}
+
+
 
 \section{Grid}
+
+\subsection{Description}
+
+A computational grid is a nonoverlapping subdivision of a domain
+$\Omega\subset\R^w$ into elements of ``simple'' shape. Here ``simple''
+means that the element can be represented as the image of a reference
+element\index{reference element} under a transformation. A reference element is a convex
+polytope, which is a bounded intersection of a finite set of
+half-spaces. A grid has a dimension $d$ which is the dimensionality of
+its reference elements. Clearly we have $d\leq w$. In the case $d<w$ the grid
+discretizes a $d$-dimensional manifold. 
+
+The intersection of a $d$-dimensional polytope with a
+tangent plane is called a face (note that there are faces of
+dimensionality $0,\ldots,d-1$). Consequently, a face of a grid element
+is defined as the image of a face of its reference element under the
+transformation. The elements and faces of elements of a grid are
+called its entities. An entity is said to be of codimension $c$ if it
+is a $d-c$-dimensional object. Thus the elements of the grid are
+entities of codimension 0, facets of an element have codimension 1,
+edges have codimension $d-1$ and vertices have codimension $d$.
+
+Computational grids come in a variety of flavours: A
+{conforming} grid is one where the intersection of two
+elements is either empty or a face of each of the two elements. 
+Grids where the intersection of two elements may have an
+arbitrary shape are called {nonconforming}. A
+{simplicial} grid is one where the reference elements are
+simplices. In a {multi-element-type} grid a finite number of
+different reference elements are allowed. The \Dune\ grid interface
+can represent conforming as well as non-conforming grids.
+
+A {hierarchically nested} grid consists of a collection of $J+1$
+grids that are subdivisions of nested domains $$\Omega=\Omega_0 \supseteq \Omega_1 \supseteq
+\ldots \supseteq \Omega_J.$$ Note that only $\Omega_0$ is required to
+be identical to $\Omega$. If $\Omega_0=\Omega_1=\ldots=\Omega_J$ the
+grid is {globally refined}, otherwise it is {locally refined}.
+The grid that discretizes $\Omega_0$ is called the macro grid and its
+elements the macro elements. The
+grid for $\Omega_{l+1}$ is obtained from the grid
+for $\Omega_l$ by possibly subdividing each of its elements into
+smaller elements. Thus, each element of the macro grid and the
+elements that are obtained from refining it form a tree structure. The
+grid discretizing $\Omega_l$ with $0\leq l \leq J$ is called the level-$l$-grid and its
+elements are obtained from an $l$-fold refinement of some macro elements.
+
+Due to the nestedness of the domains we can subdivide the domain
+$\Omega$ as $$\Omega = \Omega_J \cup \bigcup_{l=0}^{J-1}
+\Omega_l\setminus\Omega_{l+1}.$$ As a consequence of the hierarchical
+construction a computational grid discretizing $\Omega$ can be
+obtained by taking the elements of the level-$J$-grid plus
+the elements of the level-$J-1$-grid in the region
+$\Omega_{J-1}\setminus\Omega_{J}$ plus the elements of the level-$J-2$-grid in the region
+$\Omega_{J-2}\setminus\Omega_{J-1}$ and so on plus the elements of the level-$0$-grid in the region
+$\Omega_{0}\setminus\Omega_{1}$. The grid resulting from this
+procedure is called the leaf grid
+because it is formed by the leaf elements of the trees emanating at
+the macro elements. 
+
+There is a variety of ways how to hierarchically refine a grid. The
+refinement is called conforming if the leaf grid is always a
+conforming grid, otherwise the refinement is called
+non-conforming. Note that the grid on each level $l$ might be
+conforming while the leaf grid is not. 
+There are also many ways how to subdivide an individual element into smaller elements. The
+\Dune\ grid interface covers conforming and non-conforming
+refinement as well as arbitrary refinement rules for individual
+elements.
+
+
+\subsection{Enumeration Types}
+
+There are several enumeration types which are used for specifying a
+finite number of choices for certain parameters in the interface.
+
+\minisec{\tt GridIdentifier\index{{GridIdentifier}@{\tt
+      GridIdentifier}}} This type contains one identifier for each
+type implementing the \Dune\ grid interface. Currently these are
+\begin{quote}
+\raggedright
+\lstinline!SGrid_Id!, \lstinline!AlbertaGrid_Id!, \lstinline!SimpleGrid_Id!, \lstinline!UGGrid_Id!, 
+\lstinline!YaspGrid_Id!, \lstinline!ALU3dGrid_Id! and \lstinline!OneDGrid_Id!.
+\end{quote}
+
+\minisec{\tt AdaptionState\index{{AdaptionState}@{\tt AdaptionState}}}
+The adaption state may take the values
+\begin{quote}
+\raggedright
+\lstinline!NONE!, \lstinline!COARSEN! and \lstinline!REFINED!.
+\end{quote}
+It is used to indicate the state of a grid entity after refinement.
+
+\minisec{\tt PartitionType\index{{PartitionType}@{\tt PartitionType}}}
+
+In a parallel computation the grid is partitioned to a given number of
+processes in an overlapping or non-overlapping fashion. Each entity of
+a grid part in a process is assigned a value of
+\lstinline!PartitionType!. It consist of the values
+\begin{quote}
+\raggedright
+\lstinline!InteriorEntity!, \lstinline!BorderEntity!,
+\lstinline!OverlapEntity!, \lstinline!FrontEntity! and
+\lstinline!GhostEntity!.
+\end{quote}
+
+
+\minisec{\tt PartitionIteratorType\index{{PartitionIteratorType}@{\tt
+      PartitionIteratorType}}}
+with the values
+\begin{quote}
+\raggedright
+\lstinline!Interior_Partition!,
+\lstinline!InteriorBorder_Partition!,
+\lstinline!Overlap_Partition!,
+\lstinline!OverlapFront_Partition!,
+\lstinline!All_Partition! and
+\lstinline!Ghost_Partition!
+\end{quote}
+parametrizes the iterators for the entities of different partition
+type.
+
+\minisec{\tt InterfaceType\index{{InterfaceType}@{\tt InterfaceType}}}
+with the values
+\begin{quote}
+\raggedright
+\lstinline!InteriorBorder_InteriorBorder_Interface!,
+\lstinline!InteriorBorder_All_Interface!,
+\lstinline!Overlap_OverlapFront_Interface!,
+\lstinline!Overlap_All_Interface! and
+\lstinline!All_All_Interface!
+\end{quote}
+is used in parametrizing the communication between processes.
+
+
+\minisec{\tt
+  CommunicationDirection\index{{CommunicationDirection}@{\tt
+      CommunicationDirection}}} 
+with the values
+\begin{quote}
+\raggedright
+\lstinline!ForwardCommunication! and
+\lstinline!BackwardCommunication!
+\end{quote}
+is used in parametrizing the communication between processes.
+
+\subsection{Constants}
+
+Let \lstinline!G! denote a type that implements the grid
+interface. Each such type exports the following constants.
+
+\minisec{\tt G::dimension\index{dimension@{\tt dimension}}}
+The dimensionality $d$ of the elements of the grid. Note that all elements
+of the grid are of the same dimension, i.~e.~it is not possible to
+have elements of different dimension in one grid. Entities with a
+dimension $d^\prime<d$ only occur as faces of a $d$-dimensional element.
+
+\minisec{\tt G::dimensionworld\index{dimensionworld@{\tt dimensionworld}}}
+The dimension $w$ of the domain $\Omega$ that is discretized by the grid.
+
+\subsection{Associated Types}
+
+Let \lstinline!G! denote a type that implements the grid
+interface. Each such type provides access to the following types.
+
+\minisec{\tt G::ctype\index{ctype@{\tt ctype}}} 
+The type used for representing coordinates in the grid.
+
+\minisec{\tt G::Traits::Codim<c>::Entity\index{{entity}@{\tt Entity}}}
+The type for the entity of codimension \lstinline!c!.
+
+\minisec{\tt G::Traits::Codim<c>::Geometry\index{{geometry}@{\tt
+      Geometry}}}
+The type describing a map from a reference element of dimension
+\lstinline!dimension-c! to a space of dimension \lstinline!dimensionworld!.
+
+\minisec{\tt G::Traits::Codim<c>::LocalGeometry\index{{local geometry}@{\tt LocalGeometry}}}
+The type describing a map from a reference element of dimension
+\lstinline!dimension-c! to a a space of dimension \lstinline!dimension!.
+
+\minisec{\tt G::Traits::Codim<c>::EntityPointer\index{{entity
+      pointer}@{\tt EntityPointer}}}
+A type that behaves as a const pointer to an entity of
+codimension \lstinline!c!.
+
+\minisec{\tt
+  G::Traits::Codim<c>::Partition<p>::LevelIterator\index{{level
+      iterator}@{\tt LevelIterator}}}  
+A type of iterator that may be used to examine, but not to modify, the
+entities of codimension \lstinline!c! with partition type
+\lstinline!p! on a certain level of the grid, i.~e.~the increment of
+the iterator adjusts it to the next entity on that level.
+
+
+\minisec{\tt
+  G::Traits::Codim<c>::Partition<p>::LeafIterator\index{{leaf
+      iterator}@{\tt LeafIterator}}} 
+A type of iterator that may be used to examine, but not to modify, the
+entities of codimension \lstinline!c! with partition type
+\lstinline!p! in the leaf grid, i.~e.~the increment of
+the iterator adjusts it to the next entity in the leaf grid. 
+
+\minisec{\tt G::Traits::IntersectionIterator\index{{intersection
+      iterator}@{\tt IntersectionIterator}}}
+A type of iterator that allows to examine, but not to modify, the
+intersections of codimension 1 of an element (entity of codimension 0)
+with other elements.
+
+\minisec{\tt G::Traits::HierarchicIterator\index{{hierarchic
+      iterator}@{\tt HierarchicIterator}}} 
+A type of iterator that allows to examine, but not to modify, entities
+of codimension 0 that result from refinement of an entity of
+codimension 0.
+
+\minisec{\tt G::Traits::Codim<c>::LevelIterator\index{{level
+      iterator}@{\tt LevelIterator}}}
+Shortcut for the \lstinline!LevelIterator! with partition type
+\lstinline!All_Partition!. 
+
+\minisec{\tt G::Traits::Codim<c>::LeafIterator\index{{leaf
+      iterator}@{\tt LeafIterator}}} 
+Shortcut for the \lstinline!LeafIterator! with partition type
+\lstinline!All_Partition!. 
+
+
+\minisec{\tt G::Traits::LevelIndexSet\index{{level index set}@{\tt
+      LevelIndexSet}}}
+A type that provides a consecutive, but non persistent, numbering for
+entities on a grid level. 
+
+\minisec{\tt G::Traits::LeafIndexSet\index{{leaf index set}@{\tt
+      LeafIndexSet}}} 
+A type that provides a consecutive, but non persistent, numbering for
+entities in the leaf grid. 
+
+\minisec{\tt G::Traits::GlobalIdSet\index{{global id set}@{\tt
+      GlobalIdSet}}} 
+A type that provides a unique and persistent numbering for
+all entities in the grid. The numbering is unique over all processes
+over which the grid is partitioned. The numbering is not necessarily
+consecutive.  
+
+\minisec{\tt G::Traits::LocalIdSet\index{{local id set}@{\tt
+      LocalIdSet}}} 
+A type that provides a unique and persistent numbering for
+all entities in the grid. The numbering is only unique in a single process
+and it is not necessarily consecutive.  
+
+
+
+\subsection{Notation}
+
+\subsection{Definitions}
+
+\subsection{Valid Expressions}
+
+\subsection{Expression semantics}
+
+\subsection{Complexity guarantees}
+
+\subsection{Invariants}
+
+\subsection{Implementations}
+
+\subsection{Notes}
+
 
 \section{Iterators}
 
@@ -338,5 +684,7 @@ numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 
 \bibliographystyle{plain}
 \bibliography{grid-howto.bib}
+
+\printindex
 
 \end{document}

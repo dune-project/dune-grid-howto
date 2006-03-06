@@ -10,7 +10,7 @@ double integrate (G& grid, Functor f, int p)
   typedef typename G::ctype ct;
 
   // iterate through all entities of codim 0 on the given level
-  typedef typename G::template Codim<0>::LeafIterator LeafIterator;
+  typedef typename G::Traits::template Codim<0>::LeafIterator LeafIterator;
   double sum = 0.0;
   LeafIterator eendit = grid.template leafend<0>();
   for (LeafIterator it = grid.template leafbegin<0>(); it!=eendit; ++it)

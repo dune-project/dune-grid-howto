@@ -21,19 +21,18 @@ void traversal (G& grid)
   // such a type is exported by every grid implementation
   typedef typename G::ctype ct;
 
-
   // Leaf Traversal
-  std::cout << "*** Traverse codim 0 leafs" << std::endl;
+  std::cout << "*** Traverse codim 0 leaves" << std::endl;
 
   // the grid has an iterator providing the access to
   // all elements (better codim 0 entities) which are leafs
   // of the refinement tree.
   // Note the use of the typename keyword and the traits class
-  typedef typename G::template Codim<0>::LeafIterator LeafIterator;
+  typedef typename G::Traits::template Codim<0>::LeafIterator ElementLeafIterator;
 
   // iterate through all entities of codim 0 at the leafs
   int count = 0;
-  for (LeafIterator it = grid.template leafbegin<0>();
+  for (ElementLeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
     Dune::GeometryType gt = it->geometry().type();
@@ -45,6 +44,27 @@ void traversal (G& grid)
 
   std::cout << "there are/is " << count << " leaf element(s)" << std::endl;
 
+  // Leafwise traversal of codim dim
+  std::cout << std::endl;
+  std::cout << "*** Traverse codim " << dim << " leaves" << std::endl;
+
+  // Get the iterator type
+  // Note the use of the typename and template keywords
+  typedef typename G::Traits::template Codim<dim>::LeafIterator VertexLeafIterator;
+
+  // iterate through all entities of codim 0 on the given level
+  count = 0;
+  for (VertexLeafIterator it = grid.template leafbegin<dim>();
+       it!=grid.template leafend<dim>(); ++it)
+  {
+    Dune::GeometryType gt = it->geometry().type();
+    std::cout << "visiting " << gt
+              << " at " << it->geometry()[0]
+              << std::endl;
+    count++;
+  }
+  std::cout << "there are/is " << count << " leaf vertices(s)"
+            << std::endl;
 
   // Levelwise traversal of codim 0
   std::cout << std::endl;
@@ -52,7 +72,7 @@ void traversal (G& grid)
 
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::template Codim<0>::LevelIterator ElementLevelIterator;
+  typedef typename G::Traits::template Codim<0>::LevelIterator ElementLevelIterator;
 
   // iterate through all entities of codim 0 on the given level
   for (int level=0; level<=grid.maxLevel(); level++)
@@ -68,33 +88,6 @@ void traversal (G& grid)
       count++;
     }
     std::cout << "there are/is " << count << " element(s) on level "
-              << level << std::endl;
-    std::cout << std::endl;
-  }
-
-
-  // Levelwise traversal of codim dim
-  std::cout << std::endl;
-  std::cout << "*** Traverse codim dim level-wise" << std::endl;
-
-  // Get the iterator type
-  // Note the use of the typename and template keywords
-  typedef typename G::template Codim<dim>::LevelIterator VertexLevelIterator;
-
-  // iterate through all entities of codim 0 on the given level
-  for (int level=0; level<=grid.maxLevel(); level++)
-  {
-    count = 0;
-    for (VertexLevelIterator it = grid.template lbegin<dim>(level);
-         it!=grid.template lend<dim>(level); ++it)
-    {
-      Dune::GeometryType gt = it->geometry().type();
-      std::cout << "visiting " << gt
-                << " at " << it->geometry()[0]
-                << std::endl;
-      count++;
-    }
-    std::cout << "there are/is " << count << " vertices(s) on level "
               << level << std::endl;
     std::cout << std::endl;
   }
