@@ -1,0 +1,31 @@
+nNodes 8
+define Hexahedra 1
+
+Parameters {
+    Materials {
+        Mortar {
+        }
+        NonMortar {
+        }
+    }
+    Parts 0 0 0 0 1 0 3 3 3 3 3 2
+}
+
+Nodes { float[3] Coordinates } @1
+Hexahedra { int[8] Nodes } @2
+Hexahedra { byte Materials } @3
+
+# Data section follows
+@1
+0 0 0
+1 0 0
+0 1 0
+1 1 0
+0 0 1
+1 0 1
+0 1 1
+1 1 1
+@2
+1 2 4 3 5 6 8 7
+@3
+1

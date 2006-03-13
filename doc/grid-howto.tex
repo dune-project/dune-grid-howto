@@ -360,7 +360,14 @@ there are/is 4 element(s) on level 1
 
 \chapter{The DUNE grid interface}
 
+\section{Prerequisites}
 
+The description of the interface assumes familarity with the concepts
+of the Standard Template Library (STL) such as containers, iterators, value
+types, etc. On the other hand, the \Dune\ grid interface is not fully
+compatible with the STL, i.~e.~if a certain class is said to be of
+forward iterator type this does not imply that it has exactly the same
+members as a STL forward iterator.  
 
 \section{Grid}
 
@@ -508,10 +515,17 @@ with the values
 \end{quote}
 is used in parametrizing the communication between processes.
 
+\subsection{Notation}
+
+\begin{description}
+\item[{\tt G}:] A type that is a model of Grid.
+\item[\texttt{d},\texttt{c}:] Integer constants denoting
+  dimension and codimension.
+\item[\texttt{p}:] A constant of type \lstinline!PartitionIteratorType!.
+\end{description}
+
 \subsection{Constants}
 
-Let \lstinline!G! denote a type that implements the grid
-interface. Each such type exports the following constants.
 
 \minisec{\tt G::dimension\index{dimension@{\tt dimension}}}
 The dimensionality $d$ of the elements of the grid. Note that all elements
@@ -520,12 +534,10 @@ have elements of different dimension in one grid. Entities with a
 dimension $d^\prime<d$ only occur as faces of a $d$-dimensional element.
 
 \minisec{\tt G::dimensionworld\index{dimensionworld@{\tt dimensionworld}}}
-The dimension $w$ of the domain $\Omega$ that is discretized by the grid.
+The dimension $w\geq d$ of the domain $\Omega$ that is discretized by the grid.
 
 \subsection{Associated Types}
 
-Let \lstinline!G! denote a type that implements the grid
-interface. Each such type provides access to the following types.
 
 \minisec{\tt G::ctype\index{ctype@{\tt ctype}}} 
 The type used for representing coordinates in the grid.
@@ -612,8 +624,6 @@ and it is not necessarily consecutive.
 
 
 
-\subsection{Notation}
-
 \subsection{Definitions}
 
 \subsection{Valid Expressions}
@@ -624,7 +634,7 @@ and it is not necessarily consecutive.
 
 \subsection{Invariants}
 
-\subsection{Implementations}
+\subsection{Implementation details}
 
 \subsection{Notes}
 
@@ -633,8 +643,11 @@ and it is not necessarily consecutive.
 
 \section{Entity}
 
+\section{Geometry Type}
+
 \section{Geometry}
 
+\section{Collective communication}
 
 
 \chapter{Using different grids}

@@ -1,0 +1,34 @@
+nNodes 4
+nTriangles 2
+
+Parameters {
+    Materials {
+        Substrat1 {
+            Color 0.8 0.1 0.1
+        }
+        Substrat2 {
+            Color 0.1 0.1 0.8
+        }
+    }	
+       ContentType "HxTriangularGrid",   	
+	CreateMagnitude 1
+}
+
+Nodes { float[2] Coordinates } @1
+TriangleData { int[3] Nodes } @2
+TriangleData { byte Materials } @3
+
+# Data section follows
+@1
+0.0 0.0 
+1.0 0.0
+0.0 1.0 
+1.0 1.0
+
+@2
+1 2 3
+3 2 4
+
+@3
+1
+2
