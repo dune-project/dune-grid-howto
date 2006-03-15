@@ -28,7 +28,7 @@ void traversal (G& grid)
   // all elements (better codim 0 entities) which are leafs
   // of the refinement tree.
   // Note the use of the typename keyword and the traits class
-  typedef typename G::Traits::template Codim<0>::LeafIterator ElementLeafIterator;
+  typedef typename G::template Codim<0>::LeafIterator ElementLeafIterator;
 
   // iterate through all entities of codim 0 at the leafs
   int count = 0;
@@ -50,7 +50,7 @@ void traversal (G& grid)
 
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::Traits::template Codim<dim>::LeafIterator VertexLeafIterator;
+  typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator;
 
   // iterate through all entities of codim 0 on the given level
   count = 0;
@@ -72,7 +72,7 @@ void traversal (G& grid)
 
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::Traits::template Codim<0>::LevelIterator ElementLevelIterator;
+  typedef typename G::template Codim<0>::LevelIterator ElementLevelIterator;
 
   // iterate through all entities of codim 0 on the given level
   for (int level=0; level<=grid.maxLevel(); level++)

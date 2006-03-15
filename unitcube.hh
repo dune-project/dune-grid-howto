@@ -26,6 +26,7 @@ template<typename T, int variant>
 class UnitCube
 {
 public:
+  typedef T GridType;
 
   // constructor throwing exception
   UnitCube ()
@@ -33,7 +34,7 @@ public:
     DUNE_THROW(Dune::GridError,"no specialization for this grid available");
   }
 
-  const T& grid ()
+  T& grid ()
   {
     return grid_;
   }
@@ -49,10 +50,12 @@ template<>
 class UnitCube<Dune::OneDGrid<1,1>,1>
 {
 public:
+  typedef Dune::OneDGrid<1,1> GridType;
+
   UnitCube () : grid_(1,0.0,1.0)
   {}
 
-  const Dune::OneDGrid<1,1>& grid ()
+  Dune::OneDGrid<1,1>& grid ()
   {
     return grid_;
   }
@@ -66,7 +69,9 @@ template<int dim>
 class UnitCube<Dune::SGrid<dim,dim>,1>
 {
 public:
-  const Dune::SGrid<dim,dim>& grid ()
+  typedef Dune::SGrid<dim,dim> GridType;
+
+  Dune::SGrid<dim,dim>& grid ()
   {
     return grid_;
   }
@@ -80,6 +85,7 @@ template<int dim>
 class UnitCube<Dune::YaspGrid<dim,dim>,1>
 {
 public:
+  typedef Dune::YaspGrid<dim,dim> GridType;
 
   UnitCube () : Len(1.0), s(1), p(false),
 #if HAVE_MPI
@@ -89,7 +95,7 @@ public:
 #endif
   {  }
 
-  const Dune::YaspGrid<dim,dim>& grid ()
+  Dune::YaspGrid<dim,dim>& grid ()
   {
     return grid_;
   }
@@ -108,12 +114,14 @@ template<>
 class UnitCube<Dune::UGGrid<3,3>,1>
 {
 public:
+  typedef Dune::UGGrid<3,3> GridType;
+
   UnitCube () : grid_(800,10)
   {
     Dune::AmiraMeshReader<Dune::UGGrid<3,3> >::read(grid_,"grids/ug3dhexagrid.am");
   }
 
-  const Dune::UGGrid<3,3>& grid ()
+  Dune::UGGrid<3,3>& grid ()
   {
     return grid_;
   }
@@ -127,12 +135,14 @@ template<>
 class UnitCube<Dune::UGGrid<3,3>,2>
 {
 public:
+  typedef Dune::UGGrid<3,3> GridType;
+
   UnitCube () : grid_(800,10)
   {
     Dune::AmiraMeshReader<Dune::UGGrid<3,3> >::read(grid_,"grids/ug3dtetragrid.am");
   }
 
-  const Dune::UGGrid<3,3>& grid ()
+  Dune::UGGrid<3,3>& grid ()
   {
     return grid_;
   }
@@ -146,12 +156,14 @@ template<>
 class UnitCube<Dune::UGGrid<2,2>,1>
 {
 public:
+  typedef Dune::UGGrid<2,2> GridType;
+
   UnitCube () : grid_(800,10)
   {
     Dune::AmiraMeshReader<Dune::UGGrid<2,2> >::read(grid_,"grids/quadgrid.am");
   }
 
-  const Dune::UGGrid<2,2>& grid ()
+  Dune::UGGrid<2,2>& grid ()
   {
     return grid_;
   }
@@ -165,12 +177,14 @@ template<>
 class UnitCube<Dune::UGGrid<2,2>,2>
 {
 public:
+  typedef Dune::UGGrid<2,2> GridType;
+
   UnitCube () : grid_(800,10)
   {
     Dune::AmiraMeshReader<Dune::UGGrid<2,2> >::read(grid_,"grids/trianggrid.am");
   }
 
-  const Dune::UGGrid<2,2>& grid ()
+  Dune::UGGrid<2,2>& grid ()
   {
     return grid_;
   }
@@ -187,10 +201,12 @@ template<>
 class UnitCube<Dune::AlbertaGrid<2,2>,1>
 {
 public:
+  typedef Dune::AlbertaGrid<2,2> GridType;
+
   UnitCube () : grid_("grids/2dgrid.al")
   {}
 
-  const Dune::AlbertaGrid<2,2>& grid ()
+  Dune::AlbertaGrid<2,2>& grid ()
   {
     return grid_;
   }
@@ -204,10 +220,12 @@ template<>
 class UnitCube<Dune::AlbertaGrid<3,3>,1>
 {
 public:
+  typedef Dune::AlbertaGrid<3,3> GridType;
+
   UnitCube () : grid_("grids/3dgrid.al")
   {}
 
-  const Dune::AlbertaGrid<3,3>& grid ()
+  Dune::AlbertaGrid<3,3>& grid ()
   {
     return grid_;
   }
@@ -223,10 +241,12 @@ template<>
 class UnitCube<Dune::ALU3dGrid<3,3,Dune::tetra>,1>
 {
 public:
+  typedef Dune::ALU3dGrid<3,3,Dune::tetra> GridType;
+
   UnitCube () : filename("grids/cube.tetra"), grid_(filename.c_str())
   {}
 
-  const Dune::ALU3dGrid<3,3,Dune::tetra>& grid ()
+  Dune::ALU3dGrid<3,3,Dune::tetra>& grid ()
   {
     return grid_;
   }
@@ -241,10 +261,12 @@ template<>
 class UnitCube<Dune::ALU3dGrid<3,3,Dune::hexa>,1>
 {
 public:
+  typedef Dune::ALU3dGrid<3,3,Dune::hexa> GridType;
+
   UnitCube () : filename("grids/cube.hexa"), grid_(filename.c_str())
   {}
 
-  const Dune::ALU3dGrid<3,3,Dune::hexa>& grid ()
+  Dune::ALU3dGrid<3,3,Dune::hexa>& grid ()
   {
     return grid_;
   }

@@ -5,15 +5,15 @@
 // Dune includes
 #include "config.h"
 #include "dune/grid/sgrid.hh"
-#include "dune/quadrature/quadraturerules.hh"
 
-#include "integrate.hh"
+#include "integrate_domain.hh"
 
 template<typename ct, int dim>
 class Exp {
 public:
   Exp () {midpoint = 0.5;}
-  double operator() (const Dune::FieldVector<ct,dim>& x) {
+  double operator() (const Dune::FieldVector<ct,dim>& x) const
+  {
     Dune::FieldVector<ct,dim> y(x);
     y -= midpoint;
     return exp(-3.234*sqrt(y*y));
