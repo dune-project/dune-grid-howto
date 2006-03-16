@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,headinclude,footinclude,DIV14,BCOR8.25mm,titlepage,twoside,openright,normalheadings]{scrreprt}
+\documentclass[11pt,a4paper,headinclude,footinclude,DIV16,normalheadings]{scrreprt}
 \usepackage[automark]{scrpage2}
 \usepackage[ansinew]{inputenc}
 %\usepackage{german}
@@ -53,8 +53,34 @@
 
 \title{The Distributed and Unified Numerics Environment (DUNE) Grid
   Interface HOWTO}
-\author{Peter Bastian}
+
+\author{Peter Bastian$^\ast$ \and 
+Markus Blatt$^\ast$ \and
+Andreas Dedner$^\dagger$ \and 
+Christian Engwer$^\ast$ \and  
+Robert Klöfkorn$^\dagger$ \and 
+Mario Ohlberger$^\dagger$ \and  
+Oliver Sander$^\ddagger$}
+
 \date{\today}
+
+\publishers{%
+\bigskip
+{\normalsize $^\ast$Interdisziplinäres Zentrum für Wissenschaftliches Rechnen,
+Universität Heidelberg,\\
+Im Neuenheimer Feld 368, D-69120 Heidelberg, Germany}\\
+%
+\bigskip
+{\normalsize $^\dagger$Abteilung für Angewandte Mathematik, Universität Freiburg,\\
+Hermann-Herder-Str.~10, D-79104 Freiburg, Germany}\\
+%
+\bigskip
+{\normalsize $^\ddagger$Institut für Mathematik II,\\ Freie Universität Berlin,
+Arnimallee 2-6, D-14195 Berlin, Germany}\\
+%
+\bigskip
+{\normalsize \texttt{http://hal.iwr.uni-heidelberg.de/dune/index.html}}\\
+}
 
 \makeindex
 
@@ -62,37 +88,220 @@
 
 \maketitle
 
+\begin{abstract}
+This document gives an introduction to the Distributed and Unified
+Numerics Environment (\Dune). \Dune\ is a template library for the
+numerical solution of partial differential equations. It is based on
+the follwing principles: i) Seperation of data structures and
+algorithms by abstract interfaces, ii) Efficient implementation of these
+interfaces using generic programming techniques (templates) in C++ and
+iii) Reuse of existing finite element packages with a large body of
+functionality. This introduction covers only the abstract grid interface
+of \Dune\ which is currently the most developed part. However, part of
+\Dune\ are also the Iterative Solver Template Library (ISTL, providing a
+large variety of solvers for sparse linear systems) and a flexible class
+hierarchy for finite element methods. These will be described in
+subsequent documents. Now have fun!
+\end{abstract}
+
 \tableofcontents
-\cleardoublepage
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Introduction}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{What is DUNE anyway?}
+\section{What is Dune anyway?}
 
-\section{Download and installation}
+\Dune\ is a software framework for the numerical solution of partial
+differential equations with grid-based methods. It is based on the
+following main principles:
+\begin{itemize}
+\item \textit{Seperation of data structures and
+algorithms by abstract interfaces.} This provides more functionality
+with less code and also ensures maintainability and
+extendability of the framework.
+\item \textit{Efficient implementation of these
+interfaces using generic programming techniques}. Static polymorphism
+allows the compiler to do more optimizations, in particular function
+inlining, which in turn allows the interface to have very small
+functions (implemented by one or few machine instructions) without a
+severe performance penalty. In essence the algorithms are parametrized
+with a particular data structure and the interface is removed at
+compile time. Thus the resulting code is as efficient as if it would
+have been written for the special case.
+\item \textit{Reuse of existing finite element packages with a large body of
+functionality.} In particular the finite element codes UG, \cite{ug},
+Alberta, \cite{Alberta}, and ALU3d, \cite{ALU3d}, have been
+adapted to the \Dune\ framework. Thus, parallel and adaptive meshes with
+multiple element types and refinement rules are available. All these
+packages can be linked together in one executable.
+\end{itemize}
 
-get dune
+The framework consists of a number of modules which are different
+states of maturity. In particular these are:
+\begin{itemize}
+\item \textit{Grid interface.} This is the most mature module that is
+  covered in this document. It defines nonconforming, hierarchically
+  nested, multi-element-type, parallel grids in arbitrary space dimensions. 
+\item \textit{Iterative Solver Template Library.} Provides generic
+  sparse matrix/vector classes and a variety of solvers based on these
+  classes. A special feature is the use of templates to exploit the
+  recursive block structure of finite element matrices at compile
+  time. Available solvers include Krylov methods, (block-) incomplete
+  decompositions and aggregation-based algebraic multigrid.
+\item \textit{Freiburg Finite Element Hierarchy.} A flexible class
+  hierarchy for finite elements. Explicit cell-centered finite volume
+  and discontinuous Galerkin methods for hyperbolic problems,
+  e.~g.~transport in porous media and inviscid fluid flow have been implemented.
+\item \textit{Heidelberg Finite Element Hierarchy.} Another flexible
+  class hierarchy for finite elements. Standard and discontinuous
+  Galerkin finite elements for elliptic problems, e.~g.~Laplacian,
+  linear elasticity and Stokes have been implemented.
+\item \textit{Input/Output.} Graphical output with several packages is
+  available, e.~g.~file output to IBM data explorer and VTK (parallel
+  XML format for unstructured grids). The graphics package Grape,
+  \cite{Grape} has been integrated in interactive mode.
+\end{itemize}
 
-get dune-tutorial
+Before starting to work with \Dune\ you might want to update your
+knowledge about C++ and templates in particular. For that you should
+have the bible, \cite{Stroustrup}, at your desk. A good introduction,
+besides its age, is still the book by Barton and Nackman,
+\cite{BN}. The definitive guide to template programming is
+\cite{VandervoordeJosuttis}. A very useful compilation of template
+programming tricks with application to scientific computing is given
+in \cite{Veldhui99} (if you can't find it on the web contact us).
 
-and install them both
+\section{Download}
 
-The purpose of this document is to get You started with the
-``Distributed and Unified Numerics Environment'', in short DUNE. The
-main web site for DUNE can be found at
+\Dune\ and its applications are distributed under the GNU Lesser
+General Public License 
+Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
+{\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
+
+
+\minisec{Dune}
+
+The source code of the \Dune\ framework can be
+downloaded from the web page (follow the instructions given there)
 %
 \begin{center}
-\href{http://hal.iwr.uni-heidelberg.de/dune/index.html}%
-{\texttt{http://hal.iwr.uni-heidelberg.de/dune/index.html}}
+\href{http://hal.iwr.uni-heidelberg.de/dune/download.html}%
+{\texttt{http://hal.iwr.uni-heidelberg.de/dune/download.html}}
 \end{center}
 %
-We try to copy as little information as possible to avoid
-inconsistencies. So for the installation of the DUNE software and
-further packages that may be needed you should look at
+
+\minisec{Dune grid HOWTO}
+
+With the \Dune\ library itself you cannot do much. You need an
+application that uses \Dune\ to do something useful. One such
+application is the \Dune\ grid HOWTO which contains the examples
+described in this
+document. It can be downloaded from the same web page as the \Dune\
+library.
+
+\section{Installation}
+
+The official installation instructions are available on the web page
+%
 \begin{center}
 \href{http://hal.iwr.uni-heidelberg.de/dune/doc/installation-notes.html}%
 {\texttt{http://hal.iwr.uni-heidelberg.de/dune/doc/installation-notes.html}}
 \end{center}
+
+Obviously we do not want to copy all this information because it might
+get outdated and inconsistent then. To make this document
+self-contained we describe only how to install a vanilla version without
+any additional packages. Moreover, we assume that you use a UNIX
+system. If you have the Redmont system then ask them how to install it.
+
+\minisec{Required software}
+
+In order to build the \Dune\ framework the following
+software must be available on your machine:
+\begin{itemize}
+\item \lstinline!automake! in version $\geq 1.5$.
+\item \lstinline!autoconf! in version $\geq 2.50$.
+\item \lstinline!libtool!.
+\item \lstinline!g++! (the GNU C++ compiler) in version $\geq 3.4.1$ or any
+  other C++-compiler that is able to compile it. E.~g.~the INTEL
+  compiler works as well.
+\end{itemize}
+
+
+\minisec{From official version download} 
+
+\noindent Add this section later\ldots
+
+\minisec{From tarballs downloaded via view CVS} 
+
+So you have downloaded the two files
+\lstinline!dune.tar.gz! and \lstinline!dune-grid-howto.tar.gz!. Put
+them in a directory of your choice extract the archives
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+> cd <your directory>
+> tar zxvf dune.tar.gz
+> tar zxvf dune-grid-howto.tar.gz
+\end{lstlisting}
+
+Now you can join the folks who have downloaded the CVS repositories.
+
+\minisec{From CVS download} 
+
+You have checked out out two directories \lstinline!dune! and 
+\lstinline!dune-grid-howto! from the CVS server. If you have not done
+that already put them in a directory of your choice next to each other.
+
+\noindent First we configure and build \Dune:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+> cd <your directory>/dune
+> ./autogen.sh
+> ./configure CXXFLAGS="-g -O0" CFLAGS="-g -O0" CXX="g++-4.0" CC="gcc-4.0" --enable-dunedevel
+> make
+\end{lstlisting}
+This configures and builds \Dune\ with debugging flags using version
+$4.0$ of the GNU C++ and C compiler. You may supply your own compiler
+with your favourite options.
+
+\noindent Now we configure and build the \Dune grid HOWTO:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+> cd <your directory>/dune-grid-howto
+> ./autogen.sh ../dune
+> ./configure --with-dune=../dune CXXFLAGS="-g -O0" CFLAGS="-g -O0" \
+  CXX="g++-4.0" CC="gcc-4.0" --enable-dunedevel
+> make gettingstarted
+> make traversal
+> make integration
+\end{lstlisting}
+
+For the remaining targets using adaptive grids you need to install one
+ore more of the additional libraries UG, Alberta and ALU3d.
+
+The \lstinline!./configure! script prints a list of add-on packages it
+has recognized. The output may look like this:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+Alberta..........: no
+ALUGrid..........: no
+AmiraMesh........: no
+BLAS-lib.........: no
+Grape............: no
+MPI..............: MPICH
+METIS............: no
+ParMETIS.........: no
+OpenGL...........: yes
+UG...............: no
+\end{lstlisting}
+
+Here, the OpenGL library and and MPI (message passing interface)
+library have been found.
+
 
 \section{Code documentation}
 
@@ -110,11 +319,20 @@ on your machine or its latest version is available at
 
 \section{Licence}
 
+\Dune\ is distributed under the GNU Lesser General Public License
+Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
+{\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
+
 \section{Contributing to DUNE}
 
 
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{Getting started}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 In this section we will take a quick tour through the abstract
 grid interface provided by \Dune. This should give you an overview of
@@ -211,7 +429,7 @@ this case all entities are of type ``cube''.
 After looking at very first simple example we are now ready to go on
 to a more complicated one. Here it is:
 
-\begin{lst}[File dune-tutorial/traversal.cc] \mbox{}
+\begin{lst}[File dune-grid-howto/traversal.cc] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../traversal.cc}
@@ -358,31 +576,42 @@ there are/is 4 element(s) on level 1
   positions of all corners are printed.
 \end{exc}
 
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \chapter{The DUNE grid interface}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{Prerequisites}
 
-The description of the interface assumes familarity with the concepts
-of the Standard Template Library (STL) such as containers, iterators, value
-types, etc. On the other hand, the \Dune\ grid interface is not fully
-compatible with the STL, i.~e.~if a certain class is said to be of
-forward iterator type this does not imply that it has exactly the same
-members as a STL forward iterator.  
+\section{Grid definition}
 
-\section{Grid}
+There is a great variety of grids: conforming and non-conforming
+grids, single-element-type and multiple-element-type grids, locally
+and globally refined grids, nested and non-nested grids,
+bisection-type grids, red-green-type grids, sparse grids and so on. In
+this section we describe in some detail the type of grids that are
+covered by the \Dune\ grid interface.
 
-\subsection{Description}
+\minisec{Reference elements}
 
 A computational grid is a nonoverlapping subdivision of a domain
 $\Omega\subset\R^w$ into elements of ``simple'' shape. Here ``simple''
 means that the element can be represented as the image of a reference
 element\index{reference element} under a transformation. A reference element is a convex
 polytope, which is a bounded intersection of a finite set of
-half-spaces. A grid has a dimension $d$ which is the dimensionality of
+half-spaces. 
+
+\minisec{Dimension and world dimension}
+
+A grid has a dimension $d$ which is the dimensionality of
 its reference elements. Clearly we have $d\leq w$. In the case $d<w$ the grid
 discretizes a $d$-dimensional manifold. 
 
-The intersection of a $d$-dimensional polytope with a
+\minisec{Faces, entities and codimension}
+
+The intersection of a $d$-dimensional convex polytope (in
+$d$-dimensional space) with a
 tangent plane is called a face (note that there are faces of
 dimensionality $0,\ldots,d-1$). Consequently, a face of a grid element
 is defined as the image of a face of its reference element under the
@@ -392,15 +621,22 @@ is a $d-c$-dimensional object. Thus the elements of the grid are
 entities of codimension 0, facets of an element have codimension 1,
 edges have codimension $d-1$ and vertices have codimension $d$.
 
+\minisec{Conformity}
+
 Computational grids come in a variety of flavours: A
 {conforming} grid is one where the intersection of two
 elements is either empty or a face of each of the two elements. 
 Grids where the intersection of two elements may have an
-arbitrary shape are called {nonconforming}. A
-{simplicial} grid is one where the reference elements are
+arbitrary shape are called {nonconforming}. 
+
+\minisec{Element types}
+
+A {simplicial} grid is one where the reference elements are
 simplices. In a {multi-element-type} grid a finite number of
 different reference elements are allowed. The \Dune\ grid interface
 can represent conforming as well as non-conforming grids.
+
+\minisec{Hierarchically nested grids, macro grid}
 
 A {hierarchically nested} grid consists of a collection of $J+1$
 grids that are subdivisions of nested domains $$\Omega=\Omega_0 \supseteq \Omega_1 \supseteq
@@ -416,8 +652,10 @@ elements that are obtained from refining it form a tree structure. The
 grid discretizing $\Omega_l$ with $0\leq l \leq J$ is called the level-$l$-grid and its
 elements are obtained from an $l$-fold refinement of some macro elements.
 
-Due to the nestedness of the domains we can subdivide the domain
-$\Omega$ as $$\Omega = \Omega_J \cup \bigcup_{l=0}^{J-1}
+\minisec{Leaf grid}
+
+Due to the nestedness of the domains we can partition the domain
+$\Omega$ into $$\Omega = \Omega_J \cup \bigcup_{l=0}^{J-1}
 \Omega_l\setminus\Omega_{l+1}.$$ As a consequence of the hierarchical
 construction a computational grid discretizing $\Omega$ can be
 obtained by taking the elements of the level-$J$-grid plus
@@ -429,16 +667,51 @@ procedure is called the leaf grid
 because it is formed by the leaf elements of the trees emanating at
 the macro elements. 
 
+\minisec{Refinement rules}
+
 There is a variety of ways how to hierarchically refine a grid. The
 refinement is called conforming if the leaf grid is always a
 conforming grid, otherwise the refinement is called
 non-conforming. Note that the grid on each level $l$ might be
 conforming while the leaf grid is not. 
-There are also many ways how to subdivide an individual element into smaller elements. The
-\Dune\ grid interface covers conforming and non-conforming
-refinement as well as arbitrary refinement rules for individual
-elements.
+There are also many ways how to subdivide an individual element into
+smaller elements. Bisection always subdivides elements into two
+smaller elements, thus the resulting data structure is a binary tree
+(independent of the dimension of the grid). Bisection is sometimes
+calles ``green'' refinement. The so-called ``red'' refinement is the
+subdivision of an element into $2^d$ smaller elements, which is most
+obvious for cube elements. In many practical situation anisotropic
+refinement, i.~e.~refinement in a preferred direction, may be required.
 
+\minisec{Summary}
+
+The \Dune\ grid interface is able to represent grids with the
+following properties:
+\begin{itemize}
+\item Arbitrary dimension.
+\item Entities of all codimensions.
+\item Any kind of reference elements (you could define the icosahedron
+  as a reference element if you wish).
+\item Conforming and non-conforming grids.
+\item Grids are always hierarchically nested.
+\item Any type of refinement rules.
+\item Conforming and non-conforming refinement.
+\item Parallel, distributed grids.
+\end{itemize}
+
+
+
+\section{Grid}
+
+
+\section{Prerequisites}
+
+The description of the interface assumes familarity with the concepts
+of the Standard Template Library (STL) such as containers, iterators, value
+types, etc. On the other hand, the \Dune\ grid interface is not fully
+compatible with the STL, i.~e.~if a certain class is said to be of
+forward iterator type this does not imply that it has exactly the same
+members as a STL forward iterator.  
 
 \subsection{Enumeration Types}
 
@@ -652,6 +925,13 @@ and it is not necessarily consecutive.
 
 \chapter{Using different grids}
 
+\begin{lst}[File dune-grid-howto/unitcube.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube.hh}
+\end{lst}
+
+
 \section{Yasp}
 
 \section{OneD}
@@ -670,10 +950,10 @@ and it is not necessarily consecutive.
 
 \chapter{Quadrature rules}
 
-\begin{lst}[dune-grid-howto/integrate.hh] \mbox{}
+\begin{lst}[dune-grid-howto/integrate\_domain.hh] \mbox{}
 
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../integrate.hh}
+numberstyle=\tiny, numbersep=5pt]{../integrate_domain.hh}
 \end{lst}
 
 \begin{lst}[dune-grid-howto/integration.cc] \mbox{}
@@ -686,6 +966,18 @@ numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 \chapter{Attaching user data to a grid}
 
 \chapter{Adaptivity}
+
+\begin{lst}[File dune-grid-howto/integrate\_entity.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../integrate_entity.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/adaptiveintegration.cc] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../adaptiveintegration.cc}
+\end{lst}
 
 \chapter{Parallelism}
 
