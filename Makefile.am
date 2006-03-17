@@ -1,7 +1,8 @@
 # $Id$
 
 
-noinst_PROGRAMS = gettingstarted traversal integration othergrids adaptiveintegration
+noinst_PROGRAMS = gettingstarted traversal integration othergrids\
+	adaptiveintegration finitevolume adaptivefinitevolume
 
 gettingstarted_SOURCES = gettingstarted.cc
 gettingstarted_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
@@ -22,6 +23,14 @@ othergrids_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS
 adaptiveintegration_SOURCES = adaptiveintegration.cc
 adaptiveintegration_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
 adaptiveintegration_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
+
+finitevolume_SOURCES = finitevolume.cc
+finitevolume_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
+finitevolume_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
+
+adaptivefinitevolume_SOURCES = adaptivefinitevolume.cc
+adaptivefinitevolume_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
+adaptivefinitevolume_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
 
 # don't follow the full GNU-standard
 # we need automake 1.5

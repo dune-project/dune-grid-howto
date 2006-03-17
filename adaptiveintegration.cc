@@ -185,9 +185,9 @@ int main(int argc, char **argv)
   UnitCube<Dune::SGrid<1,1>,1> uc3;
   UnitCube<Dune::SGrid<2,2>,1> uc4;
   UnitCube<Dune::SGrid<3,3>,1> uc5;
+#if HAVE_UG
   UnitCube<Dune::UGGrid<2,2>,2> uc6;
-  UnitCube<Dune::AlbertaGrid<3,3>,1> uc7;
-  UnitCube<Dune::ALU3dGrid<3,3,Dune::hexa>,1> uc8;
+#endif
 
   dowork(uc6.grid());
 

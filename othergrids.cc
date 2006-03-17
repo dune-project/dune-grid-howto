@@ -74,26 +74,25 @@ int main(int argc, char **argv)
 #endif
 
   // make a grid
-  UnitCube<Dune::YaspGrid<3,3>,1> uc1;
   UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+
+  UnitCube<Dune::YaspGrid<3,3>,1> uc1;
   UnitCube<Dune::YaspGrid<2,2>,1> uc2;
   UnitCube<Dune::SGrid<1,1>,1> uc3;
   UnitCube<Dune::SGrid<2,2>,1> uc4;
   UnitCube<Dune::SGrid<3,3>,1> uc5;
+#if HAVE_UG
   UnitCube<Dune::UGGrid<3,3>,2> uc6;
+#endif
+#if HAVE_ALBERTA
   UnitCube<Dune::AlbertaGrid<3,3>,1> uc7;
+#endif
+#if HAVE_ALUGRID
   UnitCube<Dune::ALU3dGrid<3,3,Dune::hexa>,1> uc8;
+#endif
 
   // print some information about the grid
   test(uc1.grid());
-  //   test(uc1.grid());
-  //   test(uc2.grid());
-  //   test(uc3.grid());
-  //   test(uc4.grid());
-  //   test(uc5.grid());
-  //   test(uc6.grid());
-  //   test(uc7.grid());
-  //  test(uc8.grid());
 
 #if HAVE_MPI
   MPI_Finalize();
