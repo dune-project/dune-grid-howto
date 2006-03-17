@@ -66,6 +66,8 @@ Oliver Sander$^\ddagger$}
 
 \publishers{%
 \bigskip
+\includegraphics[width=0.43\textwidth]{EPS/conc.eps}\\
+\bigskip
 {\normalsize $^\ast$Interdisziplinäres Zentrum für Wissenschaftliches Rechnen,
 Universität Heidelberg,\\
 Im Neuenheimer Feld 368, D-69120 Heidelberg, Germany}\\
@@ -268,7 +270,7 @@ This configures and builds \Dune\ with debugging flags using version
 $4.0$ of the GNU C++ and C compiler. You may supply your own compiler
 with your favourite options.
 
-\noindent Now we configure and build the \Dune grid HOWTO:
+\noindent Now we configure and build the \Dune\ grid HOWTO:
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 > cd <your directory>/dune-grid-howto
@@ -305,17 +307,18 @@ library have been found.
 
 \section{Code documentation}
 
-Documentation of the files and classes in DUNE is provided in code and
+Documentation of the files and classes in \Dune\ is provided in code and
 can be extracted using the
 doxygen\footnote{\href{http://www.stack.nl/~dimitri/doxygen/}{\texttt{http://www.stack.nl/$\sim$dimitri/doxygen/}}}
-software available elsewhere. The in code documentation can either be built
-on your machine or its latest version is available at
+software available elsewhere. The code documentation can either be built
+locally on your machine (in html and other formats, e.~g.~\LaTeX) 
+or its latest version is available at
 \begin{center}
 \href{http://hal.iwr.uni-heidelberg.de/dune/doc/}%
 {\texttt{http://hal.iwr.uni-heidelberg.de/dune/doc/}}
 \end{center}
 
-\section{How to start a new DUNE project}
+%\section{How to start a new DUNE project}
 
 \section{Licence}
 
@@ -323,7 +326,7 @@ on your machine or its latest version is available at
 Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
 {\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
 
-\section{Contributing to DUNE}
+%\section{Contributing to DUNE}
 
 
 
@@ -701,229 +704,237 @@ following properties:
 
 
 
-\section{Grid}
+\section{Concepts}
+
+Generic algorithms are based on concepts. A concept is a kind of
+``generalized'' class with a well defined set of members. 
+Imagine a function template that takes a type \lstinline!T!
+as template argument. All the members of \lstinline!T!, i.e.
+methods, enumerations, data (rarely) and nested
+classes  used by the function template form the concept. From that
+definition it is clear that the concept does not necessarily exist as
+program text. 
+
+A class that implements a concept is called a
+\textit{model} of the concept. E.~g.~in the standard template library (STL)
+the class \lstinline!std::vector<int>! is a model of the concept
+``container''. If all instances of a class template are a model of
+a given concept we can also say that the class template is a model of
+the concept. In that sense \lstinline!std::vector! is also a model of
+container.  
+
+In standard OO language a concept would be formulated as
+an abstract base class and all the models would be implemented as
+derived classes. However, for reasons of efficiency we do not want to
+use dynamic polymorphism. Moreover, concepts are more powerful because
+the models of a concept can use different types, e.~g.~as return types of
+methods. As an example consider the STL where the begin method on a
+vector of int returns \lstinline!std::vector<int>::iterator! and on a
+list of int it returns \lstinline!std::list<int>::iterator! which may
+be completely different types. 
+
+Concepts are difficult to describe when they do not exist as concrete
+entities (classes or class templates) in a program. The STL way of
+specifying concepts is to describe the members \lstinline!X::foo()! of
+some arbitrary model named \lstinline!X!. Since this decription of the
+concept is not processed by the compiler it can get inconsistent and
+there is no way to check conformity of a model to the interface. As a
+consequence, strange error messages from the compiler may be the
+result (well C++ compilers can always produce strange error messages).
+There are two ways to improve the situation:
+\begin{itemize}
+\item \textit{Engines:} A class template is defined that wraps the
+  model (which is the template parameter) and forwards all member
+  function calls to it. In addition all the nested types and
+  enumerations of the model are copied into the wrapper class. 
+  The model can be seen as an engine that powers the wrapper class,
+  hence the name. Generic
+  algorithms are written in terms of the wrapper class. Thus the
+  wrapper class encapsulates the concept and it can be ensured
+  formally by the compiler that
+  all members of the concept are implemented.
+
+\item \textit{Barton-Nackman trick:} This is a refinement of the
+  engine approach where the models are derived from the wrapper class
+  template in addition. Thus static polymorphism is combined
+  with a traditional class hierarchy, see \cite{Veldhui99,BN}. 
+  However, the
+  Barton-Nackman trick gets rather involved when the derived classes
+  depend on additional template parameters and several types are related
+  with each other. That is why it is not used at all places in \Dune.
+\end{itemize}
 
 
-\section{Prerequisites}
-
-The description of the interface assumes familarity with the concepts
-of the Standard Template Library (STL) such as containers, iterators, value
-types, etc. On the other hand, the \Dune\ grid interface is not fully
-compatible with the STL, i.~e.~if a certain class is said to be of
-forward iterator type this does not imply that it has exactly the same
-members as a STL forward iterator.  
-
-\subsection{Enumeration Types}
-
-There are several enumeration types which are used for specifying a
-finite number of choices for certain parameters in the interface.
-
-\minisec{\tt GridIdentifier\index{{GridIdentifier}@{\tt
-      GridIdentifier}}} This type contains one identifier for each
-type implementing the \Dune\ grid interface. Currently these are
-\begin{quote}
-\raggedright
-\lstinline!SGrid_Id!, \lstinline!AlbertaGrid_Id!, \lstinline!SimpleGrid_Id!, \lstinline!UGGrid_Id!, 
-\lstinline!YaspGrid_Id!, \lstinline!ALU3dGrid_Id! and \lstinline!OneDGrid_Id!.
-\end{quote}
-
-\minisec{\tt AdaptionState\index{{AdaptionState}@{\tt AdaptionState}}}
-The adaption state may take the values
-\begin{quote}
-\raggedright
-\lstinline!NONE!, \lstinline!COARSEN! and \lstinline!REFINED!.
-\end{quote}
-It is used to indicate the state of a grid entity after refinement.
-
-\minisec{\tt PartitionType\index{{PartitionType}@{\tt PartitionType}}}
-
-In a parallel computation the grid is partitioned to a given number of
-processes in an overlapping or non-overlapping fashion. Each entity of
-a grid part in a process is assigned a value of
-\lstinline!PartitionType!. It consist of the values
-\begin{quote}
-\raggedright
-\lstinline!InteriorEntity!, \lstinline!BorderEntity!,
-\lstinline!OverlapEntity!, \lstinline!FrontEntity! and
-\lstinline!GhostEntity!.
-\end{quote}
-
-
-\minisec{\tt PartitionIteratorType\index{{PartitionIteratorType}@{\tt
-      PartitionIteratorType}}}
-with the values
-\begin{quote}
-\raggedright
-\lstinline!Interior_Partition!,
-\lstinline!InteriorBorder_Partition!,
-\lstinline!Overlap_Partition!,
-\lstinline!OverlapFront_Partition!,
-\lstinline!All_Partition! and
-\lstinline!Ghost_Partition!
-\end{quote}
-parametrizes the iterators for the entities of different partition
-type.
-
-\minisec{\tt InterfaceType\index{{InterfaceType}@{\tt InterfaceType}}}
-with the values
-\begin{quote}
-\raggedright
-\lstinline!InteriorBorder_InteriorBorder_Interface!,
-\lstinline!InteriorBorder_All_Interface!,
-\lstinline!Overlap_OverlapFront_Interface!,
-\lstinline!Overlap_All_Interface! and
-\lstinline!All_All_Interface!
-\end{quote}
-is used in parametrizing the communication between processes.
-
-
-\minisec{\tt
-  CommunicationDirection\index{{CommunicationDirection}@{\tt
-      CommunicationDirection}}} 
-with the values
-\begin{quote}
-\raggedright
-\lstinline!ForwardCommunication! and
-\lstinline!BackwardCommunication!
-\end{quote}
-is used in parametrizing the communication between processes.
-
-\subsection{Notation}
-
-\begin{description}
-\item[{\tt G}:] A type that is a model of Grid.
-\item[\texttt{d},\texttt{c}:] Integer constants denoting
-  dimension and codimension.
-\item[\texttt{p}:] A constant of type \lstinline!PartitionIteratorType!.
-\end{description}
-
-\subsection{Constants}
-
-
-\minisec{\tt G::dimension\index{dimension@{\tt dimension}}}
-The dimensionality $d$ of the elements of the grid. Note that all elements
-of the grid are of the same dimension, i.~e.~it is not possible to
-have elements of different dimension in one grid. Entities with a
-dimension $d^\prime<d$ only occur as faces of a $d$-dimensional element.
-
-\minisec{\tt G::dimensionworld\index{dimensionworld@{\tt dimensionworld}}}
-The dimension $w\geq d$ of the domain $\Omega$ that is discretized by the grid.
-
-\subsection{Associated Types}
-
-
-\minisec{\tt G::ctype\index{ctype@{\tt ctype}}} 
-The type used for representing coordinates in the grid.
-
-\minisec{\tt G::Traits::Codim<c>::Entity\index{{entity}@{\tt Entity}}}
-The type for the entity of codimension \lstinline!c!.
-
-\minisec{\tt G::Traits::Codim<c>::Geometry\index{{geometry}@{\tt
-      Geometry}}}
-The type describing a map from a reference element of dimension
-\lstinline!dimension-c! to a space of dimension \lstinline!dimensionworld!.
-
-\minisec{\tt G::Traits::Codim<c>::LocalGeometry\index{{local geometry}@{\tt LocalGeometry}}}
-The type describing a map from a reference element of dimension
-\lstinline!dimension-c! to a a space of dimension \lstinline!dimension!.
-
-\minisec{\tt G::Traits::Codim<c>::EntityPointer\index{{entity
-      pointer}@{\tt EntityPointer}}}
-A type that behaves as a const pointer to an entity of
-codimension \lstinline!c!.
-
-\minisec{\tt
-  G::Traits::Codim<c>::Partition<p>::LevelIterator\index{{level
-      iterator}@{\tt LevelIterator}}}  
-A type of iterator that may be used to examine, but not to modify, the
-entities of codimension \lstinline!c! with partition type
-\lstinline!p! on a certain level of the grid, i.~e.~the increment of
-the iterator adjusts it to the next entity on that level.
-
-
-\minisec{\tt
-  G::Traits::Codim<c>::Partition<p>::LeafIterator\index{{leaf
-      iterator}@{\tt LeafIterator}}} 
-A type of iterator that may be used to examine, but not to modify, the
-entities of codimension \lstinline!c! with partition type
-\lstinline!p! in the leaf grid, i.~e.~the increment of
-the iterator adjusts it to the next entity in the leaf grid. 
-
-\minisec{\tt G::Traits::IntersectionIterator\index{{intersection
-      iterator}@{\tt IntersectionIterator}}}
-A type of iterator that allows to examine, but not to modify, the
-intersections of codimension 1 of an element (entity of codimension 0)
-with other elements.
-
-\minisec{\tt G::Traits::HierarchicIterator\index{{hierarchic
-      iterator}@{\tt HierarchicIterator}}} 
-A type of iterator that allows to examine, but not to modify, entities
-of codimension 0 that result from refinement of an entity of
-codimension 0.
-
-\minisec{\tt G::Traits::Codim<c>::LevelIterator\index{{level
-      iterator}@{\tt LevelIterator}}}
-Shortcut for the \lstinline!LevelIterator! with partition type
-\lstinline!All_Partition!. 
-
-\minisec{\tt G::Traits::Codim<c>::LeafIterator\index{{leaf
-      iterator}@{\tt LeafIterator}}} 
-Shortcut for the \lstinline!LeafIterator! with partition type
-\lstinline!All_Partition!. 
-
-
-\minisec{\tt G::Traits::LevelIndexSet\index{{level index set}@{\tt
-      LevelIndexSet}}}
-A type that provides a consecutive, but non persistent, numbering for
-entities on a grid level. 
-
-\minisec{\tt G::Traits::LeafIndexSet\index{{leaf index set}@{\tt
-      LeafIndexSet}}} 
-A type that provides a consecutive, but non persistent, numbering for
-entities in the leaf grid. 
-
-\minisec{\tt G::Traits::GlobalIdSet\index{{global id set}@{\tt
-      GlobalIdSet}}} 
-A type that provides a unique and persistent numbering for
-all entities in the grid. The numbering is unique over all processes
-over which the grid is partitioned. The numbering is not necessarily
-consecutive.  
-
-\minisec{\tt G::Traits::LocalIdSet\index{{local id set}@{\tt
-      LocalIdSet}}} 
-A type that provides a unique and persistent numbering for
-all entities in the grid. The numbering is only unique in a single process
-and it is not necessarily consecutive.  
+The \Dune\ grid interface now consists of a \textit{set of related concepts}.
+Either the engine or the Barton-Nackman approach are used to clearly
+define the concepts. In order to avoid any inconsistencies we refer as
+much as possible to the doxygen-generated documentation. For an
+overview of the grid interface see the web page 
+\begin{center}
+\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/group__Grid.html}%
+{\texttt{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/group\_\_Grid.html}}.
+\end{center}
 
 
 
-\subsection{Definitions}
+\subsection{Common types}
 
-\subsection{Valid Expressions}
+Some types in the grid interface do not depend on a specific model,
+i.~e.~they are shared by all implementations.
 
-\subsection{Expression semantics}
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1ReferenceElement.html}{Dune::ReferenceElement}}
 
-\subsection{Complexity guarantees}
+describes the topology and geometry of standard entities. Any given
+entity of the grid can be completely specified by a reference element
+and a map from this reference element to world coordinate space. 
 
-\subsection{Invariants}
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1GeometryType.html}{Dune::GeometryType}}
 
-\subsection{Implementation details}
+defines names for the reference elements.
 
-\subsection{Notes}
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1CollectiveCommunication.html}{Dune::CollectiveCommunication}}
+
+defines an interface to global communication operations in a portable
+and transparent way. In particular also for sequential grids. 
 
 
-\section{Iterators}
+\subsection{Concepts of the Dune grid interface}
 
-\section{Entity}
+In the following a short description of each concept in the \Dune\
+grid interface is given. For the details click on the link that leads
+you to the documentation of the correspondeing wrapper class template 
+(in the engine sense).
 
-\section{Geometry Type}
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1Grid.html}{Grid}}
 
-\section{Geometry}
+    The grid 
+    is a container of entities that allows to access these entities
+    and that knows the number of its entities. You create instances of
+    a grid class in your applications, while objects of the other
+    classes typically aggregated in the grid class and accessed via
+    iterators. 
 
-\section{Collective communication}
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1Entity.html}{Entity}}
+
+    The entity class encapsulates
+    the topological part of an entity, i.e. its hierarchical
+    construction from subentities and the relation to other
+    entities. Entities cannot be created, copied or modified by the
+    user. They can only be read-accessed through immutable iterators. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1Geometry.html}{Geometry}}
+
+    Geometry
+    encapsulates the geometric part of an entity by mapping local
+    coordinates in a reference element to world coordinates. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1EntityPointer.html}{EntityPointer}}
+
+    EntityPointer  is a
+    dereferenceable type that delivers a reference to an
+    entity. Moreover it is immutable, i.e. the referenced entity can
+    not be modified. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1LevelIterator.html}{LevelIterator}}
+
+    LevelIterator  is an
+    immutable iterator that provides access to an entity. It can be
+    incremented to visit all entities of a given
+    codimension and level of the grid. EntityPointer is
+    assignable from a LevelIterator. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1LeafIterator.html}{LeafIterator}}
+
+    LeafIterator is an
+    immutable iterator that provides access to an entity. It can by
+    incremented to visit all entities of a given
+    codimension of the leaf grid. EntityPointer is assignable
+    from a LeafIterator. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1HierarchicIterator.html}{HierarchicIterator}}
+
+    HierarchicIterator 
+    is an immutable iterator that provides access to an entity. It can
+    be incremented to visit all entities of
+    codimension 0 that resulted from subdivision of a given entity of
+    codimension 0. EntityPointer is assgnable from a
+    HierarchicIterator. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1IntersectionIterator.html}{IntersectionIterator}}
+
+    IntersectionIterator  provides access to all entities of
+    codimension 0 that have an intersection of codimension 1 with a
+    given entity of codimension 0. In a conforming mesh these are the
+    face neighbors of an element. For two entities with a common
+    intersection the IntersectionIterator also provides information
+    about the geometric location of the intersection. Furthermore it
+    also provides information about intersections of an entity with
+    the internal or external boundaries. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1IndexSet.html}{LeafIndexSet}}
+
+    LevelIndexSet and LeafIndexSet which are both models of
+    Dune::IndexSet are used to attach any kind of user-defined data to
+    (subsets of) entities of the grid. This data is supposed to be
+    stored in one-dimensional arrays for reasons of efficiency. 
+
+\minisec{\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1IdSet.html}{LocalIdSet}, \href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1IdSet.html}{GlobalIdSet}}
+
+    LocalIdSet and GlobalIdSet which are both models of Dune::IdSet
+    are used to save user data during a grid refinement phase and
+    during dynamic load balancing in the parallel case. 
+
+
+\section{Propagation of type information}
+
+The types making up one grid implementation cannot be mixed with the
+types making up another grid implementation. Say, we have two
+implementations of the grid interface \lstinline!XGrid! and
+\lstinline!YGrid!. Each implementation provides a LevelIterator
+class, named \lstinline!XLevelIterator! and
+\lstinline!YLevelIterator! (in fact, these are class templates because
+they are parametrized by the codimension and other
+parameters). Although these types implement the same interface they
+are distinct classes that are not related in any way for the
+compiler. As in the Standard Template Library strange error messages
+may occur if you try to mix these types.
+
+In order to avoid these problems the related types of an
+implementation are as public types from most classes of an
+implementation. E.~.~in order to extract the
+\lstinline!XLevelIterator! (for codimension 0) from the
+\lstinline!XGrid! class you would write
+\begin{lstlisting}
+XGrid::template Codim<0>::LevelIterator
+\end{lstlisting}
+Because most of the types are parametrized by certain parameters like
+dimension, codimension or partition type simple typedefs (as in the
+STL) are not sufficient here. The types are rather placed in a
+struct template, named \lstinline!Codim! here, where the template
+parameters of the struct are those of the type. This concept may even
+be applied recursively. 
+
 
 
 \chapter{Using different grids}
+
+The power of \Dune\ is the possibility of writing one algorithm that
+works on a large variety of grids with different
+features. In that chapter we show how the different available grid
+classes are instantiated. As an example we create grids for the unit
+cube $\Omega=(0,1)^d$ in various dimensions $d$.
+
+The different grid classes have no common interface for instantiation,
+they may even have different template parameters. In order make the
+examples below easier to write we want to have a class template
+\lstinline!UnitCube! that we parametrize with a type \lstinline!T! and
+and integer parameter \lstinline!variant!. \lstinline!T! should be
+one of the available grid types and \lstinline!variant! can be used to
+generate different grids (e.~g.~triangular or quadrilateral) for the
+same type \lstinline!T!. The advantage of the \lstinline!UnitCube!
+template is that the instantiation is hidden from the user.
+
+The definition of the general template is as follows.
 
 \begin{lst}[File dune-grid-howto/unitcube.hh] \mbox{}
 \nopagebreak
@@ -931,16 +942,56 @@ and it is not necessarily consecutive.
 numberstyle=\tiny, numbersep=5pt]{../unitcube.hh}
 \end{lst}
 
-
-\section{Yasp}
+Instantiation of that template results in a class that throws an
+exception when an object is created.
 
 \section{OneD}
 
-\section{Alberta}
+\begin{lst}[File dune-grid-howto/unitcube\_onedgrid.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube_onedgrid.hh}
+\end{lst}
+
+\section{SGrid}
+
+\begin{lst}[File dune-grid-howto/unitcube\_sgrid.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube_sgrid.hh}
+\end{lst}
+
+\section{Yasp}
+
+\begin{lst}[File dune-grid-howto/unitcube\_yaspgrid.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube_yaspgrid.hh}
+\end{lst}
 
 \section{UG}
 
+\begin{lst}[File dune-grid-howto/unitcube\_uggrid.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
+\end{lst}
+
+\section{Alberta}
+
+\begin{lst}[File dune-grid-howto/unitcube\_albertagrid.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube_albertagrid.hh}
+\end{lst}
+
 \section{Alu3d}
+
+\begin{lst}[File dune-grid-howto/unitcube\_alu3dgrid.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../unitcube_alu3dgrid.hh}
+\end{lst}
 
 \section{Using configuration information provided by configure}
 
@@ -967,6 +1018,8 @@ numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 
 \chapter{Adaptivity}
 
+\section{Adaptive integration}
+
 \begin{lst}[File dune-grid-howto/integrate\_entity.hh] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
@@ -979,7 +1032,50 @@ numberstyle=\tiny, numbersep=5pt]{../integrate_entity.hh}
 numberstyle=\tiny, numbersep=5pt]{../adaptiveintegration.cc}
 \end{lst}
 
+\section{Cell centered finite volumes}
+
+\begin{lst}[File dune-grid-howto/transportproblem.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../transportproblem.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/initialize.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../initialize.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/evolve.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/vtkconcentration.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../vtkconcentration.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/finitevolume.cc] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
+\end{lst}
+
+\section{Adaptive cell centered finite volumes}
+
+\begin{lst}[File dune-grid-howto/finitevolumeadapt.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../finitevolumeadapt.hh}
+\end{lst}
+
+
 \chapter{Parallelism}
+
+
 
 \chapter{Input and output}
 
