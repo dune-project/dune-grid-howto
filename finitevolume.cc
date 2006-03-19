@@ -10,7 +10,7 @@
 #include "transportproblem.hh"
 #include "initialize.hh"
 #include "evolve.hh"
-#include "vtkconcentration.hh"
+#include "vtkout.hh"
 
 //===============================================================
 // the time loop function working for all types of grids
@@ -55,7 +55,7 @@ void timeloop (const G& grid, double tend)
   }
 
   // output results
-  vtkconcentration(grid,c,k);
+  vtkout(grid,c,"concentration",k);
 }
 
 //===============================================================

@@ -79,57 +79,64 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      //                  if (is.neighbor())
-      //                        {
-      //                          // access neighbor
-      //                          EntityPointer outside = is.outside();
-
-      //                          // handle face from correct side
-      //                          if (outside->isLeaf())
-      //                                {
-      //                                  int indexj = mapper.map(*outside);
-
-      // //                               std::cout << "leaf neighbor i: " << indexi << "." << it->level()
-      // //                                                     << " j=" << indexj << "." << outside->level()
-      // //                                                     << " => " << (it->level()-outside->level()) << std::endl;
-
-      //                                  if ( it->level()>outside->level() ||
-      //                                           (it->level()==outside->level() && indexi<indexj) )
-      //                                        {
-      //                                          // compute factor in neighbor
-      //                                          Dune::GeometryType nbgt = outside->geometry().type();
-      //                                          const Dune::FieldVector<ct,dim>&
-      //                                                nblocal = Dune::ReferenceElements<ct,dim>::general(nbgt).position(0,0);
-      //                                          double nbvolume = outside->geometry().integrationElement(nblocal)
-      //		  *Dune::ReferenceElements<ct,dim>::general(nbgt).volume();
-      //                                          double nbfactor = velocity*integrationOuterNormal/nbvolume;
-
-      //                                          if (factor<0) // inflow
-      //                                                {
-      //                                                  update[indexi] -= c[indexj]*factor;
-      //                                                  update[indexj] += c[indexj]*nbfactor;
-      //                                                }
-      //                                          else // outflow
-      //                                                {
-      //                                                  update[indexi] -= c[indexi]*factor;
-      //                                                  update[indexj] += c[indexi]*nbfactor;
-      //                                                }
-      //                                        }
-      //                                }
-      //                        }
-
-      if (is.neighbor())             // Alberta
+      if (0)
       {
-        // access neighbor
-        EntityPointer outside = is.outside();
+        if (is.neighbor())                   // "correct" version
+        {
+          // access neighbor
+          EntityPointer outside = is.outside();
 
-        // neighbors index
-        int indexj = mapper.map(*outside);
+          // handle face from correct side
+          if (outside->isLeaf())
+          {
+            int indexj = mapper.map(*outside);
 
-        if (factor<0)                   // inflow
-          update[indexi] -= c[indexj]*factor;
-        else                   // outflow
-          update[indexi] -= c[indexi]*factor;
+            //                            std::cout << "leaf neighbor i: " << indexi << "." << it->level()
+            //                                                  << " j=" << indexj << "." << outside->level()
+            //                                                  << " => " << (it->level()-outside->level()) << std::endl;
+
+            if ( it->level()>outside->level() ||
+                 (it->level()==outside->level() && indexi<indexj) )
+            {
+              // compute factor in neighbor
+              Dune::GeometryType nbgt = outside->geometry().type();
+              const Dune::FieldVector<ct,dim>&
+              nblocal = Dune::ReferenceElements<ct,dim>::general(nbgt).position(0,0);
+              double nbvolume = outside->geometry().integrationElement(nblocal)
+                                *Dune::ReferenceElements<ct,dim>::general(nbgt).volume();
+              double nbfactor = velocity*integrationOuterNormal/nbvolume;
+
+              if (factor<0)                                     // inflow
+              {
+                update[indexi] -= c[indexj]*factor;
+                update[indexj] += c[indexj]*nbfactor;
+              }
+              else                                     // outflow
+              {
+                update[indexi] -= c[indexi]*factor;
+                update[indexj] += c[indexi]*nbfactor;
+              }
+            }
+          }
+        }
+      }
+
+
+      if (1)
+      {
+        if (is.neighbor())                   // Alberta
+        {
+          // access neighbor
+          EntityPointer outside = is.outside();
+
+          // neighbors index
+          int indexj = mapper.map(*outside);
+
+          if (factor<0)                         // inflow
+            update[indexi] -= c[indexj]*factor;
+          else                         // outflow
+            update[indexi] -= c[indexi]*factor;
+        }
       }
 
 

@@ -14,11 +14,11 @@ struct RestrictedValue
 };
 
 template<class G, class M, class V>
-bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax)
+bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 {
   // tol value for refinement strategy
-  const double refinetol = 0.02;
-  const double coarsentol = 0.0002;
+  const double refinetol  = 0.05;
+  const double coarsentol = 0.001;
 
   // type used for coordinates in the grid
   typedef typename G::ctype ct;
@@ -38,32 +38,68 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax)
   typedef typename IdSet::IdType IdType;
 
   // compute cell indicators
-  V indicator(c.size());
-  double globaldelta = -1E100;
+  V indicator(c.size(),-1E100);
+  double globalmax = -1E100;
+  double globalmin =  1E100;
   for (LeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
+    // my index
     int indexi = mapper.map(*it);
-    double localdelta = -1E100;
+
+    // global min/max
+    globalmax = std::max(globalmax,c[indexi]);
+    globalmin = std::min(globalmin,c[indexi]);
+
     IntersectionIterator isend = it->iend();
     for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
       if (is.neighbor())
       {
-        int indexj = mapper.map(*(is.outside()));
-        localdelta = std::max(localdelta,std::abs(c[indexj]-c[indexi]));
+        // access neighbor
+        EntityPointer outside = is.outside();
+
+        if (0)                 // correct
+        {
+          // handle face from correct side
+          if (outside->isLeaf())
+          {
+            int indexj = mapper.map(*outside);
+            if ( it.level()>outside->level() ||
+                 (it.level()==outside->level() && indexi<indexj) )
+            {
+              double localdelta = std::abs(c[indexj]-c[indexi]);
+              indicator[indexi] = std::max(indicator[indexi],localdelta);
+              indicator[indexj] = std::max(indicator[indexj],localdelta);
+            }
+          }
+        }
+
+        if (1)                 // alberta
+        {
+          int indexj = mapper.map(*(is.outside()));
+          double localdelta = std::abs(c[indexj]-c[indexi]);
+          indicator[indexi] = std::max(indicator[indexi],localdelta);
+        }
+
       }
-    indicator[indexi] = localdelta;
-    globaldelta = std::max(globaldelta,localdelta);
   }
 
   // mark cells for refinement/coarsening
+  double globaldelta = globalmax-globalmin;
+  V mark(c.size(),0.0);
   for (LeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
-    if (indicator[mapper.map(*it)]>refinetol*globaldelta && it.level()<lmax)
+    if (indicator[mapper.map(*it)]>refinetol*globaldelta && (it.level()<lmax || it->isRegular()==false))
+    {
       grid.mark(1,it);
+      mark[mapper.map(*it)] = 1;
+    }
     if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)
+    {
       grid.mark(-1,it);
+      mark[mapper.map(*it)] = -1;
+    }
   }
 
   // restrict to coarse elements
