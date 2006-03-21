@@ -33,6 +33,7 @@ double b (const Dune::FieldVector<ct,dimworld>& x, double t)
 template<int dimworld, class ct>
 Dune::FieldVector<double,dimworld> u (const Dune::FieldVector<ct,dimworld>& x, double t)
 {
-  Dune::FieldVector<double,dimworld> r(1.0);
+  Dune::FieldVector<double,dimworld> r(0.5);
+  r[0] = 1.0;
   return r;
 }

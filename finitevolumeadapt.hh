@@ -58,47 +58,39 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         // access neighbor
         EntityPointer outside = is.outside();
 
-        if (0)                 // correct
+        // handle face from correct side
+        if (outside->isLeaf())
         {
-          // handle face from correct side
-          if (outside->isLeaf())
+          int indexj = mapper.map(*outside);
+          if ( it.level()>outside->level() ||
+               (it.level()==outside->level() && indexi<indexj) )
           {
-            int indexj = mapper.map(*outside);
-            if ( it.level()>outside->level() ||
-                 (it.level()==outside->level() && indexi<indexj) )
-            {
-              double localdelta = std::abs(c[indexj]-c[indexi]);
-              indicator[indexi] = std::max(indicator[indexi],localdelta);
-              indicator[indexj] = std::max(indicator[indexj],localdelta);
-            }
+            double localdelta = std::abs(c[indexj]-c[indexi]);
+            indicator[indexi] = std::max(indicator[indexi],localdelta);
+            indicator[indexj] = std::max(indicator[indexj],localdelta);
           }
         }
-
-        if (1)                 // alberta
-        {
-          int indexj = mapper.map(*(is.outside()));
-          double localdelta = std::abs(c[indexj]-c[indexi]);
-          indicator[indexi] = std::max(indicator[indexi],localdelta);
-        }
-
       }
   }
 
   // mark cells for refinement/coarsening
   double globaldelta = globalmax-globalmin;
-  V mark(c.size(),0.0);
   for (LeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
     if (indicator[mapper.map(*it)]>refinetol*globaldelta && (it.level()<lmax || it->isRegular()==false))
     {
       grid.mark(1,it);
-      mark[mapper.map(*it)] = 1;
+      IntersectionIterator isend = it->iend();
+      for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
+        if (is.neighbor())
+          if (is.outside()->isLeaf())
+            grid.mark(1,is.outside());
+
     }
     if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)
     {
       grid.mark(-1,it);
-      mark[mapper.map(*it)] = -1;
     }
   }
 

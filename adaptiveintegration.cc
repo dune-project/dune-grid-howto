@@ -189,7 +189,7 @@ int main(int argc, char **argv)
   UnitCube<Dune::UGGrid<2,2>,2> uc6;
 #endif
 
-  dowork(uc6.grid());
+  dowork(uc1.grid());
 
 #if HAVE_MPI
   MPI_Finalize();

@@ -1,8 +1,11 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
 template<class G, class M, class V>
-void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
+void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 {
+  // check data partitioning
+  assert(grid.overlapSize(0)>0 || (grid.ghostSize(0)>0));
+
   // first we extract the dimensions of the grid
   const int dim = G::dimension;
   const int dimworld = G::dimensionworld;
@@ -11,7 +14,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   typedef typename G::ctype ct;
 
   // iterator type
-  typedef typename G::template Codim<0>::LeafIterator LeafIterator;
+  typedef typename G::template Codim<0>::
+  template Partition<Dune::All_Partition>::LeafIterator LeafIterator;
 
   // intersection iterator type
   typedef typename G::template Codim<0>::IntersectionIterator IntersectionIterator;
@@ -26,8 +30,9 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   dt = 1E100;
 
   // compute update vector and optimum dt in one grid traversal
-  LeafIterator endit = grid.template leafend<0>();
-  for (LeafIterator it = grid.template leafbegin<0>(); it!=endit; ++it)
+  // iterate over all entities, but update is only used on interior entities
+  LeafIterator endit = grid.template leafend<0,Dune::All_Partition>();
+  for (LeafIterator it = grid.template leafbegin<0,Dune::All_Partition>(); it!=endit; ++it)
   {
     // cell geometry type
     Dune::GeometryType gt = it->geometry().type();
@@ -122,12 +127,18 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     }             // end all intersections
 
     // compute dt restriction
-    dt = std::min(dt,1.0/sumfactor);
+    if (it->partitionType()==Dune::InteriorEntity)
+      dt = std::min(dt,1.0/sumfactor);
 
   }       // end grid traversal
 
   // scale dt with safety factor
+  dt = grid.comm().min(dt); // global min over all partitions
   dt *= 0.99;
+
+  // exchange update
+  VectorExchange<M,V> dh(mapper,update);
+  grid.template communicate<VectorExchange<M,V> >(dh,Dune::InteriorBorder_All_Interface,Dune::ForwardCommunication);
 
   // update the concentration vector
   for (unsigned int i=0; i<c.size(); ++i)

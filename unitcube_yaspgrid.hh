@@ -14,9 +14,9 @@ public:
 
   UnitCube () : Len(1.0), s(size), p(false),
 #if HAVE_MPI
-                grid_(MPI_COMM_WORLD,Len,s,p,0)
+                grid_(MPI_COMM_WORLD,Len,s,p,1)
 #else
-                grid_(Len,s,p,0)
+                grid_(Len,s,p,1)
 #endif
   {  }
 
