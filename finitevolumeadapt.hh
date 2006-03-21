@@ -78,15 +78,14 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   for (LeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
-    if (indicator[mapper.map(*it)]>refinetol*globaldelta && (it.level()<lmax || it->isRegular()==false))
+    if (indicator[mapper.map(*it)]>refinetol*globaldelta && (it.level()<lmax || !it->isRegular()))
     {
       grid.mark(1,it);
       IntersectionIterator isend = it->iend();
       for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
         if (is.neighbor())
-          if (is.outside()->isLeaf())
+          if (is.outside()->isLeaf() && (is.outside().level()<lmax || !is.outside()->isRegular()))
             grid.mark(1,is.outside());
-
     }
     if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)
     {

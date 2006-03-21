@@ -15,7 +15,7 @@ public:
   // constructor throwing exception
   UnitCube ()
   {
-    DUNE_THROW(Dune::GridError,"no specialization for this grid available");
+    DUNE_THROW(Dune::Exception,"no specialization for this grid available");
   }
 
   T& grid ()
