@@ -18,7 +18,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   typedef typename Grid::template Codim<0>::LeafIterator ElementLeafIterator;
 
   // algorithm parameters
-  const double tol=1E-8;
+  const double tol=4E-5;
   const int loworder=1;
   const int highorder=3;
 
@@ -122,10 +122,15 @@ int main(int argc, char **argv)
   UnitCube<Dune::SGrid<2,2>,1> uc4;
   UnitCube<Dune::SGrid<3,3>,1> uc5;
 #if HAVE_UG
-  UnitCube<Dune::UGGrid<2,2>,2> uc6;
+  UnitCube<Dune::UGGrid<3,3>,2> uc6;
+#endif
+#if HAVE_ALBERTA
+#if DUNE_PROBLEM_DIM==2
+  UnitCube<Dune::AlbertaGrid<2,2>,1> uc7;
+#endif
 #endif
 
-  dowork(uc0.grid());
+  dowork(uc6.grid());
 
 #if HAVE_MPI
   MPI_Finalize();

@@ -19,7 +19,11 @@ private:
 template<typename ct, int dim>
 class Needle {
 public:
-  Needle () {midpoint = 0.5;}
+  Needle ()
+  {
+    midpoint = 0.5;
+    midpoint[dim-1] = 1;
+  }
   double operator() (const Dune::FieldVector<ct,dim>& x) const
   {
     Dune::FieldVector<ct,dim> y(x);

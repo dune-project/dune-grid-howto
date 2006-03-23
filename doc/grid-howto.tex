@@ -48,6 +48,7 @@
 \newtheorem{exc}{Excercise}[chapter]
 \newtheorem{rem}[exc]{Remark}
 \newtheorem{lst}{Listing}
+\newtheorem{warn}[exc]{Warning}
 
 \pagestyle{scrheadings}
 
@@ -1108,10 +1109,15 @@ computes the integral over the whole domain via formula
 error. This is done as follows. Let $I_c$ be the value of the numerically
 computed integral on some grid and let $I_f$ be the value of the
 numerically computed integral on a grid where each element has been
-refined. Then $$E \approx |I_f-I_c|$$ is an estimate for the error. If
+refined. Then 
+\begin{equation}
+\label{Eq:GlobalError}
+E \approx |I_f-I_c|
+\end{equation}
+is an estimate for the error. If
 the refinement is such that every element is halfened in every
 coordinate direction, the function to be integrated is sufficiently
-smooth and the order of the quadrature rule is $p$,
+smooth and the order of the quadrature rule is $p+1$,
 then the error should be reduced by a factor of $(1/2)^p$ after
 each mesh refinement. 
 
@@ -1165,11 +1171,121 @@ value $1/4$ as the grid is refined.
 
 \section{Adaptive integration}
 
+\subsection{Adaptive multigrid integration}
+
+In this section we describe briefly the adaptive multigrid integration
+algorithm presented in \cite{Deuflhard93}.
+
+\minisec{Global error estimation}
+
+The global error can be estimated by taking the difference of the numerically
+computed value for the intgral on a fine and a coarse grid as given in
+(\ref{Eq:GlobalError}). 
+
+\minisec{Local error estimation}
+
+Let $I_f^p(\omega)$ and $I_f^q(\omega)$ be two integration formulas of
+different orders $p>q$ for the evaluation of the integral over some
+function $f$ on the element $\omega\subseteq\Omega$. If we assume that
+the higher order rule is locally more accurate then 
+\begin{equation}
+\bar{\epsilon}(\omega) = |I_f^p(\omega)-I_f^q(\omega)|
+\end{equation}
+is an estimator for the local error on the element $\omega$.
+
+\minisec{Refinement strategy}
+
+If the estimated global error is not below a user tolerance the grid
+is to be refined in those places where the estimated local error is
+``high''. To be more specific, we want to achieve that each element in
+the grid contributes about the same local error to the global
+error. Suppose we would knew the maximum local error on all the new elements
+that resulted from refining the current mesh (without actually doing
+so). Then it would be a good idea to refine only those elements in the
+mesh where the local error is not already below that maximum local
+error that will be attained anyway.
+In \cite{Deuflhard93} it is shown that the local error after mesh
+refinement can be effectively computed without actually doing the
+refinement. Consider an element $\omega$ and its father element
+$\omega^-$, i.~e.~the refinement of  $\omega^-$ resulted in
+$\omega$. Moreover, assume that $\omega^+$ is a (virtual) element that
+would result from a refinement of $\omega$. Then it can be shown that under certain
+assumptions the quantity
+\begin{equation}
+\epsilon^+(\omega) = \frac{\bar{\epsilon}(\omega)^2}{\bar{\epsilon}(\omega^-)}
+\end{equation}
+is an estimate for the local error on $\omega^+$,
+i.~e.~$\bar{\epsilon}(\omega^+)$. 
+
+Another idea to determine the refinement threshold is to look simply 
+at the maximum of the local errors on the current mesh and
+to refine only those elements where the local error is above a certain
+fraction of the maximum local error.
+
+By combining the two approaches we get the threshold value $\kappa$
+actually used in the code:
+\begin{equation}
+\kappa = \min\left(\max\limits_\omega \epsilon^+(\omega), \frac12
+  \max\limits_\omega \bar{\epsilon}(\omega) \right).
+\end{equation}
+
+\minisec{Algorithm}
+
+The complete multigrid integration algorithm then reads as follows:
+\begin{itemize}
+\item Choose an initial grid.
+\item Repeat the following steps
+\begin{itemize}
+\item Compute the value $I$ for the integral on the current grid.
+\item Compute the estimate $E$ for the global error.
+\item If $E<\text{tol}\cdot I$ we are done.
+\item Compute the threshold $\kappa$ as defined above.
+\item Refine all elements $\omega$ where $\bar{\epsilon}(\omega)\geq\kappa$.
+\end{itemize}
+\end{itemize}
+
+\subsection{Implementation of the algorithm}
+
+The algorithm above is realized in the following code.
+
 \begin{lst}[File dune-grid-howto/adaptiveintegration.cc] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../adaptiveintegration.cc}
 \end{lst}
+
+The work is done in the function
+\lstinline!adaptiveintegration!. Lines 28-31 compute the value of the
+integral on the current mesh. After printing the result the decission
+whether to continue or not is done in line 46. The extrapolation
+strategy relies on the fact that every element has a father. To ensure
+this the grid is at least once refined globally in the first step
+(line 53). Now the refinement threshold $\kappa$ can be computed in
+lines 58-80. Finally the last loop in lines 83-90 marks elements for
+refinement and lines 93-95 actually do the refinement. The reason for
+dividing refinement into three functions \lstinline!preAdapt()!,
+\lstinline!adapt()! and \lstinline!postAdapt()! will be explained with
+the next example. Note the flexibility of this algorithm: It runs in
+any space dimension on any kind of grid and different integration
+orders can easily be incorporated. And that with just about 100 lineas
+of code including comments.
+
+\begin{figure}
+\includegraphics[width=0.48\textwidth]{EPS/adaptiveintegration_alberta2d.eps}\hfill
+\includegraphics[width=0.48\textwidth]{EPS/adaptiveintegration_ug3d.eps}
+\label{Fig:AdaptiveIntegration}
+\caption{Two and three-dimensional grids generated by the adaptive
+  integration algorithm applied to the needle pulse. Left grid is
+  generated using Alberta, right grid is generated using UG.}
+\end{figure}
+
+Figure \ref{Fig:AdaptiveIntegration} shows two grids generated by the
+adaptive integration algorithm. 
+
+\begin{warn} The quadrature rules for prisms and pyramids are
+  currently only implemented for order two. Therefore adaptive
+  calculations with UGGrid and hexahedral elements do not work.
+\end{warn}
 
 \section{Cell centered finite volumes}
 

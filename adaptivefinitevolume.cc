@@ -82,7 +82,9 @@ int main (int argc , char ** argv)
   UnitCube<Dune::UGGrid<3,3>,2> uc2;
 #endif
 #if HAVE_ALBERTA
+#if DUNE_PROBLEM_DIM==2
   UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
+#endif
 #endif
   //    uc3.grid().globalRefine(8);
   //    timeloop(uc3.grid(),0.5,8,18);
