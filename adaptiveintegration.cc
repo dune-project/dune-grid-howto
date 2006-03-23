@@ -12,13 +12,15 @@
 
 //! adaptive refinement test
 template<class Grid, class Functor>
-void adaptive_integration (Grid& grid, const Functor& f)
+void adaptiveintegration (Grid& grid, const Functor& f)
 {
   // get iterator type
   typedef typename Grid::template Codim<0>::LeafIterator ElementLeafIterator;
 
   // algorithm parameters
-  const double tol=1E-8; // relative accuracy
+  const double tol=1E-8;
+  const int loworder=1;
+  const int highorder=3;
 
   // loop over grid sequence
   double oldvalue=1E100;
@@ -28,10 +30,7 @@ void adaptive_integration (Grid& grid, const Functor& f)
     double value=0;
     for (ElementLeafIterator it = grid.template leafbegin<0>();
          it!=grid.template leafend<0>(); ++it)
-    {
-      double error;
-      value += integrate(it,f,error);
-    }
+      value += integrateentity(it,f,highorder);
 
     // print result
     double estimated_error = std::abs(value-oldvalue);
@@ -64,13 +63,17 @@ void adaptive_integration (Grid& grid, const Functor& f)
          it!=grid.template leafend<0>(); ++it)
     {
       // error on this entity
-      double error;
-      integrate(it,f,error);
+      double lowresult=integrateentity(it,f,loworder);
+      double highresult=integrateentity(it,f,highorder);
+      double error = std::abs(lowresult-highresult);
+
+      // max over whole grid
       maxerror = std::max(maxerror,error);
 
       // error on father entity
-      double fathererror;
-      integrate(it->father(),f,fathererror);
+      double fatherlowresult=integrateentity(it->father(),f,loworder);
+      double fatherhighresult=integrateentity(it->father(),f,highorder);
+      double fathererror = std::abs(lowresult-highresult);
 
       // local extrapolation
       double extrapolatederror = error*error/(fathererror+1E-30);
@@ -82,8 +85,9 @@ void adaptive_integration (Grid& grid, const Functor& f)
     for (ElementLeafIterator it = grid.template leafbegin<0>();
          it!=grid.template leafend<0>(); ++it)
     {
-      double error;
-      integrate(it,f,error);
+      double lowresult=integrateentity(it,f,loworder);
+      double highresult=integrateentity(it,f,highorder);
+      double error = std::abs(lowresult-highresult);
       if (error>kappa) grid.mark(1,it);
     }
 
@@ -102,7 +106,7 @@ void adaptive_integration (Grid& grid, const Functor& f)
 template<class Grid>
 void dowork (Grid& grid)
 {
-  adaptive_integration(grid,Needle<typename Grid::ctype,Grid::dimension>());
+  adaptiveintegration(grid,Needle<typename Grid::ctype,Grid::dimension>());
 }
 
 int main(int argc, char **argv)
@@ -121,7 +125,7 @@ int main(int argc, char **argv)
   UnitCube<Dune::UGGrid<2,2>,2> uc6;
 #endif
 
-  dowork(uc1.grid());
+  dowork(uc6.grid());
 
 #if HAVE_MPI
   MPI_Finalize();

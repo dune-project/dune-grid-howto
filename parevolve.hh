@@ -138,7 +138,9 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
   // exchange update
   VectorExchange<M,V> dh(mapper,update);
-  grid.template communicate<VectorExchange<M,V> >(dh,Dune::InteriorBorder_All_Interface,Dune::ForwardCommunication);
+  grid.template
+  communicate<VectorExchange<M,V> >(dh,Dune::InteriorBorder_All_Interface,
+                                    Dune::ForwardCommunication);
 
   // update the concentration vector
   for (unsigned int i=0; i<c.size(); ++i)
