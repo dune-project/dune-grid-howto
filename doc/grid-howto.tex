@@ -1007,36 +1007,63 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_alu3dgrid.hh}
 
 \chapter{Quadrature rules}
 
-In this chapter we explore how an integral $$\int_\Omega f(x)\ dx$$
+In this chapter we explore how an integral $$\int\limits_\Omega f(x)\ dx$$
 over some function $f:\Omega\to\mathbb{R}$ can be computed numerically
 using a \Dune\ grid object.
+
+\section{Numerical integration}
+
+Assume first the simpler task that $\Delta$ is a reference element 
+and that we want to
+compute the integral over some function $\hat{f}:\Delta\to\mathbb{R}$
+over the reference element:$$\int\limits_\Delta \hat{f}(\hat{x})\ d\hat{x}.$$
+
+
+A quadrature rule is a formula that approximates integrals of
+functions over a reference element $\Delta$. In general it has the form
+$$\int\limits_\Delta \hat{f}(\hat{x})\ d\hat{x} = \sum_{i=1}^n
+\hat{f}(\xi_i) w_i + \text{error}.$$
+The positions $\xi_i$ and weight factors $w_i$ are dependent on the
+type of reference element and the number of quadrature points $n$ is
+related to the error.
+
+Using the transformation formula for integrals we can now compute
+integrals over domains $\omega\subseteq\Omega$ that are mapped from a
+reference element, i.~e.~$\omega=\{x\in\Omega\ |\
+x=g(\hat{x}), \hat{x}\in\Delta\}$, by some function $g:\Delta\to\Omega$:
+\begin{equation}
+\int\limits_\omega f(x) = \int\limits_\Delta f(g(\hat{x}))\mu(\hat{x})\
+d\hat{x} = \sum_{i=1}^n f(g(\xi_i))\mu(\xi_i)w_i + \text{error}. 
+\label{Eq:IntegrateEntity}
+\end{equation}
+Here $\mu(\hat{x}) = \sqrt{|\det J^T(\hat{x})J(\hat{x})|}$ is the
+integration element and $J(\hat{x})$ the Jacobian matrix of the map $g$.
+
+The integral over the whole domain $\Omega$ requires a grid
+$\overline{\Omega}=\bigcup_k \overline{\omega}_k$. Using
+(\ref{Eq:IntegrateEntity}) on each element we obtain finally
+\begin{equation}
+\int\limits_\Omega f(x)\ dx = \sum\limits_{k} \sum_{i=1}^{n_k}
+f(g^k(\xi^k_i))\mu^k(\xi^k_i)w^k_i + \sum\limits_{k} \text{error}^k.
+\label{Eq:IntegrateDomain}
+\end{equation}
+Note that each element $\omega_k$ may in principle have its own
+reference element which means that quadrature points and weights as
+well as the transformation and integration element may depend on
+$k$. The total error is a sum of the errors on the individual
+elements. 
+
+In the following we show how the formula (\ref{Eq:IntegrateDomain})
+can be realised within \Dune.
+
+
+\section{Functors}
 
 The function $f$ is represented as a functor, i.~e.~a class having an
 \lstinline!operator()! with appropriate arguments. A point
 $x\in\Omega$ is represented by an object of type
 \lstinline!FieldVector<ct,dim>! where \lstinline!ct! is the type for
 each component of the vector and \lstinline!d! is its dimension.
-
-A quadrature rule is a formula that approximates the integral of a
-function $f$ on a reference element $\Delta$ and has the general form
-$$\int_\Delta f(z)\ dz = \sum_{i=1}^n f(\xi_i) w_i + \text{error}.$$
-The positions $\xi_i$ and weight factors $w_i$ are dependent on the
-type of reference element. Moreover, the error can be expected to
-decrease with an increasing number of quadrature points $n$.
-
-Suppose that a sufficiently smooth function $g:\Delta\to\omega$ is
-given that maps the reference element to $\omega=\{x\in\Omega\ |\
-x=g(z), z\in\Delta\}. The 
-
-The \lstinline!Dune::QuadratureRules! singleton is a container containing
-quadrature rules for the different reference element types and
-different orders of approximation. \lstinline!Dune::QuadratureRules!
-is parametrizes by dimension and the basic type used for the
-coordinate positions. The follwing example
-
-
-
-
 
 
 \begin{lst}[dune-grid-howto/functors.hh] Here are some examples for functors.
@@ -1045,17 +1072,90 @@ coordinate positions. The follwing example
 numberstyle=\tiny, numbersep=5pt]{../functors.hh}
 \end{lst}
 
+
+\section{Integration over a single element}
+
+The function \lstinline!integrateentity! in the following listing
+computes the integral over a single element of the mesh with a
+quadrature rule of given order. 
+This relates directly to formula (\ref{Eq:IntegrateEntity}) above.
+
 \begin{lst}[dune-grid-howto/integrateentity.hh] \mbox{}
 
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../integrateentity.hh}
 \end{lst}
 
+Lines 21/22 extract a reference to a \lstinline!Dune::QuadratureRule!
+from the \lstinline!Dune::QuadratureRules! singleton which 
+is a container containing quadrature rules for all the different
+reference element types and different orders of approximation.
+Both classes are parametrized by dimension and the basic type used for the
+coordinate positions. \lstinline!Dune::QuadratureRule! in turn is a
+container of \lstinline!Dune::QuadraturePoint! supplying positions $\xi_i$ and
+weights $w_i$. 
+
+Lines 30/31 shows the loop over all quadrature points in the
+quadrature rules. For each quadrature point $i$ the function value at
+the transformed position (line 33), the weight (line 34) and the
+integration element (line 35) are computed and summed (line 36).
+
+\section{Integration with global error estimation}
+
+In the listing below function \lstinline!uniformintegration!
+computes the integral over the whole domain via formula
+(\ref{Eq:IntegrateDomain}) and in addition provides an estimate of the
+error. This is done as follows. Let $I_c$ be the value of the numerically
+computed integral on some grid and let $I_f$ be the value of the
+numerically computed integral on a grid where each element has been
+refined. Then $$E \approx |I_f-I_c|$$ is an estimate for the error. If
+the refinement is such that every element is halfened in every
+coordinate direction, the function to be integrated is sufficiently
+smooth and the order of the quadrature rule is $p$,
+then the error should be reduced by a factor of $(1/2)^p$ after
+each mesh refinement. 
+
 \begin{lst}[dune-grid-howto/integration.cc] \mbox{}
 
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 \end{lst}
+
+Running the executable \lstinline!integration! on a YaspGrid in two
+space dimensions with a qudature rule of order
+two the following output is obtained:
+
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+elements=       1 integral=1.000000000000e+00 error=1.000000000000e+100
+elements=       4 integral=6.674772311008e-01 error=3.325227688992e-01
+elements=      16 integral=6.283027311366e-01 error=3.917449996419e-02
+elements=      64 integral=6.192294777551e-01 error=9.073253381426e-03
+elements=     256 integral=6.170056966109e-01 error=2.223781144285e-03
+elements=    1024 integral=6.164524949226e-01 error=5.532016882082e-04
+elements=    4096 integral=6.163143653145e-01 error=1.381296081435e-04
+elements=   16384 integral=6.162798435779e-01 error=3.452173662133e-05
+elements=   65536 integral=6.162712138101e-01 error=8.629767731416e-06
+elements=  262144 integral=6.162690564098e-01 error=2.157400356695e-06
+elements= 1048576 integral=6.162685170623e-01 error=5.393474630244e-07
+elements= 4194304 integral=6.162683822257e-01 error=1.348366243104e-07
+\end{lstlisting}
+
+The ratio of the errors on two subsequent grids nicely approaches the
+value $1/4$ as the grid is refined.
+
+
+\begin{exc} Try different quadrature orders. For that just change the
+  last argument of the call to \lstinline!integrateentity! in line 29
+  in file \lstinline!integrate.cc!.
+\end{exc}
+
+\begin{exc} Try different grid implementations and dimensions and
+  compare the run-time.
+\end{exc}
+
+\begin{exc} Try different integrands $f$ and look at the development
+  of the (estimated) error in the integral. 
+\end{exc}
 
 
 \chapter{Attaching user data to a grid}

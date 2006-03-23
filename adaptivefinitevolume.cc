@@ -86,10 +86,10 @@ int main (int argc , char ** argv)
 #endif
   //    uc3.grid().globalRefine(8);
   //    timeloop(uc3.grid(),0.5,8,18);
-  uc2.grid().globalRefine(3);
-  timeloop(uc2.grid(),0.5,3,6);
-  //   uc0.grid().globalRefine(4);
-  //   timeloop(uc0.grid(),0.5,4,9);
+  //   uc2.grid().globalRefine(3);
+  //   timeloop(uc2.grid(),0.5,3,6);
+  uc0.grid().globalRefine(4);
+  timeloop(uc0.grid(),0.5,4,9);
 
 #if HAVE_MPI
   MPI_Finalize();

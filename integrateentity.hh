@@ -27,7 +27,7 @@ double integrateentity (const Iterator& it, const Functor& f, int p)
   if (rule.order()<p)
     DUNE_THROW(Dune::Exception,"order not available");
 
-  // compute integral with low order rule
+  // compute approximate integral
   double result=0;
   for (typename Dune::QuadratureRule<ct,dim>::const_iterator i=rule.begin();
        i!=rule.end(); ++i)
@@ -38,7 +38,7 @@ double integrateentity (const Iterator& it, const Functor& f, int p)
     result += fval * weight * detjac;
   }
 
-  // return the more accurate integral
+  // return result
   return result;
 }
 #endif
