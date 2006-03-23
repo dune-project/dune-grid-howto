@@ -7,46 +7,8 @@
 #include <iomanip>
 #include "dune/io/file/vtk/vtkwriter.hh"
 #include "unitcube.hh"
-#include "integrate_entity.hh"
-
-//! uniform refinement test
-template<class Grid, class Functor>
-void uniform_integration (Grid& grid, const Functor& f)
-{
-  // get iterator type
-  typedef typename Grid::template Codim<0>::LeafIterator ElementLeafIterator;
-
-  // loop over grid sequence
-  double oldvalue=1E100;
-  for (int k=0; k<12; k++)
-  {
-    // compute integral
-    double value=0;
-    for (ElementLeafIterator it = grid.template leafbegin<0>();
-         it!=grid.template leafend<0>(); ++it)
-    {
-      double localerror;
-      value += integrate(it,f,localerror);
-    }
-
-    // print result and error estimate
-    std::cout << "elements="
-              << std::setw(8) << std::right
-              << grid.size(0)
-              << " integral="
-              << std::scientific << std::setprecision(8)
-              << value
-              << " error=" << std::abs(value-oldvalue)
-              << std::endl;
-
-    // save value of integral
-    oldvalue=value;
-
-    // refine all elements
-    grid.globalRefine(1);
-  }
-}
-
+#include "functors.hh"
+#include "integrateentity.hh"
 
 //! adaptive refinement test
 template<class Grid, class Functor>
@@ -135,36 +97,6 @@ void adaptive_integration (Grid& grid, const Functor& f)
   Dune::VTKWriter<Grid> vtkwriter(grid);
   vtkwriter.write("adaptivegrid",Dune::VTKOptions::binaryappended);
 }
-
-//! Smooth example
-template<typename ct, int dim>
-class Exp {
-public:
-  Exp () {midpoint = 0.5;}
-  double operator() (const Dune::FieldVector<ct,dim>& x) const
-  {
-    Dune::FieldVector<ct,dim> y(x);
-    y -= midpoint;
-    return exp(-3.234*sqrt(y*y));
-  }
-private:
-  Dune::FieldVector<ct,dim> midpoint;
-};
-
-//! Needle example
-template<typename ct, int dim>
-class Needle {
-public:
-  Needle () {midpoint = 0.5;}
-  double operator() (const Dune::FieldVector<ct,dim>& x) const
-  {
-    Dune::FieldVector<ct,dim> y(x);
-    y -= midpoint;
-    return 1.0/(1E-4+y*y);
-  }
-private:
-  Dune::FieldVector<ct,dim> midpoint;
-};
 
 //! supply functor
 template<class Grid>

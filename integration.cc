@@ -6,36 +6,66 @@
 #include "config.h"
 #include "dune/grid/sgrid.hh"
 
-#include "integrate_domain.hh"
+#include "unitcube.hh"
+#include "functors.hh"
+#include "integrateentity.hh"
 
-template<typename ct, int dim>
-class Exp {
-public:
-  Exp () {midpoint = 0.5;}
-  double operator() (const Dune::FieldVector<ct,dim>& x) const
-  {
-    Dune::FieldVector<ct,dim> y(x);
-    y -= midpoint;
-    return exp(-3.234*sqrt(y*y));
-  }
-private:
-  Dune::FieldVector<ct,dim> midpoint;
-};
-
-int main()
+//! uniform refinement test
+template<class Grid>
+void uniformintegration (Grid& grid)
 {
-  // make a grid
-  const int dim=3;
-  typedef Dune::SGrid<dim,dim> GridType;
-  Dune::FieldVector<int,dim> N(3);
-  Dune::FieldVector<GridType::ctype,dim> L(0.0);
-  Dune::FieldVector<GridType::ctype,dim> H(1.0);
-  GridType grid(N,L,H);
+  // function to integrate
+  Exp<typename Grid::ctype,Grid::dimension> f;
 
-  // print some information about the grid
-  std::cout << "result is "
-            << integrate(grid,Exp<GridType::ctype,dim>(),2)
-            << std::endl;
+  // get iterator type
+  typedef typename Grid::template Codim<0>::LeafIterator LeafIterator;
+
+  // loop over grid sequence
+  double oldvalue=1E100;
+  for (int k=0; k<20; k++)
+  {
+    // compute integral with some order
+    double value = 0.0;
+    LeafIterator eendit = grid.template leafend<0>();
+    for (LeafIterator it = grid.template leafbegin<0>(); it!=eendit; ++it)
+      value += integrateentity(it,f,1);
+
+    // print result and error estimate
+    std::cout << "elements="
+              << std::setw(8) << std::right
+              << grid.size(0)
+              << " integral="
+              << std::scientific << std::setprecision(12)
+              << value
+              << " error=" << std::abs(value-oldvalue)
+              << std::endl;
+
+    // save value of integral
+    oldvalue=value;
+
+    // refine all elements
+    grid.globalRefine(1);
+  }
+}
+
+int main(int argc, char **argv)
+{
+#if HAVE_MPI
+  MPI_Init(&argc,&argv);
+#endif
+
+  // make a grid
+  UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+  UnitCube<Dune::SGrid<1,1>,1> uc1;
+  UnitCube<Dune::YaspGrid<2,2>,1> uc2;
+  UnitCube<Dune::YaspGrid<3,3>,1> uc3;
+
+  // integrate and compute error with extrapolation
+  uniformintegration(uc2.grid());
+
+#if HAVE_MPI
+  MPI_Finalize();
+#endif
 
   // done
   return 0;
