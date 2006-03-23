@@ -115,8 +115,8 @@ int main(int argc, char **argv)
   MPI_Init(&argc,&argv);
 #endif
 
-  UnitCube<Dune::YaspGrid<3,3>,1> uc1;
   UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+  UnitCube<Dune::YaspGrid<3,3>,1> uc1;
   UnitCube<Dune::YaspGrid<2,2>,1> uc2;
   UnitCube<Dune::SGrid<1,1>,1> uc3;
   UnitCube<Dune::SGrid<2,2>,1> uc4;
@@ -125,7 +125,7 @@ int main(int argc, char **argv)
   UnitCube<Dune::UGGrid<2,2>,2> uc6;
 #endif
 
-  dowork(uc6.grid());
+  dowork(uc0.grid());
 
 #if HAVE_MPI
   MPI_Finalize();

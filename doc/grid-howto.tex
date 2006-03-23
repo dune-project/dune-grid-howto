@@ -1004,9 +1004,42 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_alu3dgrid.hh}
 
 \chapter{Reference elements}
 
+
 \chapter{Quadrature rules}
 
-\begin{lst}[dune-grid-howto/functors.hh] \mbox{}
+In this chapter we explore how an integral $$\int_\Omega f(x)\ dx$$
+over some function $f:\Omega\to\mathbb{R}$ can be computed numerically
+using a \Dune\ grid object.
+
+The function $f$ is represented as a functor, i.~e.~a class having an
+\lstinline!operator()! with appropriate arguments. A point
+$x\in\Omega$ is represented by an object of type
+\lstinline!FieldVector<ct,dim>! where \lstinline!ct! is the type for
+each component of the vector and \lstinline!d! is its dimension.
+
+A quadrature rule is a formula that approximates the integral of a
+function $f$ on a reference element $\Delta$ and has the general form
+$$\int_\Delta f(z)\ dz = \sum_{i=1}^n f(\xi_i) w_i + \text{error}.$$
+The positions $\xi_i$ and weight factors $w_i$ are dependent on the
+type of reference element. Moreover, the error can be expected to
+decrease with an increasing number of quadrature points $n$.
+
+Suppose that a sufficiently smooth function $g:\Delta\to\omega$ is
+given that maps the reference element to $\omega=\{x\in\Omega\ |\
+x=g(z), z\in\Delta\}. The 
+
+The \lstinline!Dune::QuadratureRules! singleton is a container containing
+quadrature rules for the different reference element types and
+different orders of approximation. \lstinline!Dune::QuadratureRules!
+is parametrizes by dimension and the basic type used for the
+coordinate positions. The follwing example
+
+
+
+
+
+
+\begin{lst}[dune-grid-howto/functors.hh] Here are some examples for functors.
 
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../functors.hh}
