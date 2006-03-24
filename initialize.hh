@@ -1,5 +1,7 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#include "dune/grid/common/referenceelements.hh"
+
 //! initialize the vector of unknowns with initial value
 template<class G, class M, class V>
 void initialize (const G& grid, const M& mapper, V& c)
@@ -29,7 +31,7 @@ void initialize (const G& grid, const M& mapper, V& c)
     Dune::FieldVector<ct,dimworld> global =
       it->geometry().global(local);
 
-    // initialize update with source term
+    // initialize cell concentration
     c[mapper.map(*it)] = c0(global);
   }
 }

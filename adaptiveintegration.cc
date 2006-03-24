@@ -18,7 +18,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   typedef typename Grid::template Codim<0>::LeafIterator ElementLeafIterator;
 
   // algorithm parameters
-  const double tol=4E-5;
+  const double tol=1E-8;
   const int loworder=1;
   const int highorder=3;
 
@@ -97,7 +97,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
     grid.postAdapt();
   }
 
-  // write grid in VTK formal
+  // write grid in VTK format
   Dune::VTKWriter<Grid> vtkwriter(grid);
   vtkwriter.write("adaptivegrid",Dune::VTKOptions::binaryappended);
 }
@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 #endif
 #endif
 
-  dowork(uc6.grid());
+  dowork(uc7.grid());
 
 #if HAVE_MPI
   MPI_Finalize();

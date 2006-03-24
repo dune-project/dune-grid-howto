@@ -3,7 +3,7 @@
 
 noinst_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
-	groundwater
+	groundwater visualization
 
 gettingstarted_SOURCES = gettingstarted.cc
 gettingstarted_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
@@ -40,6 +40,10 @@ parfinitevolume_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LD
 groundwater_SOURCES = groundwater.cc
 groundwater_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
 groundwater_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
+
+visualization_SOURCES = visualization.cc
+visualization_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
+visualization_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
 
 # don't follow the full GNU-standard
 # we need automake 1.5
