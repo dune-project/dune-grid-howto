@@ -29,12 +29,9 @@ void vertexdata (const G& grid, const F& f)
   typedef typename G::ctype ct;
   typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator;
 
-  // get leaf index set type needed for mapper
-  typedef typename G::template Codim<0>::LeafIndexSet IS;
-
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::MultipleCodimMultipleGeomTypeMapper<G,IS,P1Layout>
-  mapper(grid,grid.leafIndexSet());
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P1Layout>
+  mapper(grid);
 
   // allocate a vector for the data
   std::vector<double> c(mapper.size());
@@ -47,10 +44,8 @@ void vertexdata (const G& grid, const F& f)
     c[mapper.map(*it)] = f(it->geometry()[0]);
   }
 
-  // initialize a P0 function with the vector, needed for VTK IO
-  Dune::LeafP1Function<G,double> cc(grid,c);
-
   // generate a VTK file
+  Dune::LeafP1Function<G,double> cc(grid,c);
   Dune::VTKWriter<G> vtkwriter(grid);
   vtkwriter.addVertexData(cc,"data");
   vtkwriter.write("vertexdata",Dune::VTKOptions::binaryappended);

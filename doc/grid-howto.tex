@@ -1165,11 +1165,153 @@ value $1/4$ as the grid is refined.
 
 \chapter{Attaching user data to a grid}
 
+In most useful applications there will be the need to associate
+user-defined data with certain entities of a grid. The standard
+example are, of course, the degrees of freedom of a finite element
+function. But it could be as simple as a boolean value that indicates
+whether an entity has already been visited by some algorithm or
+not. In this chapter we will show with some examples how arbitrary
+user data can be attached to a grid.
+
+\section{Mappers}
+
+The general situation is that a user wants to store some arbitrary
+data with a subset of the entities of a grid. Remember that entities
+are all the vertices, edges, faces, elements, etc., on all the levels
+of a grid.
+
+An important design decision in the \Dune\ grid interface was that
+user-defined data is stored in user space. This has a number of
+implications:
+\begin{itemize}
+\item \Dune\ grid objects do not need to know anything about the user
+  data.
+\item Data structures used in the implementation of a \Dune\ grid do
+  not have to be extensible.
+\item Types representing the user data can be arbitrary.
+\item The user is responsible for possibly reorganizing the data when
+  a grid is modified (i.~e.~refined, coarsened, load balanced).
+\end{itemize}
+
+Since efficiency is important in scientific computing the second
+important design decision was that user data is stored in arrays (or
+random access containers) and that the data is accessed via an
+index. The set of indices starts at zero and is consecutive. 
+
+Let us assume that the set of all entities in the grid is $E$ and
+that $E^\prime\subseteq E$ is the subset of entities for which data is
+to be stored. E.~g.~this could be all the vertices in the leaf grid in
+the case of $P_1$ finite elements. Then the access from grid entities
+to user data is a two stage process: A so-called \textit{mapper}
+provides a map
+\begin{equation}
+m : E^\prime \to I_{E^\prime}
+\end{equation}
+where $I_{E^\prime}=\{0,\ldots,|E^\prime|-1\}\subset\mathbb{N}$ is the consecutive and
+zero-starting index set associated to the entity set. The user data
+$D(E^\prime)=\{d_e\ |\ e\in E^\prime\}$ is stored in an array, which
+is another map
+\begin{equation}
+a : I_{E^\prime} \to D(E^\prime).
+\end{equation}
+In order to get the data $d_e\in D(E^\prime)$ associated to entity
+$e\in E^\prime$ we therefore have to evaluate the two maps:
+\begin{equation}
+d_e = a(m(e)) .
+\end{equation}
+
+\Dune\ provides different implementations of mappers that differ in
+functionality and cost (with respect to sorage and
+run-time). Basically there are two different kinds of mappers. 
+
+\minisec{Index based mappers}
+
+An index-based mapper is allocated for a grid and can be used as long
+as the grid is not changed (i.e. refined, coarsened or load
+balanced). The implementation of these mappers is based on a
+\lstinline!Dune::IndexSet! and evaluation of the map $m$ is typically
+of $O(1)$ complexity with a very small constant. 
+Index-based mappers are only available for restricted (but
+usually sufficient) entity sets. They will be used in the examples
+shown below. 
+
+\minisec{Id based mappers}
+
+Id-based mapper can also be used while a grid changes, i.~e.~it is
+ensured that the map $m$ can still be evaluated for all entities $e$
+that are still in the grid after modification. For that it
+has to be implemented on the basis of a \lstinline!Dune::IdSet!. This may be
+relatively slow because the data type used for ids is usually not an
+\lstinline!int! and the non-consecutive ids require more complicated search data
+structures (typically a map). Evaluation of the map $m$ therefore
+typically costs $O(\log |E^\prime|)$ . On the other hand, id-based
+mappers are not restricted to specific entity sets $E^\prime$. 
+
+In adaptive applications one would use an index-based mapper to do in
+the calculations on a certain grid and only in the adaption phase an
+id-based mapper would be used to transfer the required data
+(e.~g.~only the finite element solution) from one grid to the next grid.
+
+\section{Visualization of discrete functions}
+
+Let use mappers to evaluate a function $f:\Omega\to\mathbb{R}$ for
+certain entities and store the values in a vector. Then, in order to
+do something useful, we use the vector to produce a graphical
+visualization of the function.
+
+The first example evaluates the function at the centers of all
+elements of the leaf grid and stores this value. Here is the listing:
+
 \begin{lst}[File dune-grid-howto/elementdata.hh] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../elementdata.hh}
 \end{lst}
+
+The class template
+\lstinline!Dune::LeafMultipleCodimMultipleGeomTypeMapper! 
+provides an index-based mapper where the entities in the subset
+$E^\prime$ are all leaf entities and can further be selected depending
+on the codimension and the geometry type. To that end the second
+template argument has to be a class template with one integer template
+parameter containing a method \lstinline!contains!. Just look at the
+example \lstinline!P0Layout!. When the method \lstinline!contains!
+returns true for a combination of dimension, codimension and
+geometry type then all leaf entities with that dimension, codimension and
+geometry type will be in the subset $E^\prime$. The mapper object is
+constructed in lines 31/32. A similar mapper is available also for the
+entities of a grid level. 
+
+The data vector is allocated in line 35. Here we use a
+\lstinline!std::vector<double>!. The \lstinline!size()! method of the
+mapper returns the number of entities in the set $E^\prime$. Instead
+of the STL vector one can use any other type with an
+\lstinline!operator[]!, even built-in arrays (however, built-in arrays
+will not work in this example because the constructor of
+\lstinline!Dune::LeafP0Function! below requires a container with a
+\lstinline!size()! method. 
+
+Now the loop in lines 38-53 iterates through all leaf elements. The
+next three statements within the loop body compute the position of the
+center of the element in global coordinates. Then the essential
+statement is in line 52 where the function is evaluated and the value
+is assigned to the corresponding entry in the \lstinline!c! array. The
+evaluation of the map $m$ is performed by \lstinline!mapper.map(*it)!
+where \lstinline!*it! is the entity which is passed as a const reference to
+the mapper.
+
+The remaining lines of code produce graphical output. Lines 56-59
+produce an output file for the Visualization Toolkit (VTK), \cite{VTK}, in its XML
+format. If the grid is distributed over several processes the
+\lstinline!Dune::VTKWriter! produces one file per process and the
+correponding XML metafile. Using Paraview, \cite{Paraview}, you can
+visualize these files. Lines 62-65 enable online interactive
+visualization with the Grape, \cite{Grape}, graphics package, if it is
+installed on your machine.
+
+The next list shows a function \lstinline!vertexdata! that does the
+same job except that the data is associated with the vertices of the
+grid. 
 
 \begin{lst}[File dune-grid-howto/vertexdata.hh] \mbox{}
 \nopagebreak
@@ -1177,10 +1319,203 @@ numberstyle=\tiny, numbersep=5pt]{../elementdata.hh}
 numberstyle=\tiny, numbersep=5pt]{../vertexdata.hh}
 \end{lst}
 
+The differences to the \lstinline!elementdata! example are the
+following:
+\begin{itemize}
+\item In the \lstinline!P1Layout! struct the method
+  \lstinline!contains! returns true if \lstinline!codim==dim!.
+\item Use a leaf iterator for codimension \lstinline!dim! instead of
+  \lstinline!0!.
+\item Evaluate the function at the vertex position which is directly
+  available via \lstinline!it->geometry()[0]!.
+\item Use \lstinline!addVertexData! instead of \lstinline!addCellData!
+  on the \lstinline!Dune::VTKWriter!.
+\item Pass 1 instead 0 as the second last argument of
+  \lstinline!grape.displayVector!. This argument is the polynomial
+  degree of the approximation.
+\end{itemize}
+
+Finally the following listing shows the main programm that drives the
+two functions just discussed:
+
 \begin{lst}[File dune-grid-howto/visualization.cc] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../visualization.cc}
+\end{lst}
+
+\section{Cell centered finite volumes}
+
+In this section we show a first complete example for the numerical
+solution of a partial differential equation (PDE), although a very simple
+one.
+
+We will solve the linear hyperbolic PDE
+\begin{equation}
+\frac{\partial c}{\partial t} + \nabla\cdot (uc) = 0 \ \ \text{ in
+  $\Omega\times T$}
+\label{Eq:TransportEquation}
+\end{equation}
+where $\Omega\subset\mathbb{R}^d$ is a domain, $T=(0,t_{\text{end}})$
+is a time interval,
+$c:\Omega\times T\to\mathbb{R}$ is the unknown concentration and
+$u:\Omega\times T\to\mathbb{R}^d$ is a given velocity field. We
+require that the velocity field is divergence free for all times.
+The equation is subject to the initial condition
+\begin{equation}
+c(x,0) = c_0(x) \ \ x\in\Omega
+\end{equation}
+and the boundary condition
+\begin{equation}
+c(x,t) = b(x,t) \ \ t>0, x\in\Gamma_\text{in}(t)=\{y\in\partial\Omega\
+|\ u(y,t)\cdot\nu(y)<0\}. 
+\end{equation}
+Here $\nu(x)$ is the unit outer normal at a point $y\in\partial\Omega$
+and $\Gamma_\text{in}(t)$ is the inflow boundary at time $t$.
+
+\subsection{Numerical Scheme}
+
+To keep the presentation simple we use a cell-centered finite volume
+discretization in space, full upwind evaluation of the fluxes and an
+explicit Euler scheme in time.
+
+The grid consists of cells (elements) $\omega$ and the time interval
+$T$ is discretized into discrete steps $0=t_0, t_1, \ldots, t_n,
+t_{n+1},\ldots, t_N=t_\text{end}$. Cell centered finite volume schemes
+integrate the PDE (\ref{Eq:TransportEquation}) over a cell $\omega_i$
+and a time interval $(t_n,t_{n+1})$:
+\begin{equation}
+\int\limits_{\omega_i}\int\limits_{t_n}^{t_{n+1}}\frac{\partial
+  c}{\partial t}\ dt\,dx +
+\int\limits_{\omega_i}\int\limits_{t_n}^{t_{n+1}} \nabla\cdot (uc) \
+dt\,dx = 0 \ \ \forall i.
+\label{Eq:TransportEquationIntegrated}
+\end{equation}
+Using integration by parts we arrive at
+\begin{equation}
+\int\limits_{\omega_i} c(x,t_{n+1})\ dx - \int\limits_{\omega_i}
+c(x,t_{n})\ dx + \int\limits_{t_n}^{t_{n+1}}
+\int\limits_{\partial\omega_i} c u\cdot\nu\ ds\,dt = 0 \ \ \forall i.
+\end{equation}
+Now we approximate $c$ by a cell-wise constant function $C$, where
+$C_i^n$ denotes the value in cell $\omega_i$ at time $t_n$. 
+Moreover we subdivide the boundary $\partial\omega_i$ into 
+facets $\gamma_{ij}$ which are either intersections with
+other cells $\partial\omega_i\cap\partial\omega_j$,
+or intersections with the boundary
+$\partial\omega_i\cap\partial\Omega$. 
+Evaluation of the fluxes
+at time level $t_n$ leads to the following equation for the unknown
+cell values at $t_{n+1}$:
+\begin{equation}
+C_i^{n+1}|\omega_i| - C_i^{n}|\omega_i| + \sum\limits_{\gamma_{ij}}
+\phi(C_i^n, C_j^n, u_{ij}^n\cdot\nu_{ij}; \gamma_{ij}, t_n )
+|\gamma_{ij}| \Delta t^n = 0 \ \ \forall i,
+\label{Eq:DiscreteForm}
+\end{equation}
+where $\Delta t^n=t_{n+1}-t_n$, $u_{ij}^n$ is the velocity on the facet $\gamma_{ij}$ at time
+$t_n$, $\nu_{ij}$ is the unit outer normal of the facet $\gamma_{ij}$ and $\phi$ is the flux function defined as
+\begin{equation}
+\phi(C_i^n, C_j^n, u_{ij}^n\cdot\nu_{ij}; \gamma_{ij}, t_n ) =
+\left\{\begin{array}{ll} 
+b(\gamma_{ij})\, u_{ij}^n\cdot\nu_{ij} & \gamma_{ij} \subset \Gamma_\text{in}(t) \\
+C_j^n\, u_{ij}^n\cdot\nu_{ij}&
+\gamma_{ij}=\partial\omega_i\cap\partial\omega_j\,\wedge\,u_{ij}^n\cdot\nu_{ij} < 0\\
+C_i^n\, u_{ij}^n\cdot\nu_{ij}& u_{ij}^n\cdot\nu_{ij} \geq 0 
+\end{array}\right..
+\end{equation}
+Here $b(\gamma_{ij})$ denotes evaluation of the boundary condition on
+an inflow facet $\gamma_{ij}$. If we formally set
+$C_j^n=b(\gamma_{ij})$ on an inflow facet $\gamma_{ij} \subset
+\Gamma_\text{in}(t)$ we can derive the following shorthand notation
+for the flux function:
+\begin{equation}
+\phi(C_i^n, C_j^n, u_{ij}^n\cdot\nu_{ij}; \gamma_{ij}, t_n ) = C_i^n
+\max(0,u_{ij}^n\cdot\nu_{ij}) - C_j^n \max(0,-u_{ij}^n\cdot\nu_{ij}).
+\end{equation}
+Inserting this into (\ref{Eq:DiscreteForm}) and solving for
+$C_i^{n+1}$ we obtain
+\begin{equation}
+C_i^{n+1} = C_i^n\left(1-\Delta t^n \sum\limits_{\gamma_{ij}}
+  \frac{|\gamma_{ij}|}{|\omega_i|}
+  \max(0,u_{ij}^n\cdot\nu_{ij})\right) + \Delta t^n
+\sum\limits_{\gamma_{ij}} C_j^n  \frac{|\gamma_{ij}|}{|\omega_i|}
+\max(0,-u_{ij}^n\cdot\nu_{ij}) \ \ \forall i.
+\label{Eq:IterativeForm1}
+\end{equation}
+One can show that the scheme is stable provided the following condition holds:
+\begin{equation}
+\forall i:\ 1-\Delta t^n \sum\limits_{\gamma_{ij}}
+  \frac{|\gamma_{ij}|}{|\omega_i|}
+  \max(0,u_{ij}^n\cdot\nu_{ij})\geq 0 \ \Leftrightarrow\ \Delta
+  t^n\leq  \min_i \left(\sum\limits_{\gamma_{ij}}
+  \frac{|\gamma_{ij}|}{|\omega_i|}
+  \max(0,u_{ij}^n\cdot\nu_{ij})\right)^{-1}.
+\label{Eq:TimeStepControl}
+\end{equation}
+When we rewrite \ref{Eq:IterativeForm1} in the form 
+\begin{equation}
+C_i^{n+1} = C_i^n - \Delta t^n \sum\limits_{\gamma_{ij}}
+  \underbrace{\frac{|\gamma_{ij}|}{|\omega_i|}
+  \left( C_i^n \max(0,u_{ij}^n\cdot\nu_{ij}) + 
+         C_j^n \max(0,-u_{ij}^n\cdot\nu_{ij})\right)}_{\delta_i} \ \ \forall i
+\label{Eq:IterativeForm2}
+\end{equation}
+then it becomes clear that the optimum time step $\Delta t^n$ and the
+update $\delta_i$ for each cell can be computed in a single iteration
+over the grid. The computation $C^{n+1} = C^n - \Delta t^n \delta$ can then
+be realized with a simple vector update. In this form, the algorithm
+can also be parallelized in a straightforward way.
+
+
+\subsection{Implementation}
+
+First, we need to specify the problem parameters, i.~e.~initial
+condition, boundary condition and velocity field. This is done by the
+following functions.
+
+\begin{lst}[File dune-grid-howto/transportproblem.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../transportproblem.hh}
+\end{lst}
+
+The initialization of the concentration vector with the initial
+condition should also be straightforward now. The function
+\lstinline!initialize! works on a concentration vector \lstinline!c!
+that can be stored in any container type with a vector interface
+(\lstinline!operator[]!, \lstinline!size()! and copy constructor are
+needed). Moreover the grid and a mapper for element-wise data have to
+passed as well. 
+
+\begin{lst}[File dune-grid-howto/initialize.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../initialize.hh}
+\end{lst}
+
+The main work is now done in the function which implements the
+evolution (\ref{Eq:IterativeForm2}) with optimal time step control via
+(\ref{Eq:TimeStepControl}). In addition to grid, mapper and
+concentration vector the current time $t_n$ are passed and the optimum
+time step $\Delta t^n$ selected by the algorithm is returned.
+
+\begin{lst}[File dune-grid-howto/evolve.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/vtkout.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../vtkout.hh}
+\end{lst}
+
+\begin{lst}[File dune-grid-howto/finitevolume.cc] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
 \end{lst}
 
 
@@ -1304,37 +1639,7 @@ adaptive integration algorithm.
   calculations with UGGrid and hexahedral elements do not work.
 \end{warn}
 
-\section{Cell centered finite volumes}
 
-\begin{lst}[File dune-grid-howto/transportproblem.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../transportproblem.hh}
-\end{lst}
-
-\begin{lst}[File dune-grid-howto/initialize.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../initialize.hh}
-\end{lst}
-
-\begin{lst}[File dune-grid-howto/evolve.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
-\end{lst}
-
-\begin{lst}[File dune-grid-howto/vtkout.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../vtkout.hh}
-\end{lst}
-
-\begin{lst}[File dune-grid-howto/finitevolume.cc] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
-\end{lst}
 
 \section{Adaptive cell centered finite volumes}
 

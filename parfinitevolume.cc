@@ -31,12 +31,9 @@ struct P0Layout
 template<class G>
 void partimeloop (const G& grid, double tend)
 {
-  // get leaf index set type needed for mapper
-  typedef typename G::template Codim<0>::LeafIndexSet IS;
-
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::MultipleCodimMultipleGeomTypeMapper<G,IS,P0Layout>
-  mapper(grid,grid.leafIndexSet());
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P0Layout>
+  mapper(grid);
 
   // allocate a vector for the concentration
   std::vector<double> c(mapper.size());

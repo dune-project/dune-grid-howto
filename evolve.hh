@@ -22,7 +22,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
 
   // allocate a temporary vector for the update
-  V update(c.size(),0.0);
+  V update(c.size());
+  for (int i=0; i<c.size(); i++) update[i] = 0;
 
   // initialize dt very large
   dt = 1E100;

@@ -29,12 +29,9 @@ void elementdata (const G& grid, const F& f)
   typedef typename G::ctype ct;
   typedef typename G::template Codim<0>::LeafIterator ElementLeafIterator;
 
-  // get leaf index set type needed for mapper
-  typedef typename G::template Codim<0>::LeafIndexSet IS;
-
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::MultipleCodimMultipleGeomTypeMapper<G,IS,P0Layout>
-  mapper(grid,grid.leafIndexSet());
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P0Layout>
+  mapper(grid);
 
   // allocate a vector for the data
   std::vector<double> c(mapper.size());
@@ -57,10 +54,8 @@ void elementdata (const G& grid, const F& f)
     c[mapper.map(*it)] = f(global);
   }
 
-  // initialize a P0 function with the vector, needed for VTK IO
-  Dune::LeafP0Function<G,double> cc(grid,c);
-
   // generate a VTK file
+  Dune::LeafP0Function<G,double> cc(grid,c);
   Dune::VTKWriter<G> vtkwriter(grid);
   vtkwriter.addCellData(cc,"data");
   vtkwriter.write("elementdata",Dune::VTKOptions::binaryappended);
