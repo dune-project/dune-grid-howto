@@ -1345,6 +1345,7 @@ numberstyle=\tiny, numbersep=5pt]{../visualization.cc}
 \end{lst}
 
 \section{Cell centered finite volumes}
+\label{Sec:CellCenteredFV}
 
 In this section we show a first complete example for the numerical
 solution of a partial differential equation (PDE), although a very simple
@@ -1497,7 +1498,7 @@ numberstyle=\tiny, numbersep=5pt]{../initialize.hh}
 The main work is now done in the function which implements the
 evolution (\ref{Eq:IterativeForm2}) with optimal time step control via
 (\ref{Eq:TimeStepControl}). In addition to grid, mapper and
-concentration vector the current time $t_n$ are passed and the optimum
+concentration vector the current time $t_n$ is passed and the optimum
 time step $\Delta t^n$ selected by the algorithm is returned.
 
 \begin{lst}[File dune-grid-howto/evolve.hh] \mbox{}
@@ -1506,17 +1507,104 @@ time step $\Delta t^n$ selected by the algorithm is returned.
 numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
 \end{lst}
 
+
+\begin{figure}
+\psfrag{omegai}{$\omega_i$}
+\psfrag{omegaj}{$\omega_j$}
+\psfrag{gammaij}{$\gamma_{ij}$}
+\psfrag{gammaik}{$\gamma_{ik}$}
+\psfrag{omegak}{$\omega_k$}
+\psfrag{omegam}{$\omega_m$}
+\includegraphics[width=0.48\textwidth]{EPS/intersection.eps}\hfill
+\includegraphics[width=0.48\textwidth]{EPS/islocalref.eps}
+\caption{Left: inntersection with other elements and the boundary,
+  right: intersections in the case of locally refined grids.}
+\label{Fig:IsIt}
+\end{figure}
+
+Lines 30-128 contain the loop over all leaf elements where the optimum
+$\Delta t^n$ and the cell updates $\delta_i$ are computed. The update
+vector is allocated in line 23, where we assume that \lstinline!V! is
+a container with copy constructor and size method. 
+
+The computation of the fluxes is done in lines 55-123. An
+\lstinline!IntersectionIterator! is used to access all intersections
+$\gamma_{ij}$ of a leaf element $\omega_i$. For a full documentation
+of the \lstinline!IntersectionIterator! we refer to
+\begin{center}
+\href{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune_1_1IntersectionIterator.html}%
+{{\small\texttt{http://hal.iwr.uni-heidelberg.de/dune/doc/doxygen/html/classDune\_1\_1IntersectionIterator.html}}}
+\end{center}
+An Intersections is with
+another element $\omega_j$ if the \lstinline!neighbor()! method of
+the iterator returns true (line 83) or with the external boundary if
+\lstinline!boundary()! returns true (line 118), see also left part of Figure
+\ref{Fig:IsIt}. An intersection $\gamma_{ij}$ is
+described by several mappings: (i) from a reference element of the
+intersection (with a dimension equal to the grid's dimension minus 1) to the
+reference elements of the two elements $\omega_i$ and $\omega_j$ and
+(ii) from a reference element of the intersection to the global
+coordinate system (with the world dimension). If an intersection is
+with another element then the \lstinline!outside()! method returns an
+\lstinline!EntityPointer! to an entity of codimension 0.
+
+In the case of a locally refined grid special care has to be taken in
+the flux evaluation because the intersection iterator is not
+symmetric. This is illustrated for a one-dimensional situation in
+the right part of Figure \ref{Fig:IsIt}. Element
+$\omega_j$ is a leaf element on level $l+1$. The intersection iterator
+on $\omega_j$ delivers two intersections, one with $\omega_i$ which is
+on level $l$ and one with $\omega_m$ which is also on level
+$l+1$. However, the intersection iterator started on $\omega_i$ will
+deliver an intersection with $\omega_k$ and one with the external
+boundary (which is not shown). This means that the correct flux for
+the intersection $\partial\omega_i\cap\partial\omega_j$ can only be
+evaluated from the intersection $\gamma_{ji}$ visited by the
+intersection iterator started on $\omega_j$, because only there the
+two concentration values $C_j$ and $C_i$ are both accessibly. Note
+also that the outside element delivered by an intersection
+iterator need not be a leaf element (such as $\omega_k$). 
+
+Therefore, in the code it is first checked that the outside element is
+actually a leaf element (line 89). Then the flux can be evaluated if
+the level of the outside element is smaller than that of the element
+where the intersection iterator was started (this corresponds the the
+situation of $\omega_j$ refering to $\omega_i$ in the right part of Figure
+\ref{Fig:IsIt}) or when the levels are equal and the index of
+the outside element is larger. The latter condition with the indices
+just ensures that the flux is only computed once.
+
+The $\Delta t^n$ calculation is done in line 126 where the minimum
+over all cells is taken. Then, line 131 multiplies the optimum $\Delta
+t^n$ with a safety factor to avoid any instability due to round-off
+errors. 
+
+Finally, line 134 computes the new concentration by adding the scaled
+update to the current concentration.
+
+The function \lstinline!vtkout! in the following listing provides an
+output of the grid and the solution using the Visualization Toolkit's \cite{VTK}
+XML file format.
+
 \begin{lst}[File dune-grid-howto/vtkout.hh] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../vtkout.hh}
 \end{lst}
 
+Finally, the main program:
+
 \begin{lst}[File dune-grid-howto/finitevolume.cc] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
 \end{lst}
+
+The function \lstinline!timeloop! constructs a mapper an allocates the
+concentration vector with one entry per element in the leaf grid. In
+line 39 this vector is initialized with the initial concentration and
+the loop in line 44-50 evolves the concentration in time. Finally, the
+simulation result is written to a file in line 53.
 
 
 \chapter{Adaptivity}
@@ -1561,8 +1649,8 @@ refinement can be effectively computed without actually doing the
 refinement. Consider an element $\omega$ and its father element
 $\omega^-$, i.~e.~the refinement of  $\omega^-$ resulted in
 $\omega$. Moreover, assume that $\omega^+$ is a (virtual) element that
-would result from a refinement of $\omega$. Then it can be shown that under certain
-assumptions the quantity
+would result from a refinement of $\omega$. Then it can be shown that 
+under certain assumptions the quantity
 \begin{equation}
 \epsilon^+(\omega) = \frac{\bar{\epsilon}(\omega)^2}{\bar{\epsilon}(\omega^-)}
 \end{equation}
@@ -1643,10 +1731,85 @@ adaptive integration algorithm.
 
 \section{Adaptive cell centered finite volumes}
 
+In this section we extend the example of Section
+\ref{Sec:CellCenteredFV} by adaptive mesh refinement. This requires
+two things: (i) a method to select cells for refinement or coarsening
+(derefinement) and (ii) the transfer of a solution on a given grid to
+the adapted grid. The finite volume algorithm itself has already been
+implemented for adaptively refined grids in Section
+\ref{Sec:CellCenteredFV}.
+
+For the adaptive refinement and coarsening we use a very simple
+heuristic strategy that works as follows:
+\begin{itemize}
+\item Compute global maximum and minimum of element concentrations:
+  $$\overline{C}=\max_i C_i,  \ \ \ \underline{C}=\min_i C_i.$$
+\item As the local indicator in cell $\omega_i$ we define $$\eta_i =
+  \max_{\gamma_{ij}} |C_i-C_j|$$. Here $\gamma_{ij}$ denotes
+  intersections with other elements in the leaf grid.
+\item If for $\omega_i$ we have
+  $\eta_i>\overline{\text{tol}}\cdot (\overline{C}-\underline{C})$
+  and $\omega_i$ has not been refined more than $\overline{M}$ times
+  then mark $\omega_i$ and all its neighbors for refinement.
+\item Mark all elements $\omega_i$ for coarsening where
+  $\eta_i<\underline{\text{tol}}\cdot (\overline{C}-\underline{C})$
+  and $\omega_i$ has been refined at least $\underline{M}$ times.
+\end{itemize}
+
+This strategy refines an element if the local gradient is ``large''
+and it coarsens elements (which means it removes a previous
+refinement) if the local gradient is ``small''. In addition any
+element is refined at least refined $\underline{M}$ times and at most
+$\overline{M}$ times.
+
+After mesh modification the solution from the previous grid must be
+transfered to the new mesh. Thereby the following situations do occur
+for an element:
+\begin{itemize}
+\item The element is a leaf element in the new mesh and was a leaf
+  element in the old mesh: keep the value.
+\item The element is a leaf element in the new mesh and existed in the
+  old mesh as a non-leaf element: Compute the cell value as an average
+  of the son elements in the old mesh.
+\item The element is a leaf element in the new mesh and is obtained
+  from through refining some element in the old mesh: Copy the value
+  from this element in the old mesh.
+\end{itemize}
+
+The complete mesh adaptation is done by the function
+\lstinline!finitevolumeadapt! in the following listing:
+
 \begin{lst}[File dune-grid-howto/finitevolumeadapt.hh] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../finitevolumeadapt.hh}
+\end{lst}
+
+The loop in lines 42-72 computes the indicator values $\eta_i$ as well
+as the global minimum and maximum $\overline{C},\underline{C}$. Then
+the next loop in lines 76-94 marks the elements for refinement. Lines
+97-124 construct a map that stores for each element in the mesh (on
+all levels) the average of the element values in the leaf elements of the
+subtree of the given element. This is accomplished by descending from
+the fine grid levels to the coarse grid levels and thereby adding the
+value in an element to the father element. The jey into the map is the
+global id of an element. Thus the value is accessible also after mesh
+modification.
+
+Now grid can really be modified in line 128 by calling the
+\lstinline!adapt()! method on the grid object. The mapper is updated
+to reflect the changes in the grid in line 129 and the concentration
+vector is resized to the new size in line 130. Then the values have to
+be interpolated to the new elements in the mesh using the map and finally to be
+transferred to the resized concentration vector. This is done in the
+loop in lines 133-173.
+
+Here is the new main program with an adapted \lstinline!timeloop!:
+
+\begin{lst}[File dune-grid-howto/adativefinitevolume.cc] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../adaptivefinitevolume.cc}
 \end{lst}
 
 
@@ -1680,25 +1843,25 @@ numberstyle=\tiny, numbersep=5pt]{../parfvdatahandle.hh}
 \section{Dune portable grid format}
 
 
-\chapter{Iterative Solver Template Library}
+% \chapter{Iterative Solver Template Library}
 
-\begin{lst}[File dune-grid-howto/groundwater.cc] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../groundwater.cc}
-\end{lst}
+% \begin{lst}[File dune-grid-howto/groundwater.cc] \mbox{}
+% \nopagebreak
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% numberstyle=\tiny, numbersep=5pt]{../groundwater.cc}
+% \end{lst}
 
-\begin{lst}[File dune-grid-howto/groundwaterproblem.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../groundwaterproblem.hh}
-\end{lst}
+% \begin{lst}[File dune-grid-howto/groundwaterproblem.hh] \mbox{}
+% \nopagebreak
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% numberstyle=\tiny, numbersep=5pt]{../groundwaterproblem.hh}
+% \end{lst}
 
-\begin{lst}[File dune-grid-howto/groundwateradapt.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../groundwateradapt.hh}
-\end{lst}
+% \begin{lst}[File dune-grid-howto/groundwateradapt.hh] \mbox{}
+% \nopagebreak
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% numberstyle=\tiny, numbersep=5pt]{../groundwateradapt.hh}
+% \end{lst}
 
 
 
