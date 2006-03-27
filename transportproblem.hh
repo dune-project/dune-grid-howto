@@ -1,15 +1,5 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
-//===============================================================
-// We want to solve the PDE
-//
-//   dc/dt + div( uc ) = 0   in Omega
-//                   c = b   on Gamma_in
-//                   c = c0  for t<0
-//
-// We define functions for the parameters c0, u and b.
-//===============================================================
-
 // the initial condition c0
 template<int dimworld, class ct>
 double c0 (const Dune::FieldVector<ct,dimworld>& x)
