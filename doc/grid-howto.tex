@@ -67,9 +67,11 @@ Oliver Sander$^\ddagger$}
 
 \publishers{%
 \vspace{10mm}
-\includegraphics[width=0.32\textwidth]{EPS/alberta2d-view2.eps}\hfill
+%\includegraphics[width=0.32\textwidth]{EPS/alberta2d-view2.eps}\hfill
 \includegraphics[width=0.32\textwidth]{EPS/ug2dtri-view2.eps}\hfill
-\includegraphics[width=0.32\textwidth]{EPS/ug2dquad-view2.eps}
+\includegraphics[width=0.32\textwidth]{EPS/adaptiveintegration_alberta2d.eps}\hfill
+\includegraphics[width=0.32\textwidth]{EPS/alucube3d.eps}
+%\includegraphics[width=0.32\textwidth]{EPS/ug2dquad-view2.eps}
 
 \vspace{10mm}
 {\normalsize $^\ast$Interdisziplinäres Zentrum für Wissenschaftliches Rechnen,
@@ -920,7 +922,9 @@ be applied recursively.
 
 
 
-\chapter{Using different grids}
+\chapter{Grid implementations}
+
+\section{Using different grids}
 
 The power of \Dune\ is the possibility of writing one algorithm that
 works on a large variety of grids with different
@@ -932,7 +936,7 @@ The different grid classes have no common interface for instantiation,
 they may even have different template parameters. In order make the
 examples below easier to write we want to have a class template
 \lstinline!UnitCube! that we parametrize with a type \lstinline!T! and
-and integer parameter \lstinline!variant!. \lstinline!T! should be
+an integer parameter \lstinline!variant!. \lstinline!T! should be
 one of the available grid types and \lstinline!variant! can be used to
 generate different grids (e.~g.~triangular or quadrilateral) for the
 same type \lstinline!T!. The advantage of the \lstinline!UnitCube!
@@ -949,7 +953,12 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube.hh}
 Instantiation of that template results in a class that throws an
 exception when an object is created.
 
-\section{OneD}
+\minisec{OneDGrid}
+
+The following listing creates a \lstinline!OneDGrid! object. This
+class has a constructor without arguments that creates a unit
+interval discretized with a single element. \lstinline!OneDGrid!
+allows local mesh refinement in one space dimension.
 
 \begin{lst}[File dune-grid-howto/unitcube\_onedgrid.hh] \mbox{}
 \nopagebreak
@@ -957,7 +966,11 @@ exception when an object is created.
 numberstyle=\tiny, numbersep=5pt]{../unitcube_onedgrid.hh}
 \end{lst}
 
-\section{SGrid}
+\minisec{SGrid}
+
+The following listing creates a \lstinline!SGrid! object. This class
+template also has a constructor without arguments that results in a
+cube with a single element. \lstinline!SGrid! supports all dimensions.
 
 \begin{lst}[File dune-grid-howto/unitcube\_sgrid.hh] \mbox{}
 \nopagebreak
@@ -965,7 +978,13 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_onedgrid.hh}
 numberstyle=\tiny, numbersep=5pt]{../unitcube_sgrid.hh}
 \end{lst}
 
-\section{Yasp}
+\minisec{YaspGrid}
+
+The following listing instantiates a \lstinline!YaspGrid! object. The
+\lstinline!variant! parameter specifies the number of elements in each
+direction of the cube. In the parallel case all available processes
+are used and the overlap is set to one element. Periodicity is not not
+used.  
 
 \begin{lst}[File dune-grid-howto/unitcube\_yaspgrid.hh] \mbox{}
 \nopagebreak
@@ -973,7 +992,13 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_sgrid.hh}
 numberstyle=\tiny, numbersep=5pt]{../unitcube_yaspgrid.hh}
 \end{lst}
 
-\section{UG}
+\minisec{UGGrid}
+
+The following listing shows how to create \lstinline!UGGrid!
+objects. Two and three-dimensional versions are available. The
+\lstinline!variant! parameter can take on two values: 1 for
+quadrilateral/hexahedral grids and 2 for triangular/tetrahedral
+grids. The initial grids are read in AmiraMesh format.
 
 \begin{lst}[File dune-grid-howto/unitcube\_uggrid.hh] \mbox{}
 \nopagebreak
@@ -981,7 +1006,16 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_yaspgrid.hh}
 numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
 \end{lst}
 
-\section{Alberta}
+\minisec{AlbertaGrid}
+
+The following listing contains specializations of the
+\lstinline!UnitCube! template for Alberta in two and three
+dimensions. When using Alberta the \Dune\ framework has to be
+configured with a dimension (\lstinline!--with-problem-dim=2!,
+\lstinline!--with-world-dim=2!) and only this dimension can then be
+used. The dimension from the configure run is available in the macro
+\lstinline!DUNE_PROBLEM_DIM! in the file \lstinline!config.h! (see
+next section). The \lstinline!variant! parameter must be 1.
 
 \begin{lst}[File dune-grid-howto/unitcube\_albertagrid.hh] \mbox{}
 \nopagebreak
@@ -989,7 +1023,13 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
 numberstyle=\tiny, numbersep=5pt]{../unitcube_albertagrid.hh}
 \end{lst}
 
-\section{Alu3d}
+\minisec{Alu3dGrid}
+
+The next listing shows the instantiation of \lstinline!ALU3dGrid!
+objects. ALU3d supports either tetrahedral or hexahedral grids and the
+element type has to be choosen at compile-time. Therefore, the element
+type is a template parameter of the grid class. The
+\lstinline!variant! parameter must be 1. 
 
 \begin{lst}[File dune-grid-howto/unitcube\_alu3dgrid.hh] \mbox{}
 \nopagebreak
@@ -999,11 +1039,30 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_alu3dgrid.hh}
 
 \section{Using configuration information provided by configure}
 
-\section{Capabilities}
+The \lstinline!./configure! script in the application
+(\lstinline!dune-grid-howto! here) produces a file
+\lstinline!config.h! that contains information about the configuration
+parameters. E.~g.~which of the optional grid implementations is
+available and which dimension has been selected (if applicable). This
+information can then be used at compile-time to include header files
+or code that depend on optional packages.
+
+As an example, the macro \lstinline!HAVE_UG! can be used to compile
+UG-specific code as in
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+#if HAVE_UG
+#include"dune/grid/uggrid.hh"
+#include"dune/io/file/amirameshreader.hh"
+#endif
+\end{lstlisting}
+
+It is important that the file \lstinline!config.h! is the first
+include file in your application!
 
 
+%\section{Capabilities}
 
-\chapter{Reference elements}
+% \chapter{Reference elements}
 
 
 \chapter{Quadrature rules}
@@ -1501,7 +1560,7 @@ evolution (\ref{Eq:IterativeForm2}) with optimal time step control via
 concentration vector the current time $t_n$ is passed and the optimum
 time step $\Delta t^n$ selected by the algorithm is returned.
 
-\begin{lst}[File dune-grid-howto/evolve.hh] \mbox{}
+\begin{lst}[File dune-grid-howto/evolve.hh] \mbox{} \label{List:evolve}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
@@ -1815,18 +1874,140 @@ numberstyle=\tiny, numbersep=5pt]{../adaptivefinitevolume.cc}
 
 \chapter{Parallelism}
 
+\section{Dune Data Decomposition Model}
 
-\begin{lst}[File dune-grid-howto/parfinitevolume.cc] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../parfinitevolume.cc}
-\end{lst}
+The parallelization concept in \Dune\ follows the Single Program
+Multiple Data (SPMD) data parallel programming paradigm. In this
+programming model each process executes the same code but on different
+data. The parallel program is parametrized
+by the rank of the individual process in the set and the number of
+processes $P$
+involved. The processes communicate by exchanging messages, but you
+will rarely have the need to bother with sending messages.
 
-\begin{lst}[File dune-grid-howto/parevolve.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../parevolve.hh}
-\end{lst}
+A parallel \Dune\ grid, such as YaspGrid, is a collective object which
+means that all processes participating in the computations on the grid
+instantiate the grid object at the same time (collectively). Each
+process stores a subset of all the entities that the same program run on a
+single process would have. An entity may be stored in more
+than one process, in principle it may be even stored in all
+processes. An entity
+stored in more than one process is called a distributed entity. \Dune\
+allows quite general data decompositions but not arbitrary data
+decompositions. Each entity in a process has a partition type
+value assigned to it. There are five different possible partition type
+values:
+\begin{center}
+\textit{interior}, \textit{border}, \textit{overlap},
+  \textit{front} and \textit{ghost}.
+\end{center}
+
+Entities of codimension 0 are restricted to the three partition types
+\textit{interior}, \textit{overlap} and \textit{ghost}. Entities of
+codimension greater than 0 may take all partition type values. 
+The codimension 0 entities with partition type \textit{interior} for a
+non-overlapping decomposition of the entity set, i.~e.~for each
+entity of codimension 0 there is exactly one process where this entity
+has partition type \textit{interior}.
+Moreover, the codimension 0 leaf entities in process number $i$ form a
+subdomain $\Omega_i\subseteq\Omega$ and all the $\Omega_i$, $0\leq i <
+P$, form a nonoverlapping decomposition of the computational domain
+$\Omega$. The leaf entities of codimension 0 in a process $i$ with
+partition types \textit{interior} or \textit{overlap} together form a
+subdomain $\hat{\Omega}_i\subseteq\Omega$.
+
+Now the partition types of the entities in process $i$ 
+with codimension greater 0 can
+be determined according to the following table:
+\begin{center}
+\begin{tabular}{cc}
+\hline
+\hline
+Entity located in & Partition Type value\\
+\hline
+$B_i=\overline{\partial\Omega_i\setminus\partial\Omega}$ &
+\textit{border}\\
+$\overline{\Omega_i}\setminus B_i$ & \textit{interior}\\
+$F_i =
+\overline{\partial\hat{\Omega}_i\setminus\partial\Omega}\setminus B_i$
+& \textit{front}\\
+$\overline{\hat{\Omega}_i}\setminus(B_i\cup F_i)$ & \textit{overlap}\\
+Rest & \textit{ghost}\\
+\hline
+\hline
+\end{tabular}
+\end{center}
+
+\begin{figure}
+\psfrag{codim0}{$c=0$}
+\psfrag{codim1}{$c=1$}
+\psfrag{codim2}{$c=2$}
+
+\begin{center}
+\includegraphics[width=\textwidth]{./EPS/partitionsingle.eps}
+\end{center}
+
+\caption{Color coded illustration of different data decompositions:
+  interior (red), border (blue), overlap (green), front (magenta) and
+  ghost (yellow), gray encodes entites not stored by the
+  process. First row shows case with interior, overlap and ghost
+  entities, second row shows a case with interior and overlap without
+  ghost and the last row shows a case with interior and ghost only.}
+\label{Fig:PartitionSingle}
+\end{figure}
+
+The assignment of partition types is illustrated for three different
+examples in Figure \ref{Fig:PartitionSingle}. Each example shows a
+two-dimensional structured grid with $6\times 4$ elements (in
+gray). The entities stored in some process $i$ are shown in color,
+where color indicates the partition type as explained in the
+caption. The first row shows an example where process $i$ has
+codimension 0 entities of all three partition types \textit{interior},
+\textit{overlap} and \textit{ghost} (leftmost picture in first
+row). The corresponding assignment of partition types to entities of
+codimension 1 and 2 is then shown in the middle and right most
+picture. A grid implementation can choose to omit the partition type
+\textit{overlap}  or \textit{ghost} or both, but not
+\textit{interior}. The middle row shows an example where an
+\textit{interior} partition is extended by an \textit{overlap} and no
+\textit{ghost} elements are present. This is the model used in
+YaspGrid. The last row shows an example where the \textit{interior} partition
+is extended by one row of  \textit{ghost} cells. This is the model
+used in UGGrid and ALU3dGrid. 
+
+
+\section{Communication Interfaces}
+
+This section explains how the exchange of data between the partitions
+in different processes is organized in a flexible and portable way.
+
+The abstract situation is that data has to be sent from a copy of a
+distributed entity in a process to one or more copies of the same
+entity in other processes. Usually data has to be sent not only for
+one entity but for many entities at a time, thus it is more efficient
+pack all data that goes to the same destination process into a single
+message. All entities for which data has to be sent or received form a
+so-called \textit{communication interface}. As an example let us define the set
+$X_{i,j}^c$ as the set of all entities of codimension $c$ in process $i$
+  with partition type \textit{interior} or \textit{border} that have
+a copy in process $j$ with any partition type. Then in the
+communication step process $i$ will send one message to any other
+process $j$ when $X_{i,j}^c\neq\emptyset$. The message contains some data for
+every entity in  $X_{i,j}^c$. Since all processes participate in the
+communication step, process $i$ will receive data from a process $j$
+whenever $X_{j,i}^c\neq\emptyset$. This data corresponds to entities
+in process $i$ that have a copy in $X_{j,i}^c$.
+
+A \Dune\ grid offers a selection of predefined interfaces. The example
+above would use the parameter \lstinline!InteriorBorder_All_Interface!
+in the communication function. After the
+selection of the interface it remains to specify the data to be sent
+per entity and how the data should be processed at the receiving
+end. Since the data is in user space the user has to write a small
+class that encapsulates the processing of the data at the sending and
+receiving end. The following listing shows an example for a so-called
+data handle:
+
 
 \begin{lst}[File dune-grid-howto/parfvdatahandle.hh] \mbox{}
 \nopagebreak
@@ -1834,13 +2015,95 @@ numberstyle=\tiny, numbersep=5pt]{../parevolve.hh}
 numberstyle=\tiny, numbersep=5pt]{../parfvdatahandle.hh}
 \end{lst}
 
-\chapter{Input and Output}
+Every instance of the \lstinline!VectorExchange! class template
+conforms to the data handle concept. It defines a type
+\lstinline!DataType! which is the type of objects that are exchanged
+in the messages between the processes. The method \lstinline!contains!
+should return true for all codimensions that participate in the data
+exchange. Method \lstinline!fixedsize! should return true when, for
+the given codimension, the same number of data items per entity is
+sent. If \lstinline!fixedsize! returns false the method
+\lstinline!size! is called for each entity in order to ask 
+for the number of items of type \lstinline!DataType! that are to be
+sent for the given entity. Note that this information has only to be
+given at the sender side. Then the method \lstinline!gather! is called
+for each entity in a communication interface on the sender side in
+order to pack the data for this entity into the message buffer. The
+message buffer itself is realized as an output stream that accepts data
+of type \lstinline!DataType!. After exchanging the data via message
+passing the \lstinline!scatter! method is called for each entity at
+the receiving end. Here the data is read from the message buffer and
+stored in the user's data structures. The message buffer is realized
+as an input stream delivering items of type \lstinline!DataType!. In
+the \lstinline!scatter! method it is up to the user how the data is to
+be processed, e.~g.~one can simply overwrite (as is done here), add or
+compute a maximum.
 
-\section{Visualization with Grape}
+\section{Parallel finite volume scheme}
 
-\section{Visualization with VTK}
+In this section we parallelize the (nonadaptive!) cell centered finite volume
+scheme. Essentially only the \lstinline!evolve! method has to be
+parallelized. The following listing shows the parallel version of this
+method. Compare this with listing \ref{List:evolve} on page \pageref{List:evolve}.
 
-\section{Dune portable grid format}
+\begin{lst}[File dune-grid-howto/parevolve.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../parevolve.hh}
+\end{lst}
+
+The first difference to the sequential version is in line 7 where it
+is checked that the grid provides an overlap of at least one
+element. The overlap my be either of partition type \textit{overlap}
+or \textit{ghost}. The finite volume scheme itself only computes the
+updates for the elements with partition type \textit{interior}.
+
+In order to iterate over entities with a specific partiton type the
+leaf and level iterators can be parametrized by an additional argument
+\lstinline!PartitionIteratorType! as shown in lines
+17-18. If the argument \lstinline!All_Partition! is given then all
+entities are processed, regardless of their partition type. This is
+also the default behavior of the level and leaf iterators. If the
+partition iterator type is specified explicitely in an iterator the
+same argument has also to be specified in the begin and end methods on
+the grid as shown in lines 35-36.
+
+The next change is in line 131 where the computation of the optimum
+stable time step is restricted to elements of partition type
+\textit{interior} because only thos elements have all neighboring
+elements locally available. Next, the global minimum of the time steps
+sizes determined in each process is taken in line 137. For collective
+communication each grid returns a collective communication object with
+its \lstinline!comm()! method which allows to compute global minima
+and maxima, sums, broadcasts and other functions.
+
+Finally the updates computed on the \textit{interior} cells in each
+process have to be sent to all copies of the respective entities in
+the other processes. This is done in lines 141-144 using the data
+handle described above. The \lstinline!communicate! method on the grid
+uses the data handle to assemble the message buffers, exchanges the
+data and writes the data into the user's data structures.
+
+Finally, we need a new main program, which is in the following listing: 
+
+\begin{lst}[File dune-grid-howto/parfinitevolume.cc] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../parfinitevolume.cc}
+\end{lst}
+
+The only essential difference to the sequential program is in line 51
+where the printing of the data of the current time step is restricted
+to the process with rank 0.
+
+
+% \chapter{Input and Output}
+
+% \section{Visualization with Grape}
+
+% \section{Visualization with VTK}
+
+% \section{Dune portable grid format}
 
 
 % \chapter{Iterative Solver Template Library}
