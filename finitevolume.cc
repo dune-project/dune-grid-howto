@@ -7,7 +7,7 @@
 #include "dune/grid/common/mcmgmapper.hh" // mapper class
 
 #include "unitcube.hh"
-#include "transportproblem.hh"
+#include "transportproblem2.hh"
 #include "initialize.hh"
 #include "evolve.hh"
 #include "vtkout.hh"
@@ -66,8 +66,17 @@ int main (int argc , char ** argv)
 #endif
 
   UnitCube<Dune::YaspGrid<2,2>,1> uc;
-  uc.grid().globalRefine(9);
-  timeloop(uc.grid(),0.5);
+#if HAVE_UG
+  UnitCube<Dune::UGGrid<3,3>,2> uc2;
+#endif
+#if HAVE_ALBERTA
+#if DUNE_PROBLEM_DIM==2
+  UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
+#endif
+#endif
+
+  uc2.grid().globalRefine(4);
+  timeloop(uc2.grid(),0.5);
 
 #if HAVE_MPI
   MPI_Finalize();

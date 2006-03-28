@@ -1346,8 +1346,8 @@ The data vector is allocated in line 35. Here we use a
 mapper returns the number of entities in the set $E^\prime$. Instead
 of the STL vector one can use any other type with an
 \lstinline!operator[]!, even built-in arrays (however, built-in arrays
-will not work in this example because the constructor of
-\lstinline!Dune::LeafP0Function! below requires a container with a
+will not work in this example because the VTK output
+below requires a container with a
 \lstinline!size()! method. 
 
 Now the loop in lines 38-53 iterates through all leaf elements. The
