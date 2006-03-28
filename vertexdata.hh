@@ -2,7 +2,6 @@
 // vi: set et ts=4 sw=2 sts=2:
 #include "dune/grid/common/referenceelements.hh"
 #include "dune/grid/common/mcmgmapper.hh"
-#include "dune/disc/functions/p1function.hh"
 #include "dune/io/file/vtk/vtkwriter.hh"
 #if HAVE_GRAPE
 #include "dune/io/visual/grapedatadisplay.hh"
@@ -45,9 +44,9 @@ void vertexdata (const G& grid, const F& f)
   }
 
   // generate a VTK file
-  Dune::LeafP1Function<G,double> cc(grid,c);
+  //   Dune::LeafP1Function<G,double> cc(grid,c);
   Dune::VTKWriter<G> vtkwriter(grid);
-  vtkwriter.addVertexData(cc,"data");
+  vtkwriter.addVertexData(c,"data");
   vtkwriter.write("vertexdata",Dune::VTKOptions::binaryappended);
 
   // online visualization with Grape
