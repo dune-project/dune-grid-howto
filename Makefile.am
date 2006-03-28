@@ -3,7 +3,7 @@
 
 noinst_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
-	groundwater visualization
+	visualization
 
 gettingstarted_SOURCES = gettingstarted.cc
 gettingstarted_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
@@ -37,9 +37,9 @@ parfinitevolume_SOURCES = parfinitevolume.cc
 parfinitevolume_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
 parfinitevolume_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
 
-groundwater_SOURCES = groundwater.cc
-groundwater_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-groundwater_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
+#groundwater_SOURCES = groundwater.cc
+#groundwater_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
+#groundwater_LDADD = $(MPI_LDFLAGS) $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS)
 
 visualization_SOURCES = visualization.cc
 visualization_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
