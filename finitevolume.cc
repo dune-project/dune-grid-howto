@@ -75,8 +75,8 @@ int main (int argc , char ** argv)
 #endif
 #endif
 
-  uc2.grid().globalRefine(4);
-  timeloop(uc2.grid(),0.5);
+  uc.grid().globalRefine(4);
+  timeloop(uc.grid(),0.5);
 
 #if HAVE_MPI
   MPI_Finalize();

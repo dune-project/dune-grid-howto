@@ -15,25 +15,9 @@
 \usepackage{psfrag}
 \usepackage{makeidx}
 
-\newif\ifpdf
-\ifx\pdfoutput\undefined
-\pdffalse % we are not running PDFLaTeX
-\else
-\pdfoutput=1 % we are running PDFLaTeX
-\pdftrue
-\fi
-
-\ifpdf
-\usepackage[pdftex]{graphicx}
-\else
 \usepackage{graphicx}
-\fi
 
-\ifpdf
-\DeclareGraphicsExtensions{.pdf, .jpg, .tif}
-\else
 \DeclareGraphicsExtensions{.eps, .jpg}
-\fi
 
 \newcommand{\C}{\mathbb{C}}
 \newcommand{\R}{\mathbb{R}}
@@ -1067,7 +1051,7 @@ include file in your application!
 
 \chapter{Quadrature rules}
 
-In this chapter we explore how an integral $$\int\limits_\Omega f(x)\ dx$$
+In this chapter we explore how an integral $$\int\limits_{\Omega} f(x)\ dx$$
 over some function $f:\Omega\to\mathbb{R}$ can be computed numerically
 using a \Dune\ grid object.
 
@@ -1076,12 +1060,12 @@ using a \Dune\ grid object.
 Assume first the simpler task that $\Delta$ is a reference element 
 and that we want to
 compute the integral over some function $\hat{f}:\Delta\to\mathbb{R}$
-over the reference element:$$\int\limits_\Delta \hat{f}(\hat{x})\ d\hat{x}.$$
+over the reference element:$$\int\limits_{\Delta} \hat{f}(\hat{x})\ d\hat{x}.$$
 
 
 A quadrature rule is a formula that approximates integrals of
 functions over a reference element $\Delta$. In general it has the form
-$$\int\limits_\Delta \hat{f}(\hat{x})\ d\hat{x} = \sum_{i=1}^n
+$$\int\limits_{\Delta} \hat{f}(\hat{x})\ d\hat{x} = \sum_{i=1}^n
 \hat{f}(\xi_i) w_i + \text{error}.$$
 The positions $\xi_i$ and weight factors $w_i$ are dependent on the
 type of reference element and the number of quadrature points $n$ is
@@ -1092,7 +1076,7 @@ integrals over domains $\omega\subseteq\Omega$ that are mapped from a
 reference element, i.~e.~$\omega=\{x\in\Omega\ |\
 x=g(\hat{x}), \hat{x}\in\Delta\}$, by some function $g:\Delta\to\Omega$:
 \begin{equation}
-\int\limits_\omega f(x) = \int\limits_\Delta f(g(\hat{x}))\mu(\hat{x})\
+\int\limits_{\Omega} f(x) = \int\limits_{\Delta} f(g(\hat{x}))\mu(\hat{x})\
 d\hat{x} = \sum_{i=1}^n f(g(\xi_i))\mu(\xi_i)w_i + \text{error}. 
 \label{Eq:IntegrateEntity}
 \end{equation}
@@ -1103,7 +1087,7 @@ The integral over the whole domain $\Omega$ requires a grid
 $\overline{\Omega}=\bigcup_k \overline{\omega}_k$. Using
 (\ref{Eq:IntegrateEntity}) on each element we obtain finally
 \begin{equation}
-\int\limits_\Omega f(x)\ dx = \sum\limits_{k} \sum_{i=1}^{n_k}
+\int\limits_{\Omega} f(x)\ dx = \sum\limits_{k} \sum_{i=1}^{n_k}
 f(g^k(\xi^k_i))\mu^k(\xi^k_i)w^k_i + \sum\limits_{k} \text{error}^k.
 \label{Eq:IntegrateDomain}
 \end{equation}
@@ -1427,11 +1411,11 @@ c(x,0) = c_0(x) \ \ x\in\Omega
 \end{equation}
 and the boundary condition
 \begin{equation}
-c(x,t) = b(x,t) \ \ t>0, x\in\Gamma_\text{in}(t)=\{y\in\partial\Omega\
+c(x,t) = b(x,t) \ \ t>0, x\in\Gamma_{\text{in}}(t)=\{y\in\partial\Omega\
 |\ u(y,t)\cdot\nu(y)<0\}. 
 \end{equation}
 Here $\nu(x)$ is the unit outer normal at a point $y\in\partial\Omega$
-and $\Gamma_\text{in}(t)$ is the inflow boundary at time $t$.
+and $\Gamma_{\text{in}}(t)$ is the inflow boundary at time $t$.
 
 \subsection{Numerical Scheme}
 
@@ -1441,7 +1425,7 @@ explicit Euler scheme in time.
 
 The grid consists of cells (elements) $\omega$ and the time interval
 $T$ is discretized into discrete steps $0=t_0, t_1, \ldots, t_n,
-t_{n+1},\ldots, t_N=t_\text{end}$. Cell centered finite volume schemes
+t_{n+1},\ldots, t_N=t_{\text{end}}$. Cell centered finite volume schemes
 integrate the PDE (\ref{Eq:TransportEquation}) over a cell $\omega_i$
 and a time interval $(t_n,t_{n+1})$:
 \begin{equation}
@@ -1478,7 +1462,7 @@ $t_n$, $\nu_{ij}$ is the unit outer normal of the facet $\gamma_{ij}$ and $\phi$
 \begin{equation}
 \phi(C_i^n, C_j^n, u_{ij}^n\cdot\nu_{ij}; \gamma_{ij}, t_n ) =
 \left\{\begin{array}{ll} 
-b(\gamma_{ij})\, u_{ij}^n\cdot\nu_{ij} & \gamma_{ij} \subset \Gamma_\text{in}(t) \\
+b(\gamma_{ij})\, u_{ij}^n\cdot\nu_{ij} & \gamma_{ij} \subset \Gamma_{\text{in}}(t) \\
 C_j^n\, u_{ij}^n\cdot\nu_{ij}&
 \gamma_{ij}=\partial\omega_i\cap\partial\omega_j\,\wedge\,u_{ij}^n\cdot\nu_{ij} < 0\\
 C_i^n\, u_{ij}^n\cdot\nu_{ij}& u_{ij}^n\cdot\nu_{ij} \geq 0 
@@ -1487,7 +1471,7 @@ C_i^n\, u_{ij}^n\cdot\nu_{ij}& u_{ij}^n\cdot\nu_{ij} \geq 0
 Here $b(\gamma_{ij})$ denotes evaluation of the boundary condition on
 an inflow facet $\gamma_{ij}$. If we formally set
 $C_j^n=b(\gamma_{ij})$ on an inflow facet $\gamma_{ij} \subset
-\Gamma_\text{in}(t)$ we can derive the following shorthand notation
+\Gamma_{\text{in}}(t)$ we can derive the following shorthand notation
 for the flux function:
 \begin{equation}
 \phi(C_i^n, C_j^n, u_{ij}^n\cdot\nu_{ij}; \gamma_{ij}, t_n ) = C_i^n
@@ -1724,8 +1708,8 @@ fraction of the maximum local error.
 By combining the two approaches we get the threshold value $\kappa$
 actually used in the code:
 \begin{equation}
-\kappa = \min\left(\max\limits_\omega \epsilon^+(\omega), \frac12
-  \max\limits_\omega \bar{\epsilon}(\omega) \right).
+\kappa = \min\left(\max\limits_{\omega} \epsilon^+(\omega), \frac12
+  \max\limits_{\omega} \bar{\epsilon}(\omega) \right).
 \end{equation}
 
 \minisec{Algorithm}

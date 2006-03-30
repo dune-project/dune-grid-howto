@@ -7,6 +7,11 @@ AM_INIT_AUTOMAKE(dune-grid-howto, 0.0, dune@hal.iwr.uni-heidelberg.de)
 AC_CONFIG_SRCDIR([gettingstarted.cc])
 AM_CONFIG_HEADER([config.h])
 
+AC_CHECK_PROGS([TEX], [latex], [true])
+AC_CHECK_PROGS([BIBTEX], [bibtex], [true])
+AC_CHECK_PROGS([DVIPDF], [dvipdf], [true])
+AC_CHECK_PROGS([DVIPS], [dvips], [true])
+
 # we need no more than the standard DUNE-stuff
 DUNE_CHECK_ALL
 
@@ -15,7 +20,7 @@ AC_SUBST(AM_CPPFLAGS, $DUNE_CPPFLAGS)
 AC_SUBST(AM_LDFLAGS, $DUNE_LDFLAGS)
 LIBS="$DUNE_LIBS"
 
-AC_CONFIG_FILES([Makefile])
+AC_CONFIG_FILES([Makefile doc/Makefile])
 AC_OUTPUT
 
 # finally print the summary information

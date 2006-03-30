@@ -130,7 +130,7 @@ int main(int argc, char **argv)
 #endif
 #endif
 
-  dowork(uc7.grid());
+  dowork(uc0.grid());
 
 #if HAVE_MPI
   MPI_Finalize();

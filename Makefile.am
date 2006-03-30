@@ -1,5 +1,6 @@
 # $Id$
 
+SUBDIRS = doc
 
 noinst_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
