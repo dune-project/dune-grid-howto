@@ -1,0 +1,9 @@
+# -*- html -*-
+# $Id$
+
+#use wml::layout::default title="DUNE - Documentation"
+
+<h1>Dune Grid Howto</h1>
+
+You can read the howto <a href="grid-howto.html">online</a> or
+download the <a href="grid-howto.pdf">pdf</a>.

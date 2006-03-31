@@ -22,3 +22,7 @@ grid-howto.ps
 grid-howto.dvi
 grid-howto*.html
 grid-howto*.png
+*.png
+css.html
+navigation.html
+index.html
