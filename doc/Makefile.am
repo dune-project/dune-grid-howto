@@ -9,14 +9,14 @@ if WML
 endif
 
 if TEX4HT
- HTDOCS = grid-howto.html
+ HTDOCS =  navigation.html css.html grid-howto.html
 endif
 
 DOCS =  $(HTDOCS) $(MAINDOCS) $(WMLDOCS)
 
 dist_pkgdata_DATA = $(DOCS)
 
-PAGES = index.html navigation.html css.html
+EXTRAINSTALL = grid-howto*.html *.png *.css
 
 CLEANFILES = *.aux *.bbl *.blg *.log *.out *.toc *.dvi *.pdf *.ps
 CLEANFILES += *.4ct *.4tc *.css *.idv *.idx *.lg *.tid *.tmp *.tms *.xref
