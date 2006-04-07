@@ -53,22 +53,19 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 
     IntersectionIterator isend = it->iend();
     for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
-      if (is.neighbor())
+      if (is.leafNeighbor())
       {
         // access neighbor
         EntityPointer outside = is.outside();
+        int indexj = mapper.map(*outside);
 
-        // handle face from correct side
-        if (outside->isLeaf())
+        // handle face from one side only
+        if ( it.level()>outside->level() ||
+             (it.level()==outside->level() && indexi<indexj) )
         {
-          int indexj = mapper.map(*outside);
-          if ( it.level()>outside->level() ||
-               (it.level()==outside->level() && indexi<indexj) )
-          {
-            double localdelta = std::abs(c[indexj]-c[indexi]);
-            indicator[indexi] = std::max(indicator[indexi],localdelta);
-            indicator[indexj] = std::max(indicator[indexj],localdelta);
-          }
+          double localdelta = std::abs(c[indexj]-c[indexi]);
+          indicator[indexi] = std::max(indicator[indexi],localdelta);
+          indicator[indexj] = std::max(indicator[indexj],localdelta);
         }
       }
   }
@@ -84,9 +81,8 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       grid.mark(1,it);
       IntersectionIterator isend = it->iend();
       for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
-        if (is.neighbor())
-          if (is.outside()->isLeaf() &&
-              (is.outside().level()<lmax || !is.outside()->isRegular()))
+        if (is.leafNeighbor())
+          if (is.outside().level()<lmax || !is.outside()->isRegular())
             grid.mark(1,is.outside());
     }
     if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)

@@ -65,8 +65,10 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       facelocal = Dune::ReferenceElements<ct,dim-1>::general(gtf).position(0,0);
 
       // get normal vector scaled with volume
-      Dune::FieldVector<ct,dimworld> integrationOuterNormal = is.integrationOuterNormal(facelocal);
-      integrationOuterNormal *= Dune::ReferenceElements<ct,dim-1>::general(gtf).volume();
+      Dune::FieldVector<ct,dimworld> integrationOuterNormal
+        = is.integrationOuterNormal(facelocal);
+      integrationOuterNormal
+        *= Dune::ReferenceElements<ct,dim-1>::general(gtf).volume();
 
       // center of face in global coordinates
       Dune::FieldVector<ct,dimworld>
@@ -82,36 +84,34 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      if (is.neighbor())             // "correct" version
+      if (is.leafNeighbor())             // "correct" version
       {
         // access neighbor
         EntityPointer outside = is.outside();
+        int indexj = mapper.map(*outside);
 
-        // handle face from correct side
-        if (outside->isLeaf())
+        // compute flux from one side only
+        // this should become easier with the new IntersectionIterator functionality!
+        if ( it->level()>outside->level() ||
+             (it->level()==outside->level() && indexi<indexj) )
         {
-          int indexj = mapper.map(*outside);
-          if ( it->level()>outside->level() ||
-               (it->level()==outside->level() && indexi<indexj) )
-          {
-            // compute factor in neighbor
-            Dune::GeometryType nbgt = outside->geometry().type();
-            const Dune::FieldVector<ct,dim>&
-            nblocal = Dune::ReferenceElements<ct,dim>::general(nbgt).position(0,0);
-            double nbvolume = outside->geometry().integrationElement(nblocal)
-                              *Dune::ReferenceElements<ct,dim>::general(nbgt).volume();
-            double nbfactor = velocity*integrationOuterNormal/nbvolume;
+          // compute factor in neighbor
+          Dune::GeometryType nbgt = outside->geometry().type();
+          const Dune::FieldVector<ct,dim>&
+          nblocal = Dune::ReferenceElements<ct,dim>::general(nbgt).position(0,0);
+          double nbvolume = outside->geometry().integrationElement(nblocal)
+                            *Dune::ReferenceElements<ct,dim>::general(nbgt).volume();
+          double nbfactor = velocity*integrationOuterNormal/nbvolume;
 
-            if (factor<0)                               // inflow
-            {
-              update[indexi] -= c[indexj]*factor;
-              update[indexj] += c[indexj]*nbfactor;
-            }
-            else                               // outflow
-            {
-              update[indexi] -= c[indexi]*factor;
-              update[indexj] += c[indexi]*nbfactor;
-            }
+          if (factor<0)                         // inflow
+          {
+            update[indexi] -= c[indexj]*factor;
+            update[indexj] += c[indexj]*nbfactor;
+          }
+          else                         // outflow
+          {
+            update[indexi] -= c[indexi]*factor;
+            update[indexj] += c[indexi]*nbfactor;
           }
         }
       }

@@ -2081,13 +2081,15 @@ where the printing of the data of the current time step is restricted
 to the process with rank 0.
 
 
-% \chapter{Input and Output}
+\chapter{Input and Output}
 
-% \section{Visualization with Grape}
+\section{Visualization with Grape}
 
-% \section{Visualization with VTK}
+\section{Visualization with VTK}
 
-% \section{Dune portable grid format}
+\section{Dune portable grid format}
+
+\section{Amiramesh output}
 
 
 % \chapter{Iterative Solver Template Library}
@@ -2111,7 +2113,36 @@ to the process with rank 0.
 % \end{lst}
 
 
+\chapter{Outlook}
 
+
+\begin{figure}
+\begin{center}
+\includegraphics[width=0.32\textwidth]{./EPS/alberta2d.eps}\ 
+\includegraphics[width=0.32\textwidth]{./EPS/ugsimplex2d.eps}\ 
+\includegraphics[width=0.32\textwidth]{./EPS/ugcube2d.eps}
+
+\includegraphics[width=0.32\textwidth]{./EPS/alberta3d.eps}\ 
+\includegraphics[width=0.32\textwidth]{./EPS/alusimplex3d.eps}\ 
+\includegraphics[width=0.32\textwidth]{./EPS/alucube3d.eps}
+
+
+\includegraphics[width=0.32\textwidth]{./EPS/ugsimplex3d.eps}\
+\includegraphics[width=0.32\textwidth]{./EPS/ugcube3d.eps}\ 
+\includegraphics[width=0.32\textwidth]{./EPS/iso.eps}
+\end{center}
+
+\caption{Adaptive solution of an elliptic model problem with $P_1$
+conforming finite elements and residual based error
+estimator. Illustrates that adaptive finite element algorithm can be formulated
+independent of dimension, element type and refinement scheme. From
+top to bottom, left to right: Alberta (bisection, 2d), UG (red/green
+on triangles), UG (red/green on quadrilaterals), Alberta (bisection,
+3d), ALU (hanging nodes on tetrahedra), ALU (hanging nodes on
+hexahedra), UG (red/green on tetrahedra), UG (red/green on hexahedra,
+pyramids and tetrahedra), isosurfaces of solution.}
+\label{Fig:OutlookP1}
+\end{figure}
 
 
 
