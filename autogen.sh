@@ -1,35 +1,94 @@
 #!/bin/sh
+# $Id$
 
+# barf on errors
 set -e
 
-# may be used to force a certain automake-version e.g. 1.7
-AMVERS=
+usage () {
+    echo "Usage: ./autogen.sh [options]"
+    echo "  --ac=, --acversion=VERSION   use a specific VERSION of autoconf"
+    echo "  --am=, --amversion=VERSION   use a specific VERSION of automake"
+    echo "  -h,    --help                you already found this :-)"
+}
 
-if test x$1 = "x" ; then
-  echo "Usage: ./autogen.sh DUNEDIR"
-  exit 1
+for OPT in "$@"; do
+    set +e
+    # stolen from configure...
+    # when no option is set, this returns an error code
+    arg=`expr "x$OPT" : 'x[^=]*=\(.*\)'`
+    set -e
+
+    case "$OPT" in
+	--ac=*|--acversion=*)
+			if test "x$arg" == "x"; then
+				usage; 
+				exit 1;
+			fi
+			ACVERSION=$arg
+			;;
+	--am=*|--amversion=*)
+			if test "x$arg" == "x"; then
+				usage; 
+				exit 1;
+			fi
+			AMVERSION=$arg
+			;;
+	-h|--help) usage ; exit 0 ;;
+	*)
+            if test -d "$OPT/m4"; then
+              ACLOCAL_FLAGS="$ACLOCAL_FLAGS -I $OPT/m4"
+            fi
+            if test -d "$OPT/am"; then
+              am_dir="$OPT/am"
+            fi
+            ;;
+    esac
+done
+
+## report parameters
+if test "x$ACVERSION" != "x"; then
+	echo "Forcing autoconf version «$ACVERSION»"
+	if ! which autoconf$ACVERSION > /dev/null; then
+		echo
+		echo "Error: Could not find autoconf$ACVERSION"
+		echo "       Did you specify a wrong version?"
+		exit 1
+	fi
+fi
+if test "x$AMVERSION" != "x"; then
+	echo "Forcing automake version «$AMVERSION»"
+	if ! which automake$AMVERSION > /dev/null; then
+		echo
+		echo "Error: Could not find automake$AMVERSION"
+		echo "       Did you specify a wrong version?"
+		exit 1
+	fi
 fi
 
-if test ! -d $1/m4 ; then
-  echo $1/m4 not found! Wrong directory supplied?
-  exit 1
-fi
 
-if test "x$AMVERS" != x ; then
-  echo Warning: explicitly using automake version $AMVERS
-  # binaries are called automake-$AMVERS
-  AMVERS="-$AMVERS"
-fi
+## run autotools
 
-# convert to absolute path so that aclocal 1.8 does the right thing
-DUNEM4=`cd $1/m4 && pwd`
-
-aclocal$AMVERS -I $DUNEM4
-
+echo "--> libtoolize..."
+# this script won't rewrite the files if they already exist. This is a
+# PITA when you want to upgrade libtool, thus I'm setting --force
 libtoolize --force
 
-autoheader
+# prepare everything
+echo "--> aclocal..."
+aclocal$AMVERSION $ACLOCAL_FLAGS
 
-automake$AMVERS --add-missing
+# applications should provide a config.h for now
+echo "--> autoheader..."
+autoheader$ACVERSION
 
-autoconf
+# create a link to the dune-common am directory
+echo "--> linking dune-common/am..."
+rm -f am
+ln -s $am_dir am
+
+# call automake/conf
+echo "--> automake..."
+automake$AMVERSION --add-missing
+
+echo "--> autoconf..."
+autoconf$ACVERSION

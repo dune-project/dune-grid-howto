@@ -1,10 +1,9 @@
-#                                               -*- Autoconf -*-
+#! /bin/bash
+# $Id$
 # Process this file with autoconf to produce a configure script.
-
-AC_PREREQ(2.50)
 AC_INIT(dune-grid-howto, 0.0, dune@hal.iwr.uni-heidelberg.de)
-AM_INIT_AUTOMAKE(dune-grid-howto, 0.0, dune@hal.iwr.uni-heidelberg.de)
-AC_CONFIG_SRCDIR([gettingstarted.cc])
+AM_INIT_AUTOMAKE
+AC_CONFIG_SRCDIR([./gettingstarted.cc])
 AM_CONFIG_HEADER([config.h])
 
 AC_CHECK_PROGS([TEX], [latex], [true])
@@ -40,18 +39,31 @@ if test x$with_duneweb != x ; then
 fi
 AC_SUBST(DUNEWEBDIR, $with_duneweb)
 
-# we need no more than the standard DUNE-stuff
-DUNE_CHECK_ALL
+# check all dune-module stuff
+DUNE_CHECK_ALL([dunecommon], [dunegrid])
 
-# implicitly set the Dune-flags everywhere
-AC_SUBST(AM_CPPFLAGS, $DUNE_CPPFLAGS)
-AC_SUBST(AM_LDFLAGS, $DUNE_LDFLAGS)
-LIBS="$DUNE_LIBS"
+if test x$HAVE_DUNECOMMON != x1 ; then
+  AC_MSG_ERROR([Can't work without the dune-common module. Maybe you have to supply your dune-common directory as --with-dunecommon=dir])
+fi
 
+if test x$HAVE_DUNEGRID != x1 ; then
+  AC_MSG_ERROR([Can't work without the dune-grid module. Maybe you have to supply your dune-grid directory as --with-dunegrid=dir])
+fi
+
+# preset variable to path such that #include <dune/...> works
+AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
+
+echo
+echo Note: Most of the libraries checked for above are only used for the self-test
+echo of Dune.  The library itself will build and the headers will work even if
+echo Alberta, MPI, etc. cannot be found.  An exception to this are UG and AmiraMesh
+echo which need to be found right now if you want to use them later.
+echo
+
+# write output
 AC_CONFIG_FILES([Makefile doc/Makefile bin/wmlwrap])
 AC_OUTPUT
 
 chmod +x bin/wmlwrap
 
-# finally print the summary information
 DUNE_SUMMARY_ALL

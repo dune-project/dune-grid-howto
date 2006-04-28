@@ -76,19 +76,19 @@ int main (int argc , char ** argv)
   UnitCube<Dune::SGrid<1,1>,1> uc1;
   UnitCube<Dune::YaspGrid<2,2>,1> uc;
 #if HAVE_UG
-  UnitCube<Dune::UGGrid<2,2>,2> uc2;
+  UnitCube<Dune::UGGrid<3,3>,1> uc2;
 #endif
 #if HAVE_ALBERTA
 #if DUNE_PROBLEM_DIM==2
   UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
 #endif
 #endif
-  uc3.grid().globalRefine(8);
-  timeloop(uc3.grid(),0.5,8,18);
-  //   uc2.grid().globalRefine(4);
-  //   timeloop(uc2.grid(),0.5,4,8);
-  //   uc0.grid().globalRefine(4);
-  //   timeloop(uc0.grid(),0.5,4,9);
+  //     uc3.grid().globalRefine(8);
+  //     timeloop(uc3.grid(),0.5,8,18);
+  //  uc2.grid().globalRefine(3);
+  //  timeloop(uc2.grid(),0.5,3,7);
+  uc0.grid().globalRefine(4);
+  timeloop(uc0.grid(),0.5,4,9);
 
 #if HAVE_MPI
   MPI_Finalize();
