@@ -5,7 +5,7 @@
 
 #if HAVE_UG
 #include "dune/grid/uggrid.hh"
-#include "dune/io/file/amirameshreader.hh"
+#include "dune/grid/io/file/amirameshreader.hh"
 
 // UGGrid 3d, variant 1 (hexahedra) specialization
 template<>
