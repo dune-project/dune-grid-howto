@@ -42,6 +42,7 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
   initialize(grid,mapper,c);
   for (int i=grid.maxLevel(); i<lmax; i++)
   {
+    if (grid.maxLevel()>=lmax) break;
     finitevolumeadapt(grid,mapper,c,lmin,lmax,0);
     initialize(grid,mapper,c);
   }
@@ -54,12 +55,12 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     k++;
     evolve(grid,mapper,c,t,dt);
     t += dt;
-    if (k%20==0) vtkout(grid,c,"concentration",k/20);
+    if (k%1==0) vtkout(grid,c,"concentration",k/1);
     std::cout << "s=" << grid.size(0) << " k=" << k
               << " t=" << t << " dt=" << dt << std::endl;
     finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
   }
-  vtkout(grid,c,"concentration",k/20);
+  vtkout(grid,c,"concentration",k/1);
 }
 
 //===============================================================
@@ -88,7 +89,7 @@ int main (int argc , char ** argv)
   //  uc2.grid().globalRefine(3);
   //  timeloop(uc2.grid(),0.5,3,7);
   uc0.grid().globalRefine(4);
-  timeloop(uc0.grid(),0.5,4,9);
+  timeloop(uc0.grid(),0.5,4,6);
 
 #if HAVE_MPI
   MPI_Finalize();

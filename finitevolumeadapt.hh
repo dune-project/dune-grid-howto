@@ -72,6 +72,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 
   // mark cells for refinement/coarsening
   double globaldelta = globalmax-globalmin;
+  int marked=0;
   for (LeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
@@ -79,6 +80,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         && (it.level()<lmax || !it->isRegular()))
     {
       grid.mark(1,it);
+      marked++;
       IntersectionIterator isend = it->iend();
       for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
         if (is.leafNeighbor())
@@ -88,8 +90,10 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
     if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)
     {
       grid.mark(-1,it);
+      marked++;
     }
   }
+  if (marked==0) return false;
 
   // restrict to coarse elements
   std::map<IdType,RestrictedValue> restrictionmap; // restricted concentration

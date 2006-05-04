@@ -44,17 +44,18 @@ void timeloop (const G& grid, double tend)
   // now do the time steps
   double t=0,dt;
   int k=0;
+  const int modulo=50;
   while (t<tend)
   {
     k++;
     evolve(grid,mapper,c,t,dt);
-    if (k%20==0) vtkout(grid,c,"concentration",k/20);
+    if (k%modulo==0) vtkout(grid,c,"concentration",k/modulo);
     std::cout << "k=" << k << " t=" << t << " dt=" << dt << std::endl;
     t += dt;
   }
 
   // output results
-  vtkout(grid,c,"concentration",k/20);
+  vtkout(grid,c,"concentration",k/modulo);
 }
 
 //===============================================================
@@ -68,6 +69,8 @@ int main (int argc , char ** argv)
 #endif
 
   UnitCube<Dune::YaspGrid<2,2>,1> uc;
+  UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+  UnitCube<Dune::SGrid<1,1>,1> uc1;
 #if HAVE_UG
   UnitCube<Dune::UGGrid<2,2>,2> uc2;
 #endif
@@ -77,8 +80,8 @@ int main (int argc , char ** argv)
 #endif
 #endif
 
-  uc.grid().globalRefine(7);
-  timeloop(uc.grid(),0.5);
+  uc0.grid().globalRefine(9);
+  timeloop(uc0.grid(),0.5);
 
 #if HAVE_MPI
   MPI_Finalize();
