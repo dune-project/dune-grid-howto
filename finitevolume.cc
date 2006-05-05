@@ -44,7 +44,7 @@ void timeloop (const G& grid, double tend)
   // now do the time steps
   double t=0,dt;
   int k=0;
-  const int modulo=50;
+  const int modulo=5;
   while (t<tend)
   {
     k++;
@@ -80,7 +80,7 @@ int main (int argc , char ** argv)
 #endif
 #endif
 
-  uc0.grid().globalRefine(9);
+  uc0.grid().globalRefine(7);
   timeloop(uc0.grid(),0.5);
 
 #if HAVE_MPI
