@@ -17,10 +17,10 @@ template<class Grid>
 void dowork (Grid& grid)
 {
   // make function object
-  Needle<typename Grid::ctype,Grid::dimension> f;
+  Exp<typename Grid::ctype,Grid::dimension> f;
 
   // refine the grid
-  grid.globalRefine(6);
+  grid.globalRefine(5);
 
   // call the visualization functions
   elementdata(grid,f);
@@ -48,7 +48,7 @@ int main(int argc, char **argv)
 #endif
 #endif
 
-  dowork(uc2.grid());
+  dowork(uc1.grid());
 
 #if HAVE_MPI
   MPI_Finalize();
