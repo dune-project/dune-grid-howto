@@ -21,7 +21,7 @@ endif
 BASEDIR=../..
 CURDIR=doc/grid-howto
 
-docdir=$(datadir)/$(CURDIR)
+docdir=$(datadir)/doc/dune/grid-howto
 
 doc_DATA = $(DOCS)
 
