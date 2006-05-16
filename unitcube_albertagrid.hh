@@ -4,7 +4,7 @@
 #define UNITCUBE_ALBERTAGRID_HH
 
 #if HAVE_ALBERTA
-#include "dune/grid/albertagrid.hh"
+#include <dune/grid/albertagrid.hh>
 
 // AlbertaGrid 2d, variant 1 (2 triangles) specialization
 #if DUNE_PROBLEM_DIM==2

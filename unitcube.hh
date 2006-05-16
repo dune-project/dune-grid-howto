@@ -3,7 +3,7 @@
 #ifndef UNITCUBE_HH
 #define UNITCUBE_HH
 
-#include "dune/common/exceptions.hh"
+#include <dune/common/exceptions.hh>
 
 // default implementation for any template parameter
 template<typename T, int variant>

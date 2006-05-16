@@ -4,7 +4,7 @@
 #include <iostream>               // for input/output to shell
 #include <fstream>                // for input/output to files
 #include <vector>                 // STL vector class
-#include "dune/grid/common/mcmgmapper.hh" // mapper class
+#include <dune/grid/common/mcmgmapper.hh> // mapper class
 
 #include "unitcube.hh"
 #include "transportproblem2.hh"

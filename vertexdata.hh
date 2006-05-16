@@ -1,10 +1,10 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
-#include "dune/grid/common/referenceelements.hh"
-#include "dune/grid/common/mcmgmapper.hh"
-#include "dune/grid/io/file/vtk/vtkwriter.hh"
+#include <dune/grid/common/referenceelements.hh>
+#include <dune/grid/common/mcmgmapper.hh>
+#include <dune/grid/io/file/vtk/vtkwriter.hh>
 #if HAVE_GRAPE
-#include "dune/grid/io/visual/grapedatadisplay.hh"
+#include <dune/grid/io/visual/grapedatadisplay.hh>
 #endif
 
 //! Parameter for mapper class

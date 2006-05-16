@@ -3,8 +3,8 @@
 #ifndef DUNE_INTEGRATE_ENTITY_HH
 #define DUNE_INTEGRATE_ENTITY_HH
 
-#include "dune/common/exceptions.hh"
-#include "dune/grid/common/quadraturerules.hh"
+#include <dune/common/exceptions.hh>
+#include <dune/grid/common/quadraturerules.hh>
 
 //! compute integral of function over entity with given order
 template<class Iterator, class Functor>

@@ -3,7 +3,7 @@
 #ifndef UNITCUBE_YASPGRID_HH
 #define UNITCUBE_YASPGRID_HH
 
-#include "dune/grid/yaspgrid.hh"
+#include <dune/grid/yaspgrid.hh>
 
 // YaspGrid specialization
 template<int dim, int size>

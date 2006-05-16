@@ -5,7 +5,7 @@
 #include "config.h"
 #include <iostream>
 #include <iomanip>
-#include "dune/grid/io/file/vtk/vtkwriter.hh"
+#include <dune/grid/io/file/vtk/vtkwriter.hh>
 #include "unitcube.hh"
 #include "functors.hh"
 #include "integrateentity.hh"

@@ -4,7 +4,7 @@
 
 // Dune includes
 #include "config.h"
-#include "dune/grid/sgrid.hh"
+#include <dune/grid/sgrid.hh>
 
 #include "unitcube.hh"
 #include "functors.hh"

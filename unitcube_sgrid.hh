@@ -3,7 +3,7 @@
 #ifndef UNITCUBE_SGRID_HH
 #define UNITCUBE_SGRID_HH
 
-#include "dune/grid/sgrid.hh"
+#include <dune/grid/sgrid.hh>
 
 // SGrid specialization
 template<int dim>

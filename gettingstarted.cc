@@ -4,8 +4,8 @@
 
 // Dune includes
 #include "config.h"           // file constructed by ./configure script
-#include "dune/grid/sgrid.hh" // load sgrid definition
-#include "dune/grid/common/gridinfo.hh" // definition of gridinfo
+#include <dune/grid/sgrid.hh> // load sgrid definition
+#include <dune/grid/common/gridinfo.hh> // definition of gridinfo
 
 int main()
 {

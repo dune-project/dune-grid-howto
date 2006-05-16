@@ -7,7 +7,7 @@
 
 // Dune includes
 #include "config.h"           // file constructed by ./configure script
-#include "dune/grid/sgrid.hh" // load sgrid definition
+#include <dune/grid/sgrid.hh> // load sgrid definition
 
 // example for a generic algorithm that traverses
 // the entities of a given mesh in various ways

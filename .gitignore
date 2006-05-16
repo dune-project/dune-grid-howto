@@ -1,5 +1,11 @@
 Makefile
 Makefile.in
+depcomp
+ltmain.sh
+.libs
+am
+missing
+install-sh
 .deps
 aclocal.m4
 autom4te.cache
@@ -18,4 +24,4 @@ othergrids
 parfinitevolume
 traversal
 visualization
-adaptivegrid.vtu
+*.vtu
