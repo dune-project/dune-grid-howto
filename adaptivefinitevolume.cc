@@ -129,7 +129,7 @@ int main (int argc , char ** argv)
   //  uc2.grid().globalRefine(3);
   //  timeloop(uc2.grid(),0.5,3,7);
   uc0.grid().globalRefine(4);
-  timeloop(uc0.grid(),0.5,4,9);
+  timeloop(uc0.grid(),0.5,4,8);
 
 #if HAVE_MPI
   MPI_Finalize();

@@ -14,7 +14,7 @@
 template<int dimworld, class ct>
 double c0 (const Dune::FieldVector<ct,dimworld>& x)
 {
-  if (x.two_norm()<0.125)
+  if (x.two_norm()>0.125 && x.two_norm()<0.5)
     return 1.0;
   else
     return 0.0;
@@ -24,6 +24,7 @@ double c0 (const Dune::FieldVector<ct,dimworld>& x)
 template<int dimworld, class ct>
 double b (const Dune::FieldVector<ct,dimworld>& x, double t)
 {
+  return 0.0;
   if (x.two_norm()<t+0.125)
     return 1.0;
   else
