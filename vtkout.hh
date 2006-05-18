@@ -10,5 +10,5 @@ void vtkout (const G& grid, const V& c, char* name, int k)
   char fname[128];
   sprintf(fname,"%s-%05d",name,k);
   vtkwriter.addCellData(c,"celldata");
-  vtkwriter.write(fname,Dune::VTKOptions::binaryappended);
+  vtkwriter.write(fname,Dune::VTKOptions::ascii);
 }

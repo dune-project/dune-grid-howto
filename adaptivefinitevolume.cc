@@ -84,10 +84,10 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     initialize(grid,mapper,c);
   }
   vtkout(grid,c,"concentration",0);
-  gnuplot(grid,c);
 
   double dt, t=0;
   int k=0;
+  int modulo=5;
   std::cout << "s=" << grid.size(0) << " k=" << k
             << " t=" << t << std::endl;
   while (t<tend)
@@ -95,14 +95,12 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     k++;
     evolve(grid,mapper,c,t,dt);
     t += dt;
-    if (k%1==0) vtkout(grid,c,"concentration",k/1);
-    gnuplot(grid,c);
+    if (k%modulo==0) vtkout(grid,c,"concentration",k/modulo);
     std::cout << "s=" << grid.size(0) << " k=" << k
               << " t=" << t << " dt=" << dt << std::endl;
-    //	  finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
+    //            finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
   }
-  vtkout(grid,c,"concentration",k/1);
-  gnuplot(grid,c);
+  vtkout(grid,c,"concentration",k/modulo);
 }
 
 //===============================================================
@@ -126,12 +124,12 @@ int main (int argc , char ** argv)
   UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
 #endif
 #endif
-  //     uc3.grid().globalRefine(8);
-  //     timeloop(uc3.grid(),0.5,8,18);
+  //    uc3.grid().globalRefine(8);
+  //    timeloop(uc3.grid(),0.5,8,18);
   //  uc2.grid().globalRefine(3);
   //  timeloop(uc2.grid(),0.5,3,7);
   uc0.grid().globalRefine(4);
-  timeloop(uc0.grid(),0.5,4,6);
+  timeloop(uc0.grid(),0.5,4,9);
 
 #if HAVE_MPI
   MPI_Finalize();
