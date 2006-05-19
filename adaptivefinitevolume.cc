@@ -94,6 +94,7 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
   {
     k++;
     evolve(grid,mapper,c,t,dt);
+    return;
     t += dt;
     if (k%modulo==0) vtkout(grid,c,"concentration",k/modulo);
     std::cout << "s=" << grid.size(0) << " k=" << k

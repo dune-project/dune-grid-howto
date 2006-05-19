@@ -53,7 +53,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     // variable to compute sum of positive factors
     double sumfactor = 0.0;
 
-    //std::cout << "LEAF ELEMENT index=" << indexi << " pos=" << global << std::endl;
+    std::cout << "LEAF ELEMENT "<< " pos=" << global << " index=" << indexi << std::endl;
 
     // run through all intersections with neighbors and boundary
     IntersectionIterator isend = it->iend();
@@ -92,8 +92,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
         EntityPointer outside = is.outside();
         int indexj = mapper.map(*outside);
 
-        //                        std::cout << "  NEIGHBOR index=" << indexj
-        //                                              << " pos=" << outside->geometry().global(local) << std::endl;
+        std::cout << "  NEIGHBOR index=" << indexj
+                  << " pos=" << outside->geometry().global(local) << std::endl;
 
         // compute flux from one side only
         // this should become easier with the new IntersectionIterator functionality!
