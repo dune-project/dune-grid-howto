@@ -25,7 +25,7 @@ docdir=$(datadir)/doc/dune/grid-howto
 
 doc_DATA = $(DOCS)
 
-EXTRAINSTALL = grid-howto*.html *.png *.css
+EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
 CLEANFILES = *.aux *.bbl *.blg *.log *.out *.toc *.dvi *.pdf *.ps
 CLEANFILES += *.4ct *.4tc *.css *.idv *.idx *.lg *.tid *.tmp *.tms *.xref
