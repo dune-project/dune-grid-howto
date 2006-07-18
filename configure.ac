@@ -40,7 +40,7 @@ fi
 AC_SUBST(DUNEWEBDIR, $with_duneweb)
 
 # check all dune-module stuff
-DUNE_CHECK_ALL([dunecommon], [dunegrid])
+DUNE_CHECK_ALL([dune-common], [dune-grid])
 
 # preset variable to path such that #include <dune/...> works
 AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
