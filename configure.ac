@@ -42,14 +42,6 @@ AC_SUBST(DUNEWEBDIR, $with_duneweb)
 # check all dune-module stuff
 DUNE_CHECK_ALL([dunecommon], [dunegrid])
 
-if test x$HAVE_DUNECOMMON != x1 ; then
-  AC_MSG_ERROR([Can't work without the dune-common module. Maybe you have to supply your dune-common directory as --with-dunecommon=dir])
-fi
-
-if test x$HAVE_DUNEGRID != x1 ; then
-  AC_MSG_ERROR([Can't work without the dune-grid module. Maybe you have to supply your dune-grid directory as --with-dunegrid=dir])
-fi
-
 # preset variable to path such that #include <dune/...> works
 AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
 
