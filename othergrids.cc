@@ -31,7 +31,7 @@ int main(int argc, char **argv)
 #endif
 #endif
 #if HAVE_ALUGRID
-  UnitCube<Dune::ALU3dGrid<3,3,Dune::hexa>,1> uc8;
+  UnitCube<Dune::ALUCubeGrid<3,3>,1> uc8;
 #endif
 
 #if HAVE_MPI
