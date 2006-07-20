@@ -34,6 +34,6 @@ private:
 #include "unitcube_yaspgrid.hh"
 #include "unitcube_uggrid.hh"
 #include "unitcube_albertagrid.hh"
-#include "unitcube_alu3dgrid.hh"
+#include "unitcube_alugrid.hh"
 
 #endif
