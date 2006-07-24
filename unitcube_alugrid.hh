@@ -33,7 +33,7 @@ class UnitCube<Dune::ALUSimplexGrid<2,2>,1>
 public:
   typedef Dune::ALUSimplexGrid<2,2> GridType;
 
-  UnitCube () : filename("grids/2dgrid.al"), grid_(filename.c_str())
+  UnitCube () : filename("grids/2dsimplex.alu"), grid_(filename.c_str())
   {}
 
   GridType& grid ()
