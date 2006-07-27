@@ -2,7 +2,10 @@
 // vi: set et ts=4 sw=2 sts=2:
 // A DataHandle class to exchange entries of a vector
 template<class M, class V> // mapper type and vector type
-class VectorExchange {
+class VectorExchange
+  : public Dune::CommDataHandleIF<VectorExchange<M,V>,
+        typename V::value_type>
+{
 public:
   //! export type of data for message buffer
   typedef typename V::value_type DataType;
