@@ -47,4 +47,4 @@ visualization_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_
 AUTOMAKE_OPTIONS = foreign 1.5
 
 # pass most important options when "make distcheck" is used
-DISTCHECK_CONFIGURE_FLAGS = --with-dune-common=$(DUNECOMMONROOT) --with-dune-grid="$(DUNEGRIDROOT)" --with-dune-istl="$(DUNEISTLROOT)" --with-dune-disc="$(DUNEDISCROOT)" CXX="$(CXX)" CC="$(CC)"
+DISTCHECK_CONFIGURE_FLAGS = --with-dune-common=$(DUNE_COMMON_ROOT) --with-dune-grid="$(DUNE_GRID_ROOT)" --with-dune-istl="$(DUNE_ISTL_ROOT)" --with-dune-disc="$(DUNE_DISC_ROOT)" CXX="$(CXX)" CC="$(CC)"
