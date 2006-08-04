@@ -1,6 +1,10 @@
 # $id: $
 
-SUBDIRS =
+SUBDIRS = EPS
+
+DOCSOURCE = grid-howto.tex navigation.html css.html
+
+EXTRA_DIST = $(DOCSOURCE)
 
 MAINDOCS = grid-howto.dvi grid-howto.pdf grid-howto.ps
 
@@ -32,7 +36,7 @@ CLEANFILES += *.4ct *.4tc *.css *.idv *.idx *.lg *.tid *.tmp *.tms *.xref
 CLEANFILES += grid-howto*.html grid-howto*.png
 CLEANFILES += $(DOCS)
 
-grid-howto.html: grid-howto.tex navigation.html css.html
+grid-howto.html:  $(DOCSOURCE)
 	$(MAKE) grid-howto.dvi
 	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(T4HT) grid-howto.tex

@@ -53,7 +53,7 @@ echo which need to be found right now if you want to use them later.
 echo
 
 # write output
-AC_CONFIG_FILES([Makefile doc/Makefile bin/wmlwrap])
+AC_CONFIG_FILES([Makefile doc/Makefile doc/EPS/Makefile grids/Makefile bin/wmlwrap])
 AC_OUTPUT
 
 chmod +x bin/wmlwrap
