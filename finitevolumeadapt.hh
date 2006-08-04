@@ -31,7 +31,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
 
   // intersection iterator type
-  typedef typename G::template Codim<0>::IntersectionIterator IntersectionIterator;
+  typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
 
   // global id set types
   typedef typename G::template Codim<0>::LocalIdSet IdSet;
@@ -51,9 +51,9 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
     globalmax = std::max(globalmax,c[indexi]);
     globalmin = std::min(globalmin,c[indexi]);
 
-    IntersectionIterator isend = it->iend();
-    for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
-      if (is.leafNeighbor())
+    IntersectionIterator isend = it->ileafend();
+    for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
+      if (is.neighbor())
       {
         // access neighbor
         EntityPointer outside = is.outside();
@@ -81,9 +81,9 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
     {
       grid.mark(1,it);
       marked++;
-      IntersectionIterator isend = it->iend();
-      for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
-        if (is.leafNeighbor())
+      IntersectionIterator isend = it->ileafend();
+      for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
+        if (is.neighbor())
           if (is.outside().level()<lmax || !is.outside()->isRegular())
             grid.mark(1,is.outside());
     }

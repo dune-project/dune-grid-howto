@@ -20,7 +20,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   template Partition<Dune::All_Partition>::LeafIterator LeafIterator;
 
   // intersection iterator type
-  typedef typename G::template Codim<0>::IntersectionIterator IntersectionIterator;
+  typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
 
   // entity pointer type
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
@@ -59,8 +59,8 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     double sumfactor = 0.0;
 
     // run through all intersections with neighbors and boundary
-    IntersectionIterator isend = it->iend();
-    for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
+    IntersectionIterator isend = it->ileafend();
+    for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
     {
       // get geometry type of face
       Dune::GeometryType gtf = is.intersectionSelfLocal().type();
@@ -89,7 +89,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      if (is.leafNeighbor())
+      if (is.neighbor())
       {
         // access neighbor
         EntityPointer outside = is.outside();

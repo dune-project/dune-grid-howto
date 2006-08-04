@@ -16,7 +16,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   typedef typename G::template Codim<0>::LeafIterator LeafIterator;
 
   // intersection iterator type
-  typedef typename G::template Codim<0>::IntersectionIterator IntersectionIterator;
+  typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
 
   // entity pointer type
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
@@ -56,8 +56,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     std::cout << "LEAF ELEMENT "<< " pos=" << global << " index=" << indexi << std::endl;
 
     // run through all intersections with neighbors and boundary
-    IntersectionIterator isend = it->iend();
-    for (IntersectionIterator is = it->ibegin(); is!=isend; ++is)
+    IntersectionIterator isend = it->ileafend();
+    for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
     {
       // get geometry type of face
       Dune::GeometryType gtf = is.intersectionSelfLocal().type();
@@ -86,7 +86,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      if (is.leafNeighbor())             // "correct" version
+      if (is.neighbor())             // "correct" version
       {
         // access neighbor
         EntityPointer outside = is.outside();
