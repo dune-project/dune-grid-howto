@@ -4,8 +4,6 @@ SUBDIRS = EPS
 
 DOCSOURCE = grid-howto.tex navigation.html css.html
 
-EXTRA_DIST = $(DOCSOURCE)
-
 MAINDOCS = grid-howto.dvi grid-howto.pdf grid-howto.ps
 
 if WML
@@ -15,6 +13,9 @@ endif
 if TEX4HT
  HTDOCS =  navigation.html css.html grid-howto.html
 endif
+
+
+EXTRA_DIST = $(DOCSOURCE) $(WMLDOCS) $(HTDOCS)
 
 if BUILD_DOCS
  DOCS = $(HTDOCS) $(MAINDOCS) $(WMLDOCS)

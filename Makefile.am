@@ -2,6 +2,13 @@
 
 SUBDIRS = doc grids
 
+noinst_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
+	evolve.hh transportproblem2.hh unitcube_uggrid.hh \
+	finitevolumeadapt.hh transportproblem.hh unitcube_yaspgrid.hh \
+	functors.hh unitcube_albertagrid.hh vertexdata.hh \
+	initialize.hh unitcube_alugrid.hh vtkout.hh integrateentity.hh \
+	unitcube.hh parevolve.hh unitcube_onedgrid.hh
+
 noinst_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
 	visualization
