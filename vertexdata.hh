@@ -51,7 +51,17 @@ void vertexdata (const G& grid, const F& f)
 
   // online visualization with Grape
 #if HAVE_GRAPE
-  Dune::GrapeDataDisplay<G> grape(grid);
-  grape.displayVector("concentration",c,grid.leafIndexSet(),1,1);
+  {
+    const int polynomialOrder = 1; // we piecewise linear data
+    const int dimRange = 1; // we have scalar data here
+    // create instance of data display
+    Dune::GrapeDataDisplay<G> grape(grid);
+    // display data
+    grape.displayVector("concentration", // name of data that appears in grape
+                        c,  // data vector
+                        grid.leafIndexSet(), // used index set
+                        polynomialOrder, // polynomial order of data
+                        dimRange); // dimRange of data
+  }
 #endif
 }
