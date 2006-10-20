@@ -54,14 +54,24 @@ void elementdata (const G& grid, const F& f)
   }
 
   // generate a VTK file
-  //   Dune::LeafP0Function<G,double> cc(grid,c);
+  // Dune::LeafP0Function<G,double> cc(grid,c);
   Dune::VTKWriter<G> vtkwriter(grid);
   vtkwriter.addCellData(c,"data");
   vtkwriter.write("elementdata",Dune::VTKOptions::binaryappended);
 
   // online visualization with Grape
 #if HAVE_GRAPE
-  Dune::GrapeDataDisplay<G> grape(grid);
-  grape.displayVector("concentration",c,grid.leafIndexSet(),0,1);
+  {
+    const int polynomialOrder = 0; // we piecewise constant data
+    const int dimRange = 1; // we have scalar data here
+    // create instance of data display
+    Dune::GrapeDataDisplay<G> grape(grid);
+    // display data
+    grape.displayVector("concentration", // name of data that appears in grape
+                        c,  // data vector
+                        grid.leafIndexSet(), // used index set
+                        polynomialOrder, // polynomial order of data
+                        dimRange); // dimRange of data
+  }
 #endif
 }
