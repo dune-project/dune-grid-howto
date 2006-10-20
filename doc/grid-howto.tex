@@ -850,7 +850,7 @@ you to the documentation of the correspondeing wrapper class template
     codimension 0. EntityPointer is assgnable from a
     HierarchicIterator. 
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}{IntersectionIterator}}
+\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{IntersectionIterator}}
 
     IntersectionIterator  provides access to all entities of
     codimension 0 that have an intersection of codimension 1 with a
@@ -995,10 +995,12 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
 The following listing contains specializations of the
 \lstinline!UnitCube! template for Alberta in two and three
 dimensions. When using Alberta the \Dune\ framework has to be
-configured with a dimension (\lstinline!--with-problem-dim=2!,
-\lstinline!--with-world-dim=2!) and only this dimension can then be
-used. The dimension from the configure run is available in the macro
-\lstinline!DUNE_PROBLEM_DIM! in the file \lstinline!config.h! (see
+configured with a dimension (\lstinline!--with-alberta-dim=2!,
+\lstinline!--with-alberta-world-dim=2!) and only this dimension can then be
+used. 
+The dimension from the configure run is available in the macro
+\lstinline!ALBERTA_DIM! and \lstinline!ALBERTA_WORLD_DIM! 
+in the file \lstinline!config.h! (see
 next section). The \lstinline!variant! parameter must be 1.
 
 \begin{lst}[File dune-grid-howto/unitcube\_albertagrid.hh] \mbox{}
@@ -1007,13 +1009,15 @@ next section). The \lstinline!variant! parameter must be 1.
 numberstyle=\tiny, numbersep=5pt]{../unitcube_albertagrid.hh}
 \end{lst}
 
-\minisec{Alu3dGrid}
+\minisec{ALUGrid}
 
-The next listing shows the instantiation of \lstinline!ALU3dGrid!
-objects. ALU3d supports either tetrahedral or hexahedral grids and the
-element type has to be choosen at compile-time. Therefore, the element
-type is a template parameter of the grid class. The
-\lstinline!variant! parameter must be 1. 
+The next listing shows the instantiation of \lstinline!ALUSimplexGrid! or 
+\lstinline!ALUCubeGrid! objects. 
+The ALUGrid implementation supports either simplicial grids ,i.e. 
+tetrahedral or triangular grids, and hexahedral grids and the
+element type has to be chosen at compile-time. This is done by choosing 
+either \lstinline!ALUSimplexGrid! or \lstinline!ALUCubeGrid!. 
+The \lstinline!variant! parameter must be 1. 
 
 \begin{lst}[File dune-grid-howto/unitcube\_alugrid.hh] \mbox{}
 \nopagebreak
@@ -1348,7 +1352,7 @@ produce an output file for the Visualization Toolkit (VTK), \cite{VTK}, in its X
 format. If the grid is distributed over several processes the
 \lstinline!Dune::VTKWriter! produces one file per process and the
 correponding XML metafile. Using Paraview, \cite{Paraview}, you can
-visualize these files. Lines 62-65 enable online interactive
+visualize these files. Lines 62-73 enable online interactive
 visualization with the Grape, \cite{Grape}, graphics package, if it is
 installed on your machine.
 
@@ -1373,8 +1377,8 @@ following:
   available via \lstinline!it->geometry()[0]!.
 \item Use \lstinline!addVertexData! instead of \lstinline!addCellData!
   on the \lstinline!Dune::VTKWriter!.
-\item Pass 1 instead 0 as the second last argument of
-  \lstinline!grape.displayVector!. This argument is the polynomial
+\item Pass \lstinline!polynomialOrder=1! instead of 0 as 
+the second last argument of \lstinline!grape.displayVector!. This argument is the polynomial
   degree of the approximation.
 \end{itemize}
 
@@ -1574,8 +1578,8 @@ The computation of the fluxes is done in lines 55-123. An
 $\gamma_{ij}$ of a leaf element $\omega_i$. For a full documentation
 of the \lstinline!IntersectionIterator! we refer to
 \begin{center}
-\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}%
-{{\small\texttt{http://www.dune-project.org/doc/doxygen/html/classDune\_1\_1IntersectionIterator.html}}}
+\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}
+{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}}}
 \end{center}
 An Intersections is with
 another element $\omega_j$ if the \lstinline!neighbor()! method of
@@ -1956,7 +1960,7 @@ picture. A grid implementation can choose to omit the partition type
 \textit{ghost} elements are present. This is the model used in
 YaspGrid. The last row shows an example where the \textit{interior} partition
 is extended by one row of  \textit{ghost} cells. This is the model
-used in UGGrid and ALU3dGrid. 
+used in UGGrid and ALUGrid. 
 
 
 \section{Communication Interfaces}
@@ -2084,9 +2088,21 @@ to the process with rank 0.
 
 \section{Visualization with Grape}
 
+
+
 \section{Visualization with VTK}
 
 \section{Dune portable grid format}
+
+Dune provides a unified macro grid format called the 
+\textbf{D}une \textbf{G}rid \textbf{F}ormat, short the \textbf{DGF}. 
+This enables the user to use all types of grids with one and the same
+macro grid file. For the documentation of the DGF and the usage of the parser we refer to 
+
+\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}%
+{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}
+ 
+in the dune-grid documentation. 
 
 \section{Amiramesh output}
 
