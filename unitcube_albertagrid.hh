@@ -7,7 +7,7 @@
 #include <dune/grid/albertagrid.hh>
 
 // AlbertaGrid 2d, variant 1 (2 triangles) specialization
-#if DUNE_PROBLEM_DIM==2
+#if ALBERTA_DIM == 2 && ALBERTA_WORLD_DIM == 2
 template<>
 class UnitCube<Dune::AlbertaGrid<2,2>,1>
 {
@@ -28,7 +28,7 @@ private:
 #endif
 
 // AlbertaGrid 3d, variant 1 (6 tetrahedra) specialization
-#if DUNE_PROBLEM_DIM==3
+#if ALBERTA_DIM == 3 && ALBERTA_WORLD_DIM == 3
 template<>
 class UnitCube<Dune::AlbertaGrid<3,3>,1>
 {
