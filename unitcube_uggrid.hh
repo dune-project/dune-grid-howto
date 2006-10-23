@@ -58,7 +58,35 @@ public:
 
   UnitCube () : grid_(800,10)
   {
-    Dune::AmiraMeshReader<Dune::UGGrid<2,2> >::read(grid_,"grids/quadgrid.am");
+    //   Start grid creation
+    grid_.createBegin();
+
+    //   Insert vertices
+    Dune::FieldVector<double,2> pos;
+
+    pos[0] = 0;  pos[1] = 0;
+    grid_.insertVertex(pos);
+
+    pos[0] = 1;  pos[1] = 0;
+    grid_.insertVertex(pos);
+
+    pos[0] = 0;  pos[1] = 1;
+    grid_.insertVertex(pos);
+
+    pos[0] = 1;  pos[1] = 1;
+    grid_.insertVertex(pos);
+
+    // Insert element
+    std::vector<unsigned int> cornerIDs(4);
+    cornerIDs[0] = 0;
+    cornerIDs[1] = 1;
+    cornerIDs[2] = 2;
+    cornerIDs[3] = 3;
+
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::cube,2), cornerIDs);
+
+    //   Finish initialization
+    grid_.createEnd();
   }
 
   Dune::UGGrid<2,2>& grid ()
@@ -79,7 +107,35 @@ public:
 
   UnitCube () : grid_(800,10)
   {
-    Dune::AmiraMeshReader<Dune::UGGrid<2,2> >::read(grid_,"grids/trianggrid.am");
+    //   Start grid creation
+    grid_.createBegin();
+
+    //   Insert vertices
+    Dune::FieldVector<double,2> pos;
+
+    pos[0] = 0;  pos[1] = 0;
+    grid_.insertVertex(pos);
+
+    pos[0] = 1;  pos[1] = 0;
+    grid_.insertVertex(pos);
+
+    pos[0] = 0;  pos[1] = 1;
+    grid_.insertVertex(pos);
+
+    pos[0] = 1;  pos[1] = 1;
+    grid_.insertVertex(pos);
+
+    // Insert element
+    std::vector<unsigned int> cornerIDs(3);
+
+    cornerIDs[0] = 0;  cornerIDs[1] = 1;  cornerIDs[2] = 2;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,2), cornerIDs);
+
+    cornerIDs[0] = 2;  cornerIDs[1] = 1;  cornerIDs[2] = 3;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,2), cornerIDs);
+
+    //   Finish initialization
+    grid_.createEnd();
   }
 
   Dune::UGGrid<2,2>& grid ()
