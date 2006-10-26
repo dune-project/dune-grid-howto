@@ -22,10 +22,10 @@ struct P1Layout
 template<class G, class F>
 void vertexdata (const G& grid, const F& f)
 {
-  // the usual stuff
+  // get dimension and coordinate type from Grid
   const int dim = G::dimension;
-  const int dimworld = G::dimensionworld;
   typedef typename G::ctype ct;
+  // dertermine type of LeafIterator for codimension = dimension
   typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator;
 
   // make a mapper for codim 0 entities in the leaf grid
