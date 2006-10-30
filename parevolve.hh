@@ -27,7 +27,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
   // allocate a temporary vector for the update
   V update(c.size());
-  for (int i=0; i<c.size(); i++) update[i] = 0;
+  for (typename V::size_type i=0; i<c.size(); i++) update[i] = 0;
 
   // initialize dt very large
   dt = 1E100;
