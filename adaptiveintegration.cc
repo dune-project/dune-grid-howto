@@ -73,7 +73,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
       // error on father entity
       double fatherlowresult=integrateentity(it->father(),f,loworder);
       double fatherhighresult=integrateentity(it->father(),f,highorder);
-      double fathererror = std::abs(lowresult-highresult);
+      double fathererror = std::abs(fatherlowresult-fatherhighresult);
 
       // local extrapolation
       double extrapolatederror = error*error/(fathererror+1E-30);
