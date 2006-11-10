@@ -30,13 +30,13 @@ void elementdata (const G& grid, const F& f)
 
   // make a mapper for codim 0 entities in the leaf grid
   Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P0Layout>
-  mapper(grid);
+  mapper(grid);                                        /*@\label{edh:mapper}@*/
 
   // allocate a vector for the data
-  std::vector<double> c(mapper.size());
+  std::vector<double> c(mapper.size());                /*@\label{edh:c}@*/
 
   // iterate through all entities of codim 0 at the leafs
-  for (ElementLeafIterator it = grid.template leafbegin<0>();
+  for (ElementLeafIterator it = grid.template leafbegin<0>(); /*@\label{edh:loop0}@*/
        it!=grid.template leafend<0>(); ++it)
   {
     // cell geometry type
@@ -50,17 +50,17 @@ void elementdata (const G& grid, const F& f)
     Dune::FieldVector<ct,dimworld> global = it->geometry().global(local);
 
     // evaluate functor and store value
-    c[mapper.map(*it)] = f(global);
-  }
+    c[mapper.map(*it)] = f(global);                    /*@\label{edh:feval}@*/
+  }                                                    /*@\label{edh:loop1}@*/
 
   // generate a VTK file
   // Dune::LeafP0Function<G,double> cc(grid,c);
-  Dune::VTKWriter<G> vtkwriter(grid);
+  Dune::VTKWriter<G> vtkwriter(grid);                  /*@\label{edh:vtk0}@*/
   vtkwriter.addCellData(c,"data");
-  vtkwriter.write("elementdata",Dune::VTKOptions::binaryappended);
+  vtkwriter.write("elementdata",Dune::VTKOptions::binaryappended); /*@\label{edh:vtk1}@*/
 
   // online visualization with Grape
-#if HAVE_GRAPE
+#if HAVE_GRAPE                                         /*@\label{edh:grape0}@*/
   {
     const int polynomialOrder = 0; // we piecewise constant data
     const int dimRange = 1; // we have scalar data here
@@ -73,5 +73,5 @@ void elementdata (const G& grid, const F& f)
                         polynomialOrder, // polynomial order of data
                         dimRange); // dimRange of data
   }
-#endif
+#endif                                                 /*@\label{edh:grape1}@*/
 }

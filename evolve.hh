@@ -22,14 +22,14 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
 
   // allocate a temporary vector for the update
-  V update(c.size());
+  V update(c.size());                                  /*@\label{evh:update}@*/
   for (typename V::size_type i=0; i<c.size(); i++) update[i] = 0;
 
   // initialize dt very large
   dt = 1E100;
 
   // compute update vector and optimum dt in one grid traversal
-  LeafIterator endit = grid.template leafend<0>();
+  LeafIterator endit = grid.template leafend<0>();     /*@\label{evh:loop0}@*/
   for (LeafIterator it = grid.template leafbegin<0>(); it!=endit; ++it)
   {
     // cell geometry type
@@ -56,7 +56,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     std::cout << "LEAF ELEMENT "<< " pos=" << global << " index=" << indexi << std::endl;
 
     // run through all intersections with neighbors and boundary
-    IntersectionIterator isend = it->ileafend();
+    IntersectionIterator isend = it->ileafend();       /*@\label{evh:flux0}@*/
     for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
     {
       // get geometry type of face
@@ -86,7 +86,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      if (is.neighbor())             // "correct" version
+      if (is.neighbor())             // "correct" version /*@\label{evh:neighbor}@*/
       {
         // access neighbor
         EntityPointer outside = is.outside();
@@ -122,24 +122,24 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       }
 
       // handle boundary face
-      if (is.boundary())
+      if (is.boundary())                               /*@\label{evh:bndry}@*/
         if (factor<0)                 // inflow, apply boundary condition
           update[indexi] -= b(faceglobal,t)*factor;
         else                 // outflow
           update[indexi] -= c[indexi]*factor;
-    }             // end all intersections
+    }             // end all intersections             /*@\label{evh:flux1}@*/
 
     // compute dt restriction
-    dt = std::min(dt,1.0/sumfactor);
+    dt = std::min(dt,1.0/sumfactor);                   /*@\label{evh:dt}@*/
 
-  }       // end grid traversal
+  }       // end grid traversal                        /*@\label{evh:loop1}@*/
 
   // scale dt with safety factor
-  dt *= 0.99;
+  dt *= 0.99;                                          /*@\label{evh:.99}@*/
 
   // update the concentration vector
   for (unsigned int i=0; i<c.size(); ++i)
-    c[i] += dt*update[i];
+    c[i] += dt*update[i];                              /*@\label{evh:updc}@*/
 
   return;
 }

@@ -9,8 +9,8 @@
 \usepackage{color}
 \usepackage{listings}
 \lstset{language=C++, basicstyle=\ttfamily, 
-  keywordstyle=\color{black}\bfseries, tabsize=4,
-  stringstyle=\ttfamily, commentstyle=\it, extendedchars=true}
+  keywordstyle=\color{black}\bfseries, tabsize=4, stringstyle=\ttfamily,
+  commentstyle=\it, extendedchars=true, escapeinside={/*@}{@*/}}
 \usepackage{hyperref}
 \usepackage{psfrag}
 \usepackage{makeidx}
@@ -82,15 +82,15 @@ Arnimallee 2-6, D-14195 Berlin, Germany}\\
 
 \begin{abstract}
 This document gives an introduction to the Distributed and Unified
-Numerics Environment (\Dune). \Dune\ is a template library for the
+Numerics Environment (\Dune). \Dune{} is a template library for the
 numerical solution of partial differential equations. It is based on
 the following principles: i) Separation of data structures and
 algorithms by abstract interfaces, ii) Efficient implementation of these
 interfaces using generic programming techniques (templates) in C++ and
 iii) Reuse of existing finite element packages with a large body of
 functionality. This introduction covers only the abstract grid interface
-of \Dune\ which is currently the most developed part. However, part of
-\Dune\ are also the Iterative Solver Template Library (ISTL, providing a
+of \Dune{} which is currently the most developed part. However, part of
+\Dune{} are also the Iterative Solver Template Library (ISTL, providing a
 large variety of solvers for sparse linear systems) and a flexible class
 hierarchy for finite element methods. These will be described in
 subsequent documents. Now have fun!
@@ -107,7 +107,7 @@ subsequent documents. Now have fun!
 
 \section{What is Dune anyway?}
 
-\Dune\ is a software framework for the numerical solution of partial
+\Dune{} is a software framework for the numerical solution of partial
 differential equations with grid-based methods. It is based on the
 following main principles:
 \begin{itemize}
@@ -127,7 +127,7 @@ have been written for the special case.
 \item \textit{Reuse of existing finite element packages with a large body of
 functionality.} In particular the finite element codes UG, \cite{ug},
 Alberta, \cite{Alberta}, and ALU3d, \cite{ALU3d}, have been
-adapted to the \Dune\ framework. Thus, parallel and adaptive meshes with
+adapted to the \Dune{} framework. Thus, parallel and adaptive meshes with
 multiple element types and refinement rules are available. All these
 packages can be linked together in one executable.
 \end{itemize}
@@ -158,7 +158,7 @@ states of maturity. In particular these are:
   \cite{Grape} has been integrated in interactive mode.
 \end{itemize}
 
-Before starting to work with \Dune\ you might want to update your
+Before starting to work with \Dune{} you might want to update your
 knowledge about C++ and templates in particular. For that you should
 have the bible, \cite{Stroustrup}, at your desk. A good introduction,
 besides its age, is still the book by Barton and Nackman,
@@ -169,7 +169,7 @@ in \cite{Veldhui99} (if you can't find it on the web, contact us).
 
 \section{Download}
 
-\Dune\ and its applications are distributed under the GNU Lesser
+\Dune{} and its applications are distributed under the GNU Lesser
 General Public License 
 Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
 {\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
@@ -177,7 +177,7 @@ Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
 
 \minisec{Dune}
 
-The source code of the \Dune\ framework can be
+The source code of the \Dune{} framework can be
 downloaded from the web page (follow the instructions given there)
 %
 \begin{center}
@@ -188,11 +188,11 @@ downloaded from the web page (follow the instructions given there)
 
 \minisec{Dune grid HOWTO}
 
-With the \Dune\ library itself you cannot do much. You need an
-application that uses \Dune\ to do something useful. One such
-application is the \Dune\ grid HOWTO which contains the examples
+With the \Dune{} library itself you cannot do much. You need an
+application that uses \Dune{} to do something useful. One such
+application is the \Dune{} grid HOWTO which contains the examples
 described in this
-document. It can be downloaded from the same web page as the \Dune\
+document. It can be downloaded from the same web page as the \Dune{}
 library.
 
 \section{Installation}
@@ -212,7 +212,7 @@ system. If you have the Redmont system then ask them how to install it.
 
 \minisec{Required software}
 
-In order to build the \Dune\ framework the following
+In order to build the \Dune{} framework the following
 software must be available on your machine:
 \begin{itemize}
 \item \lstinline!automake! in version $\geq 1.5$.
@@ -256,11 +256,11 @@ that already put them in a directory of your choice next to each other.
 > ./configure CXXFLAGS="-g -O0" CFLAGS="-g -O0" CXX="g++-4.0" CC="gcc-4.0" --enable-dunedevel
 > make
 \end{lstlisting}
-This configures and builds \Dune\ with debugging flags using version
+This configures and builds \Dune{} with debugging flags using version
 $4.0$ of the GNU C++ and C compiler. You may supply your own compiler
 with your favourite options.
 
-\noindent Now we configure and build the \Dune\ grid HOWTO:
+\noindent Now we configure and build the \Dune{} grid HOWTO:
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 > cd <your directory>/dune-grid-howto
@@ -297,7 +297,7 @@ library have been found.
 
 \section{Code documentation}
 
-Documentation of the files and classes in \Dune\ is provided in code and
+Documentation of the files and classes in \Dune{} is provided in code and
 can be extracted using the
 doxygen\footnote{\href{http://www.stack.nl/~dimitri/doxygen/}{\texttt{http://www.stack.nl/$\sim$dimitri/doxygen/}}}
 software available elsewhere. The code documentation can either be built
@@ -312,7 +312,7 @@ or its latest version is available at
 
 \section{Licence}
 
-\Dune\ is distributed under the GNU Lesser General Public License
+\Dune{} is distributed under the GNU Lesser General Public License
 Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
 {\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
 
@@ -337,47 +337,46 @@ Let us start with a replacement of the famous ``hello world''
 program given below.
 
 \begin{lst}[File dune-grid-howto/gettingstarted.cc] \mbox{}
-
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../gettingstarted.cc}
 \end{lst}
 
 This program is quite simple. It starts with some includes in lines
-4-6. The file \lstinline!config.h! has been produced by the
-\lstinline!configure! script in the application's build system. It contains the
-current configuration and can be used to compile different versions of
-your code depending on the configuration selected. It is important
-that this file is include before any other \Dune\ header files. The
-next file \lstinline!dune/grid/sgrid.hh! includes the headers for the
-\lstinline!SGrid! class which provides a special implementation of the
-\Dune\ grid interface with an equidistant structured mesh in a cube in
-any space dimension. Then \lstinline!dune/grid/common/gridinfo.hh!
-loads the headers of some functions which print useful information
-about a grid.
+\ref{gs:inc0}-\ref{gs:inc1}. The file \lstinline!config.h! has been
+produced by the \lstinline!configure! script in the application's
+build system. It contains the current configuration and can be used to
+compile different versions of your code depending on the configuration
+selected. It is important that this file is include before any other
+\Dune{} header files. The next file \lstinline!dune/grid/sgrid.hh!
+includes the headers for the \lstinline!SGrid! class which provides a
+special implementation of the \Dune{} grid interface with an
+equidistant structured mesh in a cube in any space dimension. Then
+\lstinline!dune/grid/common/gridinfo.hh!  loads the headers of some
+functions which print useful information about a grid.
 
 Since the dimension will be used as a template parameter in many
-places below we define it as a constant in line number 11.
-The \lstinline!SGrid! class template takes two template
-parameters which are the dimensionality of the grid (its dimension)
-and the dimension of the space where the grid is embedded (its world
+places below we define it as a constant in line number \ref{gs:dim}.
+The \lstinline!SGrid! class template takes two template parameters
+which are the dimensionality of the grid (its dimension) and the
+dimension of the space where the grid is embedded (its world
 dimension). The \lstinline!SGrid! class does only support the case
 where dimension and world dimension are equal. For easy of writing we
-define in line 12 the type \lstinline!GridType! using the selected
-value for the dimension. All identifiers of the \Dune\
+define in line \ref{gs:gridtype} the type \lstinline!GridType! using
+the selected value for the dimension. All identifiers of the \Dune{}
 framework are within the \lstinline!Dune! namespace.
 
-Lines 13-15 prepare the arguments for the construction of an
-\lstinline!SGrid! object. These arguments use the class template
-\lstinline!FieldVector<T,n>! which is a vector with \lstinline!n!
-components of type \lstinline!T!. You can either assign the same value
-to all components in the constructor (as is done here) or you could
-use \lstinline!operator[]! to assign values to individual components.
-The variable \lstinline!N! defines the number of cells or elements to
-be used in the respective dimension of the grid. \lstinline!L! defines
-the coordinates of the lower left corner of the cube and \lstinline!H!
-defines the extend of the cube in each space dimension. Finally in
-line 16 we are now able to instantiate the \lstinline!SGrid!
-object.
+Lines \ref{gs:par0}-\ref{gs:par1} prepare the arguments for the
+construction of an \lstinline!SGrid! object. These arguments use the
+class template \lstinline!FieldVector<T,n>! which is a vector with
+\lstinline!n!  components of type \lstinline!T!. You can either assign
+the same value to all components in the constructor (as is done here)
+or you could use \lstinline!operator[]! to assign values to individual
+components.  The variable \lstinline!N! defines the number of cells or
+elements to be used in the respective dimension of the grid.
+\lstinline!L! defines the coordinates of the lower left corner of the
+cube and \lstinline!H!  defines the extend of the cube in each space
+dimension. Finally in line \ref{gs:grid} we are now able to
+instantiate the \lstinline!SGrid!  object.
 
 The only thing we do with the grid in this little example is printing
 some information about it. After successfully running the executable
@@ -394,7 +393,7 @@ leaf dim=3 geomTypes=((cube,3)[0]=27,(cube,2)[1]=108,(cube,1)[2]=144,(cube,0)[3]
 \end{lst}
 
 The first line tells you that you are looking at an \lstinline!SGrid!
-object of the given dimensions. The \Dune\ grid interface supports
+object of the given dimensions. The \Dune{} grid interface supports
 unstructured, locally refined, logically nested grids. The coarsest
 grid is called level-0-grid or macro grid. Elements can be
 individually refined into a number of smaller elements. Each element
@@ -428,25 +427,25 @@ to a more complicated one. Here it is:
 numberstyle=\tiny, numbersep=5pt]{../traversal.cc}
 \end{lst}
 
-The \lstinline!main! function near the end of the listing
-is pretty similar to previous one except
-that we use a 2d grid for the unit square that just consists of one
-cell. In line 106 this cell is refined once using the standard method
-of grid refinement of the implementation. Here, the cell is refined
-into four smaller cells. The main work is done in a
-call to the function \lstinline!traversal! in line 109. 
-This function is given in lines 12-92.
+The \lstinline!main! function near the end of the listing is pretty
+similar to previous one except that we use a 2d grid for the unit
+square that just consists of one cell. In line \ref{tc:refine} this
+cell is refined once using the standard method of grid refinement of
+the implementation. Here, the cell is refined into four smaller cells.
+The main work is done in a call to the function \lstinline!traversal!
+in line \ref{tc:call}.  This function is given in lines
+\ref{tc:tra0}-\ref{tc:tra1}.
 
 The function \lstinline!traversal! is a function template that is
-parameterized by a class \lstinline!G! that is assumed to
-implement the \Dune\ grid interface. 
-Thus, it will work on \textit{any} grid available in \Dune\
-without any changes. We now go into the details of this function.
+parameterized by a class \lstinline!G! that is assumed to implement
+the \Dune{} grid interface.  Thus, it will work on \textit{any} grid
+available in \Dune{} without any changes. We now go into the details
+of this function.
 
 The algorithm should work in any dimension so we extract the grid's
-dimension in line 16. Next, each \Dune\
-grid defines a type that it uses to represent positions. This type is
-extracted in line 20 for later use. 
+dimension in line \ref{tc:dim}. Next, each \Dune{} grid defines a type
+that it uses to represent positions. This type is extracted in line
+\ref{tc:ct} for later use.
 
 A grid is considered to be a container of ``entities'' which are
 abstractions for geometric objects like vertices, edges,
@@ -455,12 +454,12 @@ standard template library (STL), see e.~g.~\cite{Stroustrup},
 which is part of any C++ system. 
 A key difference is, however, that there is not just one type of entity but
 several. As in the STL the elements of any container can be accessed
-with iterators which are generalized pointers. Again, a \Dune\ grid
+with iterators which are generalized pointers. Again, a \Dune{} grid
 knows several different iterators which provide access to the
 different kinds of entities and which also provide different patterns
 of access. 
 
-Line 29 extracts the type of an iterator from the grid
+Line \ref{tc:ittype} extracts the type of an iterator from the grid
 class. \lstinline!Codim! is a \lstinline!struct! within the grid class
 that takes an integer template parameter specifying the codimension
 over which to iterate. Within the \lstinline!Codim! structure the type
@@ -469,41 +468,40 @@ this iterator is used to iterate
 over the elements which are not refined any further, i.~e.~which are
 the leaves of the refinement trees.
 
-The \lstinline!for!-loop in lines 33-34 now visits every such
+The \lstinline!for!-loop in line \ref{tc:forel} now visits every such
 element. The \lstinline!leafbegin! and \lstinline!leafend! on the grid
 class deliver the first leaf element and one past the last leaf
 element. Note that the \lstinline!template! keyword must be used and
 template parameters are passed explicitely. Within the loop body in
-lines 35-41 the iterator \lstinline!it! acts like a pointer to an entity of
-dimension \lstinline!dim! and codimension 0. The exact type would be
-\lstinline!typename G::template Codim<0>::Entity! just to mention
-it.
+lines \ref{tc:forel0}-\ref{tc:forel1} the iterator \lstinline!it! acts
+like a pointer to an entity of dimension \lstinline!dim! and
+codimension 0. The exact type would be
+\lstinline!typename G::template Codim<0>::Entity! just to mention it.
 
-An important part of an entity is its geometrical shape and
-position. All geometrical information is factored out into a
-sub-object that can be accessed via the \lstinline!geometry()!
-method. The geometry object is in general a mapping from a $d$-dimensional
-polyhedral reference element to $w$ dimensional space. Here we have
-$d=$ \lstinline!G::dimension! and $w=$
-\lstinline!G::dimensionworld!. This mapping is also called the ``local to
-global'' mapping.
-The corresponding reference element has a certain type which is
-extracted in line 36. Since the reference elements are polyhedra they
-consist of a finite number of corners. The images of the corners under
-the local to global map can be accessed via an
-\lstinline!operator[]!. Lines 37-39 print the geometry type and the
-position of the first corner of the element. Then line 40 just counts
-the number of elements visited.
+An important part of an entity is its geometrical shape and position.
+All geometrical information is factored out into a sub-object that can
+be accessed via the \lstinline!geometry()!  method. The geometry
+object is in general a mapping from a $d$-dimensional polyhedral
+reference element to $w$ dimensional space. Here we have $d=$
+\lstinline!G::dimension! and $w=$ \lstinline!G::dimensionworld!. This
+mapping is also called the ``local to global'' mapping.  The
+corresponding reference element has a certain type which is extracted
+in line \ref{tc:reftype}. Since the reference elements are polyhedra
+they consist of a finite number of corners. The images of the corners
+under the local to global map can be accessed via an
+\lstinline!operator[]!. Line \ref{tc:print} prints the geometry type
+and the position of the first corner of the element. Then line
+\ref{tc:count} just counts the number of elements visited.
 
 Suppose now that we wanted to iterate over the vertices of the leaf
 grid instead of the elements. Now vertices have the codimension
 \lstinline!dim! in a \lstinline!dim!-dimensional grid and a
 corresponding iterator is provided by each grid class. It is extracted
-in line 51 for later use. The \lstinline!for!-loop starting in line 55
-is very similar to the first one except that it now uses the
-\lstinline!VertexLeafIterator!.  
-As you can see the different entities can be accessed with the same
-methods. We will see later that codimensions 0 and \lstinline!dim! are
+in line \ref{tc:vertit} for later use. The \lstinline!for!-loop
+starting in line \ref{tc:forve} is very similar to the first one
+except that it now uses the \lstinline!VertexLeafIterator!.  As you
+can see the different entities can be accessed with the same methods.
+We will see later that codimensions 0 and \lstinline!dim! are
 specializations with an extended interface compared to all other
 codimensions. You can also access the codimensions between 0 and
 \lstinline!dim!. However, currently not all implementations of the
@@ -511,15 +509,16 @@ grid interface support these intermediate codimensions (though this
 does not restrict the implementation of finite element methods with
 degrees of freedom associated to, say, faces).
 
-Finally, we show in lines 73-91 how the hierarchic structure of the
-mesh can be accessed. To that end a \lstinline!LevelIterator! is
-used. It provides access to all entities of a given codimension (here
-0) on a given grid level. The coarsest grid level (the initial macro
-grid) has number zero and the number of the finest grid level is
-returned by the \lstinline!maxLevel()! method of the grid. 
-The methods \lstinline!lbegin()! and \lstinline!lend()! on the grid
-deliver iterators to the first and one-past-the-last entity of a given
-grid level supplied as an integer argument to these methods. 
+Finally, we show in lines \ref{tc:level0}-\ref{tc:level1} how the
+hierarchic structure of the mesh can be accessed. To that end a
+\lstinline!LevelIterator! is used. It provides access to all entities
+of a given codimension (here 0) on a given grid level. The coarsest
+grid level (the initial macro grid) has number zero and the number of
+the finest grid level is returned by the \lstinline!maxLevel()! method
+of the grid.  The methods \lstinline!lbegin()! and \lstinline!lend()!
+on the grid deliver iterators to the first and one-past-the-last
+entity of a given grid level supplied as an integer argument to these
+methods.
 
 The following listing shows the output of the program.
 
@@ -584,7 +583,7 @@ grids, single-element-type and multiple-element-type grids, locally
 and globally refined grids, nested and non-nested grids,
 bisection-type grids, red-green-type grids, sparse grids and so on. In
 this section we describe in some detail the type of grids that are
-covered by the \Dune\ grid interface.
+covered by the \Dune{} grid interface.
 
 \minisec{Reference elements}
 
@@ -626,7 +625,7 @@ arbitrary shape are called {nonconforming}.
 
 A {simplicial} grid is one where the reference elements are
 simplices. In a {multi-element-type} grid a finite number of
-different reference elements are allowed. The \Dune\ grid interface
+different reference elements are allowed. The \Dune{} grid interface
 can represent conforming as well as non-conforming grids.
 
 \minisec{Hierarchically nested grids, macro grid}
@@ -678,7 +677,7 @@ refinement, i.~e.~refinement in a preferred direction, may be required.
 
 \minisec{Summary}
 
-The \Dune\ grid interface is able to represent grids with the
+The \Dune{} grid interface is able to represent grids with the
 following properties:
 \begin{itemize}
 \item Arbitrary dimension.
@@ -755,7 +754,7 @@ There are two ways to improve the situation:
 \end{itemize}
 
 
-The \Dune\ grid interface now consists of a \textit{set of related concepts}.
+The \Dune{} grid interface now consists of a \textit{set of related concepts}.
 Either the engine or the Barton-Nackman approach are used to clearly
 define the concepts. In order to avoid any inconsistencies we refer as
 much as possible to the doxygen-generated documentation. For an
@@ -790,7 +789,7 @@ and transparent way. In particular also for sequential grids.
 
 \subsection{Concepts of the Dune grid interface}
 
-In the following a short description of each concept in the \Dune\
+In the following a short description of each concept in the \Dune{}
 grid interface is given. For the details click on the link that leads
 you to the documentation of the correspondeing wrapper class template 
 (in the engine sense).
@@ -910,7 +909,7 @@ be applied recursively.
 
 \section{Using different grids}
 
-The power of \Dune\ is the possibility of writing one algorithm that
+The power of \Dune{} is the possibility of writing one algorithm that
 works on a large variety of grids with different
 features. In that chapter we show how the different available grid
 classes are instantiated. As an example we create grids for the unit
@@ -994,7 +993,7 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
 
 The following listing contains specializations of the
 \lstinline!UnitCube! template for Alberta in two and three
-dimensions. When using Alberta the \Dune\ framework has to be
+dimensions. When using Alberta the \Dune{} framework has to be
 configured with a dimension (\lstinline!--with-alberta-dim=2!,
 \lstinline!--with-alberta-world-dim=2!) and only this dimension can then be
 used. 
@@ -1057,7 +1056,7 @@ include file in your application!
 
 In this chapter we explore how an integral $$\int\limits_{\Omega} f(x)\ dx$$
 over some function $f:\Omega\to\mathbb{R}$ can be computed numerically
-using a \Dune\ grid object.
+using a \Dune{} grid object.
 
 \section{Numerical integration}
 
@@ -1134,19 +1133,21 @@ This relates directly to formula (\ref{Eq:IntegrateEntity}) above.
 numberstyle=\tiny, numbersep=5pt]{../integrateentity.hh}
 \end{lst}
 
-Lines 21/22 extract a reference to a \lstinline!Dune::QuadratureRule!
-from the \lstinline!Dune::QuadratureRules! singleton which 
-is a container containing quadrature rules for all the different
-reference element types and different orders of approximation.
-Both classes are parametrized by dimension and the basic type used for the
-coordinate positions. \lstinline!Dune::QuadratureRule! in turn is a
-container of \lstinline!Dune::QuadraturePoint! supplying positions $\xi_i$ and
-weights $w_i$. 
+Line \ref{ieh:qr} extracts a reference to a
+\lstinline!Dune::QuadratureRule!  from the
+\lstinline!Dune::QuadratureRules! singleton which is a container
+containing quadrature rules for all the different reference element
+types and different orders of approximation.  Both classes are
+parametrized by dimension and the basic type used for the coordinate
+positions. \lstinline!Dune::QuadratureRule! in turn is a container of
+\lstinline!Dune::QuadraturePoint! supplying positions $\xi_i$ and
+weights $w_i$.
 
-Lines 30/31 shows the loop over all quadrature points in the
+Line \ref{ieh:for} shows the loop over all quadrature points in the
 quadrature rules. For each quadrature point $i$ the function value at
-the transformed position (line 33), the weight (line 34) and the
-integration element (line 35) are computed and summed (line 36).
+the transformed position (line \ref{ieh:fval}), the weight (line
+\ref{ieh:weight}) and the integration element (line \ref{ieh:detjac})
+are computed and summed (line \ref{ieh:result}).
 
 \section{Integration with global error estimation}
 
@@ -1198,8 +1199,8 @@ value $1/4$ as the grid is refined.
 
 
 \begin{exc} Try different quadrature orders. For that just change the
-  last argument of the call to \lstinline!integrateentity! in line 29
-  in file \lstinline!integrate.cc!.
+  last argument of the call to \lstinline!integrateentity! in line
+  \ref{ic:call} in file \lstinline!integration.cc!.
 \end{exc}
 
 \begin{exc} Try different grid implementations and dimensions and
@@ -1227,13 +1228,13 @@ data with a subset of the entities of a grid. Remember that entities
 are all the vertices, edges, faces, elements, etc., on all the levels
 of a grid.
 
-An important design decision in the \Dune\ grid interface was that
+An important design decision in the \Dune{} grid interface was that
 user-defined data is stored in user space. This has a number of
 implications:
 \begin{itemize}
-\item \Dune\ grid objects do not need to know anything about the user
+\item \Dune{} grid objects do not need to know anything about the user
   data.
-\item Data structures used in the implementation of a \Dune\ grid do
+\item Data structures used in the implementation of a \Dune{} grid do
   not have to be extensible.
 \item Types representing the user data can be arbitrary.
 \item The user is responsible for possibly reorganizing the data when
@@ -1267,7 +1268,7 @@ $e\in E^\prime$ we therefore have to evaluate the two maps:
 d_e = a(m(e)) .
 \end{equation}
 
-\Dune\ provides different implementations of mappers that differ in
+\Dune{} provides different implementations of mappers that differ in
 functionality and cost (with respect to sorage and
 run-time). Basically there are two different kinds of mappers. 
 
@@ -1316,20 +1317,20 @@ numberstyle=\tiny, numbersep=5pt]{../elementdata.hh}
 \end{lst}
 
 The class template
-\lstinline!Dune::LeafMultipleCodimMultipleGeomTypeMapper! 
-provides an index-based mapper where the entities in the subset
-$E^\prime$ are all leaf entities and can further be selected depending
-on the codimension and the geometry type. To that end the second
-template argument has to be a class template with one integer template
-parameter containing a method \lstinline!contains!. Just look at the
-example \lstinline!P0Layout!. When the method \lstinline!contains!
-returns true for a combination of dimension, codimension and
-geometry type then all leaf entities with that dimension, codimension and
-geometry type will be in the subset $E^\prime$. The mapper object is
-constructed in lines 31/32. A similar mapper is available also for the
-entities of a grid level. 
+\lstinline!Dune::LeafMultipleCodimMultipleGeomTypeMapper!  provides an
+index-based mapper where the entities in the subset $E^\prime$ are all
+leaf entities and can further be selected depending on the codimension
+and the geometry type. To that end the second template argument has to
+be a class template with one integer template parameter containing a
+method \lstinline!contains!. Just look at the example
+\lstinline!P0Layout!. When the method \lstinline!contains!  returns
+true for a combination of dimension, codimension and geometry type
+then all leaf entities with that dimension, codimension and geometry
+type will be in the subset $E^\prime$. The mapper object is
+constructed in line \ref{edh:mapper}. A similar mapper is available
+also for the entities of a grid level.
 
-The data vector is allocated in line 35. Here we use a
+The data vector is allocated in line \ref{edh:c}. Here we use a
 \lstinline!std::vector<double>!. The \lstinline!size()! method of the
 mapper returns the number of entities in the set $E^\prime$. Instead
 of the STL vector one can use any other type with an
@@ -1338,23 +1339,25 @@ will not work in this example because the VTK output
 below requires a container with a
 \lstinline!size()! method. 
 
-Now the loop in lines 38-53 iterates through all leaf elements. The
-next three statements within the loop body compute the position of the
-center of the element in global coordinates. Then the essential
-statement is in line 52 where the function is evaluated and the value
-is assigned to the corresponding entry in the \lstinline!c! array. The
-evaluation of the map $m$ is performed by \lstinline!mapper.map(*it)!
-where \lstinline!*it! is the entity which is passed as a const reference to
+Now the loop in lines \ref{edh:loop0}-\ref{edh:loop1} iterates through
+all leaf elements. The next three statements within the loop body
+compute the position of the center of the element in global
+coordinates. Then the essential statement is in line \ref{edh:feval}
+where the function is evaluated and the value is assigned to the
+corresponding entry in the \lstinline!c! array. The evaluation of the
+map $m$ is performed by \lstinline!mapper.map(*it)!  where
+\lstinline!*it! is the entity which is passed as a const reference to
 the mapper.
 
-The remaining lines of code produce graphical output. Lines 56-59
-produce an output file for the Visualization Toolkit (VTK), \cite{VTK}, in its XML
-format. If the grid is distributed over several processes the
+The remaining lines of code produce graphical output. Lines
+\ref{edh:vtk0}-\ref{edh:vtk1} produce an output file for the
+Visualization Toolkit (VTK), \cite{VTK}, in its XML format. If the
+grid is distributed over several processes the
 \lstinline!Dune::VTKWriter! produces one file per process and the
 correponding XML metafile. Using Paraview, \cite{Paraview}, you can
-visualize these files. Lines 62-73 enable online interactive
-visualization with the Grape, \cite{Grape}, graphics package, if it is
-installed on your machine.
+visualize these files. Lines \ref{edh:grape0}-\ref{edh:grape1} enable
+online interactive visualization with the Grape, \cite{Grape},
+graphics package, if it is installed on your machine.
 
 The next list shows a function \lstinline!vertexdata! that does the
 same job except that the data is associated with the vertices of the
@@ -1503,8 +1506,8 @@ One can show that the scheme is stable provided the following condition holds:
 \end{equation}
 When we rewrite \ref{Eq:IterativeForm1} in the form 
 \begin{equation}
-C_i^{n+1} = C_i^n - \Delta t^n \sum\limits_{\gamma_{ij}}
-  \underbrace{\frac{|\gamma_{ij}|}{|\omega_i|}
+C_i^{n+1} = C_i^n - \Delta t^n
+  \underbrace{\sum\limits_{\gamma_{ij}} \frac{|\gamma_{ij}|}{|\omega_i|}
   \left( C_i^n \max(0,u_{ij}^n\cdot\nu_{ij}) + 
          C_j^n \max(0,-u_{ij}^n\cdot\nu_{ij})\right)}_{\delta_i} \ \ \forall i
 \label{Eq:IterativeForm2}
@@ -1568,31 +1571,34 @@ numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
 \label{Fig:IsIt}
 \end{figure}
 
-Lines 30-128 contain the loop over all leaf elements where the optimum
-$\Delta t^n$ and the cell updates $\delta_i$ are computed. The update
-vector is allocated in line 23, where we assume that \lstinline!V! is
-a container with copy constructor and size method. 
+Lines \ref{evh:loop0}-\ref{evh:loop1} contain the loop over all leaf
+elements where the optimum $\Delta t^n$ and the cell updates
+$\delta_i$ are computed. The update vector is allocated in line
+\ref{evh:update}, where we assume that \lstinline!V! is a container
+with copy constructor and size method.
 
-The computation of the fluxes is done in lines 55-123. An
-\lstinline!IntersectionIterator! is used to access all intersections
-$\gamma_{ij}$ of a leaf element $\omega_i$. For a full documentation
-of the \lstinline!IntersectionIterator! we refer to
+The computation of the fluxes is done in lines
+\ref{evh:flux0}-\ref{evh:flux1}. An \lstinline!IntersectionIterator!
+is used to access all intersections $\gamma_{ij}$ of a leaf element
+$\omega_i$. For a full documentation of the
+\lstinline!IntersectionIterator! we refer to
 \begin{center}
 \href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}
 {{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}}}
 \end{center}
-An Intersections is with
-another element $\omega_j$ if the \lstinline!neighbor()! method of
-the iterator returns true (line 83) or with the external boundary if
-\lstinline!boundary()! returns true (line 118), see also left part of Figure
-\ref{Fig:IsIt}. An intersection $\gamma_{ij}$ is
+An Intersections is with another element $\omega_j$ if the
+\lstinline!neighbor()! method of the iterator returns true (line
+\ref{evh:neighbor}) or with the external boundary if
+\lstinline!boundary()! returns true (line \ref{evh:bndry}), see also
+left part of Figure \ref{Fig:IsIt}. An intersection $\gamma_{ij}$ is
 described by several mappings: (i) from a reference element of the
-intersection (with a dimension equal to the grid's dimension minus 1) to the
-reference elements of the two elements $\omega_i$ and $\omega_j$ and
-(ii) from a reference element of the intersection to the global
-coordinate system (with the world dimension). If an intersection is
-with another element then the \lstinline!outside()! method returns an
-\lstinline!EntityPointer! to an entity of codimension 0.
+intersection (with a dimension equal to the grid's dimension minus 1)
+to the reference elements of the two elements $\omega_i$ and
+$\omega_j$ and (ii) from a reference element of the intersection to
+the global coordinate system (with the world dimension). If an
+intersection is with another element then the \lstinline!outside()!
+method returns an \lstinline!EntityPointer! to an entity of
+codimension 0.
 
 In the case of a locally refined grid special care has to be taken in
 the flux evaluation because the intersection iterator is not
@@ -1620,13 +1626,13 @@ situation of $\omega_j$ refering to $\omega_i$ in the right part of Figure
 the outside element is larger. The latter condition with the indices
 just ensures that the flux is only computed once.
 
-The $\Delta t^n$ calculation is done in line 126 where the minimum
-over all cells is taken. Then, line 131 multiplies the optimum $\Delta
-t^n$ with a safety factor to avoid any instability due to round-off
-errors. 
+The $\Delta t^n$ calculation is done in line \ref{evh:dt} where the
+minimum over all cells is taken. Then, line \ref{evh:.99} multiplies
+the optimum $\Delta t^n$ with a safety factor to avoid any instability
+due to round-off errors.
 
-Finally, line 134 computes the new concentration by adding the scaled
-update to the current concentration.
+Finally, line \ref{evh:updc} computes the new concentration by adding
+the scaled update to the current concentration.
 
 The function \lstinline!vtkout! in the following listing provides an
 output of the grid and the solution using the Visualization Toolkit's \cite{VTK}
@@ -1648,9 +1654,10 @@ numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
 
 The function \lstinline!timeloop! constructs a mapper an allocates the
 concentration vector with one entry per element in the leaf grid. In
-line 39 this vector is initialized with the initial concentration and
-the loop in line 44-50 evolves the concentration in time. Finally, the
-simulation result is written to a file in line 53.
+line \ref{fvc:init} this vector is initialized with the initial
+concentration and the loop in line \ref{fvc:loop0}-\ref{fvc:loop1}
+evolves the concentration in time. Finally, the simulation result is
+written to a file in line \ref{fvc:file}.
 
 
 \chapter{Adaptivity}
@@ -1740,21 +1747,23 @@ The algorithm above is realized in the following code.
 numberstyle=\tiny, numbersep=5pt]{../adaptiveintegration.cc}
 \end{lst}
 
-The work is done in the function
-\lstinline!adaptiveintegration!. Lines 28-31 compute the value of the
-integral on the current mesh. After printing the result the decission
-whether to continue or not is done in line 46. The extrapolation
+The work is done in the function \lstinline!adaptiveintegration!.
+Lines \ref{aic:int0}-\ref{aic:int1} compute the value of the integral
+on the current mesh. After printing the result the decission whether
+to continue or not is done in line \ref{aic:finish}. The extrapolation
 strategy relies on the fact that every element has a father. To ensure
 this the grid is at least once refined globally in the first step
-(line 53). Now the refinement threshold $\kappa$ can be computed in
-lines 58-80. Finally the last loop in lines 83-90 marks elements for
-refinement and lines 93-95 actually do the refinement. The reason for
-dividing refinement into three functions \lstinline!preAdapt()!,
-\lstinline!adapt()! and \lstinline!postAdapt()! will be explained with
-the next example. Note the flexibility of this algorithm: It runs in
-any space dimension on any kind of grid and different integration
-orders can easily be incorporated. And that with just about 100 lineas
-of code including comments.
+(line \ref{aic:gr}). Now the refinement threshold $\kappa$ can be
+computed in lines \ref{aic:kappa0}-\ref{aic:kappa1}. Finally the last
+loop in lines \ref{aic:mark0}-\ref{aic:mark1} marks elements for
+refinement and lines \ref{aic:ref0}-\ref{aic:ref1} actually do the
+refinement. The reason for dividing refinement into three functions
+\lstinline!preAdapt()!, \lstinline!adapt()! and
+\lstinline!postAdapt()! will be explained with the next example. Note
+the flexibility of this algorithm: It runs in any space dimension on
+any kind of grid and different integration orders can easily be
+incorporated. And that with just about 100 lines of code including
+comments.
 
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{EPS/adaptiveintegration_alberta2d.eps}\hfill
@@ -1831,24 +1840,26 @@ The complete mesh adaptation is done by the function
 numberstyle=\tiny, numbersep=5pt]{../finitevolumeadapt.hh}
 \end{lst}
 
-The loop in lines 42-72 computes the indicator values $\eta_i$ as well
-as the global minimum and maximum $\overline{C},\underline{C}$. Then
-the next loop in lines 76-94 marks the elements for refinement. Lines
-97-124 construct a map that stores for each element in the mesh (on
-all levels) the average of the element values in the leaf elements of the
-subtree of the given element. This is accomplished by descending from
-the fine grid levels to the coarse grid levels and thereby adding the
-value in an element to the father element. The jey into the map is the
-global id of an element. Thus the value is accessible also after mesh
-modification.
+The loop in lines \ref{fah:loop0}-\ref{fah:loop1} computes the
+indicator values $\eta_i$ as well as the global minimum and maximum
+$\overline{C},\underline{C}$. Then the next loop in lines
+\ref{fah:loop2}-\ref{fah:loop3} marks the elements for refinement.
+Lines \ref{fah:loop4}-\ref{fah:loop5} construct a map that stores for
+each element in the mesh (on all levels) the average of the element
+values in the leaf elements of the subtree of the given element. This
+is accomplished by descending from the fine grid levels to the coarse
+grid levels and thereby adding the value in an element to the father
+element. The key into the map is the global id of an element. Thus the
+value is accessible also after mesh modification.
 
-Now grid can really be modified in line 128 by calling the
+Now grid can really be modified in line \ref{fah:adapt} by calling the
 \lstinline!adapt()! method on the grid object. The mapper is updated
-to reflect the changes in the grid in line 129 and the concentration
-vector is resized to the new size in line 130. Then the values have to
-be interpolated to the new elements in the mesh using the map and finally to be
-transferred to the resized concentration vector. This is done in the
-loop in lines 133-173.
+to reflect the changes in the grid in line \ref{fah:update} and the
+concentration vector is resized to the new size in line
+\ref{fah:resize}. Then the values have to be interpolated to the new
+elements in the mesh using the map and finally to be transferred to
+the resized concentration vector. This is done in the loop in lines
+\ref{fah:loop6}-\ref{fah:loop7}.
 
 Here is the new main program with an adapted \lstinline!timeloop!:
 
@@ -1863,7 +1874,7 @@ numberstyle=\tiny, numbersep=5pt]{../adaptivefinitevolume.cc}
 
 \section{Dune Data Decomposition Model}
 
-The parallelization concept in \Dune\ follows the Single Program
+The parallelization concept in \Dune{} follows the Single Program
 Multiple Data (SPMD) data parallel programming paradigm. In this
 programming model each process executes the same code but on different
 data. The parallel program is parametrized
@@ -1872,14 +1883,14 @@ processes $P$
 involved. The processes communicate by exchanging messages, but you
 will rarely have the need to bother with sending messages.
 
-A parallel \Dune\ grid, such as YaspGrid, is a collective object which
+A parallel \Dune{} grid, such as YaspGrid, is a collective object which
 means that all processes participating in the computations on the grid
 instantiate the grid object at the same time (collectively). Each
 process stores a subset of all the entities that the same program run on a
 single process would have. An entity may be stored in more
 than one process, in principle it may be even stored in all
 processes. An entity
-stored in more than one process is called a distributed entity. \Dune\
+stored in more than one process is called a distributed entity. \Dune{}
 allows quite general data decompositions but not arbitrary data
 decompositions. Each entity in a process has a partition type
 value assigned to it. There are five different possible partition type
@@ -1985,7 +1996,7 @@ communication step, process $i$ will receive data from a process $j$
 whenever $X_{j,i}^c\neq\emptyset$. This data corresponds to entities
 in process $i$ that have a copy in $X_{j,i}^c$.
 
-A \Dune\ grid offers a selection of predefined interfaces. The example
+A \Dune{} grid offers a selection of predefined interfaces. The example
 above would use the parameter \lstinline!InteriorBorder_All_Interface!
 in the communication function. After the
 selection of the interface it remains to specify the data to be sent
@@ -2039,37 +2050,39 @@ method. Compare this with listing \ref{List:evolve} on page \pageref{List:evolve
 numberstyle=\tiny, numbersep=5pt]{../parevolve.hh}
 \end{lst}
 
-The first difference to the sequential version is in line 7 where it
-is checked that the grid provides an overlap of at least one
-element. The overlap my be either of partition type \textit{overlap}
-or \textit{ghost}. The finite volume scheme itself only computes the
-updates for the elements with partition type \textit{interior}.
+The first difference to the sequential version is in line
+\ref{peh:assert} where it is checked that the grid provides an overlap
+of at least one element. The overlap my be either of partition type
+\textit{overlap} or \textit{ghost}. The finite volume scheme itself
+only computes the updates for the elements with partition type
+\textit{interior}.
 
 In order to iterate over entities with a specific partiton type the
 leaf and level iterators can be parametrized by an additional argument
-\lstinline!PartitionIteratorType! as shown in lines
-17-18. If the argument \lstinline!All_Partition! is given then all
-entities are processed, regardless of their partition type. This is
-also the default behavior of the level and leaf iterators. If the
-partition iterator type is specified explicitely in an iterator the
-same argument has also to be specified in the begin and end methods on
-the grid as shown in lines 35-36.
+\lstinline!PartitionIteratorType! as shown in line \ref{peh:pit}. If
+the argument \lstinline!All_Partition! is given then all entities are
+processed, regardless of their partition type. This is also the
+default behavior of the level and leaf iterators. If the partition
+iterator type is specified explicitely in an iterator the same
+argument has also to be specified in the begin and end methods on the
+grid as shown in lines \ref{peh:end}-\ref{peh:begin}.
 
-The next change is in line 131 where the computation of the optimum
-stable time step is restricted to elements of partition type
-\textit{interior} because only thos elements have all neighboring
+The next change is in line \ref{peh:inter} where the computation of
+the optimum stable time step is restricted to elements of partition
+type \textit{interior} because only thos elements have all neighboring
 elements locally available. Next, the global minimum of the time steps
-sizes determined in each process is taken in line 137. For collective
-communication each grid returns a collective communication object with
-its \lstinline!comm()! method which allows to compute global minima
-and maxima, sums, broadcasts and other functions.
+sizes determined in each process is taken in line \ref{peh:min}. For
+collective communication each grid returns a collective communication
+object with its \lstinline!comm()! method which allows to compute
+global minima and maxima, sums, broadcasts and other functions.
 
 Finally the updates computed on the \textit{interior} cells in each
 process have to be sent to all copies of the respective entities in
-the other processes. This is done in lines 141-144 using the data
-handle described above. The \lstinline!communicate! method on the grid
-uses the data handle to assemble the message buffers, exchanges the
-data and writes the data into the user's data structures.
+the other processes. This is done in lines
+\ref{peh:dist0}-\ref{peh:dist1} using the data handle described above.
+The \lstinline!communicate! method on the grid uses the data handle to
+assemble the message buffers, exchanges the data and writes the data
+into the user's data structures.
 
 Finally, we need a new main program, which is in the following listing: 
 
@@ -2079,9 +2092,9 @@ Finally, we need a new main program, which is in the following listing:
 numberstyle=\tiny, numbersep=5pt]{../parfinitevolume.cc}
 \end{lst}
 
-The only essential difference to the sequential program is in line 51
-where the printing of the data of the current time step is restricted
-to the process with rank 0.
+The only essential difference to the sequential program is in line
+\ref{pfc:rank0} where the printing of the data of the current time
+step is restricted to the process with rank 0.
 
 
 \chapter{Input and Output}

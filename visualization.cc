@@ -20,7 +20,7 @@ void dowork (Grid& grid)
   Exp<typename Grid::ctype,Grid::dimension> f;
 
   // refine the grid
-  grid.globalRefine(1);
+  grid.globalRefine(5);
 
   // call the visualization functions
   elementdata(grid,f);

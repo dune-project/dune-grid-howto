@@ -41,7 +41,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   V indicator(c.size(),-1E100);
   double globalmax = -1E100;
   double globalmin =  1E100;
-  for (LeafIterator it = grid.template leafbegin<0>();
+  for (LeafIterator it = grid.template leafbegin<0>(); /*@\label{fah:loop0}@*/
        it!=grid.template leafend<0>(); ++it)
   {
     // my index
@@ -68,12 +68,12 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
           indicator[indexj] = std::max(indicator[indexj],localdelta);
         }
       }
-  }
+  }                                                    /*@\label{fah:loop1}@*/
 
   // mark cells for refinement/coarsening
   double globaldelta = globalmax-globalmin;
   int marked=0;
-  for (LeafIterator it = grid.template leafbegin<0>();
+  for (LeafIterator it = grid.template leafbegin<0>(); /*@\label{fah:loop2}@*/
        it!=grid.template leafend<0>(); ++it)
   {
     if (indicator[mapper.map(*it)]>refinetol*globaldelta
@@ -92,11 +92,11 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       grid.mark(-1,it);
       marked++;
     }
-  }
+  }                                                    /*@\label{fah:loop3}@*/
   if (marked==0) return false;
 
   // restrict to coarse elements
-  std::map<IdType,RestrictedValue> restrictionmap; // restricted concentration
+  std::map<IdType,RestrictedValue> restrictionmap; // restricted concentration /*@\label{fah:loop4}@*/
   const IdSet& idset = grid.localIdSet();
   for (int level=grid.maxLevel(); level>=0; level--)
     for (LevelIterator it = grid.template lbegin<0>(level);
@@ -123,16 +123,16 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         rvf.value += rv.value/rv.count;
         rvf.count += 1;
       }
-    }
+    }                                                  /*@\label{fah:loop5}@*/
   grid.preAdapt();
 
   // adapt mesh and mapper
-  bool rv=grid.adapt();
-  mapper.update();
-  c.resize(mapper.size());
+  bool rv=grid.adapt();                                /*@\label{fah:adapt}@*/
+  mapper.update();                                     /*@\label{fah:update}@*/
+  c.resize(mapper.size());                             /*@\label{fah:resize}@*/
 
   // interpolate new cells, restrict coarsened cells
-  for (int level=0; level<=grid.maxLevel(); level++)
+  for (int level=0; level<=grid.maxLevel(); level++)   /*@\label{fah:loop6}@*/
     for (LevelIterator it = grid.template lbegin<0>(level);
          it!=grid.template lend<0>(level); ++it)
     {
@@ -172,7 +172,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
           }
         }
       }
-    }
+    }                                                  /*@\label{fah:loop7}@*/
   grid.postAdapt();
 
   return rv;

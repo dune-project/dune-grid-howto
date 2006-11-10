@@ -27,10 +27,10 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   for (int k=0; k<100; k++)
   {
     // compute integral on current mesh
-    double value=0;
+    double value=0;                                      /*@\label{aic:int0}@*/
     for (ElementLeafIterator it = grid.template leafbegin<0>();
          it!=grid.template leafend<0>(); ++it)
-      value += integrateentity(it,f,highorder);
+      value += integrateentity(it,f,highorder);           /*@\label{aic:int1}@*/
 
     // print result
     double estimated_error = std::abs(value-oldvalue);
@@ -45,19 +45,19 @@ void adaptiveintegration (Grid& grid, const Functor& f)
               << std::endl;
 
     // check convergence
-    if (estimated_error <= tol*value)
+    if (estimated_error <= tol*value)                  /*@\label{aic:finish}@*/
       break;
 
     // refine grid globally in first step to ensure
     // that every element has a father
     if (k==0)
     {
-      grid.globalRefine(1);
+      grid.globalRefine(1);                            /*@\label{aic:gr}@*/
       continue;
     }
 
     // compute threshold for subsequent refinement
-    double maxerror=-1E100;
+    double maxerror=-1E100;                            /*@\label{aic:kappa0}@*/
     double maxextrapolatederror=-1E100;
     for (ElementLeafIterator it = grid.template leafbegin<0>();
          it!=grid.template leafend<0>(); ++it)
@@ -79,22 +79,22 @@ void adaptiveintegration (Grid& grid, const Functor& f)
       double extrapolatederror = error*error/(fathererror+1E-30);
       maxextrapolatederror = std::max(maxextrapolatederror,extrapolatederror);
     }
-    double kappa = std::min(maxextrapolatederror,0.5*maxerror);
+    double kappa = std::min(maxextrapolatederror,0.5*maxerror);       /*@\label{aic:kappa1}@*/
 
     // mark elements for refinement
-    for (ElementLeafIterator it = grid.template leafbegin<0>();
+    for (ElementLeafIterator it = grid.template leafbegin<0>();       /*@\label{aic:mark0}@*/
          it!=grid.template leafend<0>(); ++it)
     {
       double lowresult=integrateentity(it,f,loworder);
       double highresult=integrateentity(it,f,highorder);
       double error = std::abs(lowresult-highresult);
       if (error>kappa) grid.mark(1,it);
-    }
+    }                                                  /*@\label{aic:mark1}@*/
 
     // adapt the mesh
-    grid.preAdapt();
+    grid.preAdapt();                                   /*@\label{aic:ref0}@*/
     grid.adapt();
-    grid.postAdapt();
+    grid.postAdapt();                                  /*@\label{aic:ref1}@*/
   }
 
   // write grid in VTK format

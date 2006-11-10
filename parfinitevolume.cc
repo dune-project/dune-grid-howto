@@ -50,7 +50,7 @@ void partimeloop (const G& grid, double tend)
     k++;
     parevolve(grid,mapper,c,t,dt);
     t += dt;
-    if (grid.comm().rank()==0)
+    if (grid.comm().rank()==0)                         /*@\label{pfc:rank0}@*/
       std::cout << "k=" << k << " t=" << t << " dt=" << dt << std::endl;
     if (k%20==0) vtkout(grid,c,"pconc",k/20);
   }

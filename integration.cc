@@ -22,13 +22,13 @@ void uniformintegration (Grid& grid)
 
   // loop over grid sequence
   double oldvalue=1E100;
-  for (int k=0; k<20; k++)
+  for (int k=0; k<10; k++)
   {
     // compute integral with some order
     double value = 0.0;
     LeafIterator eendit = grid.template leafend<0>();
     for (LeafIterator it = grid.template leafbegin<0>(); it!=eendit; ++it)
-      value += integrateentity(it,f,1);
+      value += integrateentity(it,f,1);                /*@\label{ic:call}@*/
 
     // print result and error estimate
     std::cout << "elements="
@@ -56,7 +56,7 @@ int main(int argc, char **argv)
 
   // make a grid
   UnitCube<Dune::OneDGrid<1,1>,1> uc0;
-  UnitCube<Dune::SGrid<1,1>,1> uc1;
+  UnitCube<Dune::SGrid<2,2>,1> uc1;
   UnitCube<Dune::YaspGrid<2,2>,1> uc2;
   UnitCube<Dune::YaspGrid<3,3>,1> uc3;
 

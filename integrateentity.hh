@@ -21,7 +21,7 @@ double integrateentity (const Iterator& it, const Functor& f, int p)
 
   // get quadrature rule of order p
   const Dune::QuadratureRule<ct,dim>&
-  rule = Dune::QuadratureRules<ct,dim>::rule(gt,p);
+  rule = Dune::QuadratureRules<ct,dim>::rule(gt,p);     /*@\label{ieh:qr}@*/
 
   // ensure that rule has at least the requested order
   if (rule.order()<p)
@@ -29,13 +29,13 @@ double integrateentity (const Iterator& it, const Functor& f, int p)
 
   // compute approximate integral
   double result=0;
-  for (typename Dune::QuadratureRule<ct,dim>::const_iterator i=rule.begin();
+  for (typename Dune::QuadratureRule<ct,dim>::const_iterator i=rule.begin(); /*@\label{ieh:for}@*/
        i!=rule.end(); ++i)
   {
-    double fval = f(it->geometry().global(i->position()));
-    double weight = i->weight();
-    double detjac = it->geometry().integrationElement(i->position());
-    result += fval * weight * detjac;
+    double fval = f(it->geometry().global(i->position()));       /*@\label{ieh:fval}@*/
+    double weight = i->weight();                        /*@\label{ieh:weight}@*/
+    double detjac = it->geometry().integrationElement(i->position());       /*@\label{ieh:detjac}@*/
+    result += fval * weight * detjac;                   /*@\label{ieh:result}@*/
   }
 
   // return result

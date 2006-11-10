@@ -6,7 +6,7 @@ template<class G, class M, class V>
 void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 {
   // check data partitioning
-  assert(grid.overlapSize(0)>0 || (grid.ghostSize(0)>0));
+  assert(grid.overlapSize(0)>0 || (grid.ghostSize(0)>0)); /*@\label{peh:assert}@*/
 
   // first we extract the dimensions of the grid
   const int dim = G::dimension;
@@ -17,7 +17,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
   // iterator type
   typedef typename G::template Codim<0>::
-  template Partition<Dune::All_Partition>::LeafIterator LeafIterator;
+  template Partition<Dune::All_Partition>::LeafIterator LeafIterator;       /*@\label{peh:pit}@*/
 
   // intersection iterator type
   typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
@@ -34,8 +34,8 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
   // compute update vector and optimum dt in one grid traversal
   // iterate over all entities, but update is only used on interior entities
-  LeafIterator endit = grid.template leafend<0,Dune::All_Partition>();
-  for (LeafIterator it = grid.template leafbegin<0,Dune::All_Partition>(); it!=endit; ++it)
+  LeafIterator endit = grid.template leafend<0,Dune::All_Partition>(); /*@\label{peh:end}@*/
+  for (LeafIterator it = grid.template leafbegin<0,Dune::All_Partition>(); it!=endit; ++it) /*@\label{peh:begin}@*/
   {
     // cell geometry type
     Dune::GeometryType gt = it->geometry().type();
@@ -129,20 +129,21 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     }             // end all intersections
 
     // compute dt restriction
-    if (it->partitionType()==Dune::InteriorEntity)
+    if (it->partitionType()==Dune::InteriorEntity)       /*@\label{peh:inter}@*/
       dt = std::min(dt,1.0/sumfactor);
 
   }       // end grid traversal
 
+  // global min over all partitions
+  dt = grid.comm().min(dt);                            /*@\label{peh:min}@*/
   // scale dt with safety factor
-  dt = grid.comm().min(dt); // global min over all partitions
   dt *= 0.99;
 
   // exchange update
-  VectorExchange<M,V> dh(mapper,update);
+  VectorExchange<M,V> dh(mapper,update);               /*@\label{peh:dist0}@*/
   grid.template
   communicate<VectorExchange<M,V> >(dh,Dune::InteriorBorder_All_Interface,
-                                    Dune::ForwardCommunication);
+                                    Dune::ForwardCommunication);                                       /*@\label{peh:dist1}@*/
 
   // update the concentration vector
   for (unsigned int i=0; i<c.size(); ++i)

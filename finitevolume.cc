@@ -38,24 +38,24 @@ void timeloop (const G& grid, double tend)
   std::vector<double> c(mapper.size());
 
   // initialize concentration with initial values
-  initialize(grid,mapper,c);
+  initialize(grid,mapper,c);                           /*@\label{fvc:init}@*/
   vtkout(grid,c,"concentration",0);
 
   // now do the time steps
   double t=0,dt;
   int k=0;
   const int modulo=5;
-  while (t<tend)
+  while (t<tend)                                       /*@\label{fvc:loop0}@*/
   {
     k++;
     evolve(grid,mapper,c,t,dt);
     if (k%modulo==0) vtkout(grid,c,"concentration",k/modulo);
     std::cout << "k=" << k << " t=" << t << " dt=" << dt << std::endl;
     t += dt;
-  }
+  }                                                    /*@\label{fvc:loop1}@*/
 
   // output results
-  vtkout(grid,c,"concentration",k/modulo);
+  vtkout(grid,c,"concentration",k/modulo);             /*@\label{fvc:file}@*/
 }
 
 //===============================================================

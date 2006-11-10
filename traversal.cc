@@ -11,15 +11,15 @@
 
 // example for a generic algorithm that traverses
 // the entities of a given mesh in various ways
-template<class G>
+template<class G>                                      /*@\label{tc:tra0}@*/
 void traversal (G& grid)
 {
   // first we extract the dimensions of the grid
-  const int dim = G::dimension;
+  const int dim = G::dimension;                        /*@\label{tc:dim}@*/
 
   // type used for coordinates in the grid
   // such a type is exported by every grid implementation
-  typedef typename G::ctype ct;
+  typedef typename G::ctype ct;                        /*@\label{tc:ct}@*/
 
   // Leaf Traversal
   std::cout << "*** Traverse codim 0 leaves" << std::endl;
@@ -28,19 +28,19 @@ void traversal (G& grid)
   // all elements (better codim 0 entities) which are leafs
   // of the refinement tree.
   // Note the use of the typename keyword and the traits class
-  typedef typename G::template Codim<0>::LeafIterator ElementLeafIterator;
+  typedef typename G::template Codim<0>::LeafIterator ElementLeafIterator; /*@\label{tc:ittype}@*/
 
   // iterate through all entities of codim 0 at the leafs
   int count = 0;
-  for (ElementLeafIterator it = grid.template leafbegin<0>();
+  for (ElementLeafIterator it = grid.template leafbegin<0>(); /*@\label{tc:forel}@*/
        it!=grid.template leafend<0>(); ++it)
-  {
-    Dune::GeometryType gt = it->geometry().type();
-    std::cout << "visiting leaf " << gt
+  {                                                    /*@\label{tc:forel0}@*/
+    Dune::GeometryType gt = it->geometry().type();       /*@\label{tc:reftype}@*/
+    std::cout << "visiting leaf " << gt                /*@\label{tc:print}@*/
               << " with first vertex at " << it->geometry()[0]
               << std::endl;
-    count++;
-  }
+    count++;                                           /*@\label{tc:count}@*/
+  }                                                    /*@\label{tc:forel1}@*/
 
   std::cout << "there are/is " << count << " leaf element(s)" << std::endl;
 
@@ -50,11 +50,11 @@ void traversal (G& grid)
 
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator;
+  typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator; /*@\label{tc:vertit}@*/
 
   // iterate through all entities of codim 0 on the given level
   count = 0;
-  for (VertexLeafIterator it = grid.template leafbegin<dim>();
+  for (VertexLeafIterator it = grid.template leafbegin<dim>(); /*@\label{tc:forve}@*/
        it!=grid.template leafend<dim>(); ++it)
   {
     Dune::GeometryType gt = it->geometry().type();
@@ -72,7 +72,7 @@ void traversal (G& grid)
 
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::template Codim<0>::LevelIterator ElementLevelIterator;
+  typedef typename G::template Codim<0>::LevelIterator ElementLevelIterator; /*@\label{tc:level0}@*/
 
   // iterate through all entities of codim 0 on the given level
   for (int level=0; level<=grid.maxLevel(); level++)
@@ -90,8 +90,8 @@ void traversal (G& grid)
     std::cout << "there are/is " << count << " element(s) on level "
               << level << std::endl;
     std::cout << std::endl;
-  }
-}
+  }                                                    /*@\label{tc:level1}@*/
+}                                                      /*@\label{tc:tra1}@*/
 
 
 int main()
@@ -105,10 +105,10 @@ int main()
   GridType grid(N,L,H);
 
   // refine all elements once using the standard refinement rule
-  grid.globalRefine(1);
+  grid.globalRefine(1);                                /*@\label{tc:refine}@*/
 
   // traverse the grid and print some info
-  traversal(grid);
+  traversal(grid);                                     /*@\label{tc:call}@*/
 
   // done
   return 0;
