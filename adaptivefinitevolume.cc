@@ -21,9 +21,9 @@
 template<int dim>
 struct P0Layout
 {
-  bool contains (int codim, Dune::GeometryType gt)
+  bool contains (Dune::GeometryType gt)
   {
-    if (codim==0) return true;
+    if (gt.dim()==dim) return true;
     return false;
   }
 };
