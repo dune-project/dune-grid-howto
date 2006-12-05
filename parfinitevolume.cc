@@ -67,9 +67,24 @@ int main (int argc , char ** argv)
   MPI_Init(&argc,&argv);
 #endif
 
-  UnitCube<Dune::YaspGrid<2,2>,64> uc;
-  uc.grid().globalRefine(2);
-  partimeloop(uc.grid(),0.5);
+  // start try/catch block to get error messages from dune
+  try {
+    UnitCube<Dune::YaspGrid<2,2>,64> uc;
+    uc.grid().globalRefine(2);
+    partimeloop(uc.grid(),0.5);
+  }
+  catch (std::exception & e) {
+    std::cout << "STL ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (Dune::Exception & e) {
+    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (...) {
+    std::cout << "Unknown ERROR" << std::endl;
+    return 1;
+  }
 
 #if HAVE_MPI
   MPI_Finalize();

@@ -68,20 +68,35 @@ int main (int argc , char ** argv)
   MPI_Init(&argc,&argv);
 #endif
 
-  UnitCube<Dune::YaspGrid<2,2>,1> uc;
-  UnitCube<Dune::OneDGrid<1,1>,1> uc0;
-  UnitCube<Dune::SGrid<1,1>,1> uc1;
+  // start try/catch block to get error messages from dune
+  try {
+    UnitCube<Dune::YaspGrid<2,2>,1> uc;
+    UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+    UnitCube<Dune::SGrid<1,1>,1> uc1;
 #if HAVE_UG
-  UnitCube<Dune::UGGrid<2,2>,2> uc2;
+    UnitCube<Dune::UGGrid<2,2>,2> uc2;
 #endif
 #if HAVE_ALBERTA
 #if DUNE_PROBLEM_DIM==2
-  UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
+    UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
 #endif
 #endif
 
-  uc0.grid().globalRefine(7);
-  timeloop(uc0.grid(),0.5);
+    uc0.grid().globalRefine(7);
+    timeloop(uc0.grid(),0.5);
+  }
+  catch (std::exception & e) {
+    std::cout << "STL ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (Dune::Exception & e) {
+    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (...) {
+    std::cout << "Unknown ERROR" << std::endl;
+    return 1;
+  }
 
 #if HAVE_MPI
   MPI_Finalize();

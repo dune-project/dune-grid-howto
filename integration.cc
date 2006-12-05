@@ -54,14 +54,29 @@ int main(int argc, char **argv)
   MPI_Init(&argc,&argv);
 #endif
 
-  // make a grid
-  UnitCube<Dune::OneDGrid<1,1>,1> uc0;
-  UnitCube<Dune::SGrid<2,2>,1> uc1;
-  UnitCube<Dune::YaspGrid<2,2>,1> uc2;
-  UnitCube<Dune::YaspGrid<3,3>,1> uc3;
+  // start try/catch block to get error messages from dune
+  try {
+    // make a grid
+    UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+    UnitCube<Dune::SGrid<2,2>,1> uc1;
+    UnitCube<Dune::YaspGrid<2,2>,1> uc2;
+    UnitCube<Dune::YaspGrid<3,3>,1> uc3;
 
-  // integrate and compute error with extrapolation
-  uniformintegration(uc2.grid());
+    // integrate and compute error with extrapolation
+    uniformintegration(uc2.grid());
+  }
+  catch (std::exception & e) {
+    std::cout << "STL ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (Dune::Exception & e) {
+    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (...) {
+    std::cout << "Unknown ERROR" << std::endl;
+    return 1;
+  }
 
 #if HAVE_MPI
   MPI_Finalize();

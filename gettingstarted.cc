@@ -9,16 +9,31 @@
 
 int main()
 {
-  // make a grid
-  const int dim=3;                                     /*@\label{gs:dim}@*/
-  typedef Dune::SGrid<dim,dim> GridType;               /*@\label{gs:gridtype}@*/
-  Dune::FieldVector<int,dim> N(3);;                    /*@\label{gs:par0}@*/
-  Dune::FieldVector<GridType::ctype,dim> L(-1.0);
-  Dune::FieldVector<GridType::ctype,dim> H(1.0);;      /*@\label{gs:par1}@*/
-  GridType grid(N,L,H);                                /*@\label{gs:grid}@*/
+  // start try/catch block to get error messages from dune
+  try{
+    // make a grid
+    const int dim=3;                                     /*@\label{gs:dim}@*/
+    typedef Dune::SGrid<dim,dim> GridType;               /*@\label{gs:gridtype}@*/
+    Dune::FieldVector<int,dim> N(3);;                    /*@\label{gs:par0}@*/
+    Dune::FieldVector<GridType::ctype,dim> L(-1.0);
+    Dune::FieldVector<GridType::ctype,dim> H(1.0);;      /*@\label{gs:par1}@*/
+    GridType grid(N,L,H);                                /*@\label{gs:grid}@*/
 
-  // print some information about the grid
-  Dune::gridinfo(grid);
+    // print some information about the grid
+    Dune::gridinfo(grid);
+  }
+  catch (std::exception & e) {
+    std::cout << "STL ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (Dune::Exception & e) {
+    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (...) {
+    std::cout << "Unknown ERROR" << std::endl;
+    return 1;
+  }
 
   // done
   return 0;

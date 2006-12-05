@@ -96,19 +96,34 @@ void traversal (G& grid)
 
 int main()
 {
-  // make a grid
-  const int dim=2;
-  typedef Dune::SGrid<dim,dim> GridType;
-  Dune::FieldVector<int,dim> N(1);
-  Dune::FieldVector<GridType::ctype,dim> L(-1.0);
-  Dune::FieldVector<GridType::ctype,dim> H(1.0);
-  GridType grid(N,L,H);
+  // start try/catch block to get error messages from dune
+  try {
+    // make a grid
+    const int dim=2;
+    typedef Dune::SGrid<dim,dim> GridType;
+    Dune::FieldVector<int,dim> N(1);
+    Dune::FieldVector<GridType::ctype,dim> L(-1.0);
+    Dune::FieldVector<GridType::ctype,dim> H(1.0);
+    GridType grid(N,L,H);
 
-  // refine all elements once using the standard refinement rule
-  grid.globalRefine(1);                                /*@\label{tc:refine}@*/
+    // refine all elements once using the standard refinement rule
+    grid.globalRefine(1);                                /*@\label{tc:refine}@*/
 
-  // traverse the grid and print some info
-  traversal(grid);                                     /*@\label{tc:call}@*/
+    // traverse the grid and print some info
+    traversal(grid);                                     /*@\label{tc:call}@*/
+  }
+  catch (std::exception & e) {
+    std::cout << "STL ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (Dune::Exception & e) {
+    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    return 1;
+  }
+  catch (...) {
+    std::cout << "Unknown ERROR" << std::endl;
+    return 1;
+  }
 
   // done
   return 0;
