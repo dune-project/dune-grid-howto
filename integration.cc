@@ -57,7 +57,7 @@ int main(int argc, char **argv)
   // start try/catch block to get error messages from dune
   try {
     // make a grid
-    UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+    UnitCube<Dune::OneDGrid,1> uc0;
     UnitCube<Dune::SGrid<2,2>,1> uc1;
     UnitCube<Dune::YaspGrid<2,2>,1> uc2;
     UnitCube<Dune::YaspGrid<3,3>,1> uc3;

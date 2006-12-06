@@ -7,21 +7,21 @@
 
 // OneDGrid specialization
 template<>
-class UnitCube<Dune::OneDGrid<1,1>,1>
+class UnitCube<Dune::OneDGrid,1>
 {
 public:
-  typedef Dune::OneDGrid<1,1> GridType;
+  typedef Dune::OneDGrid GridType;
 
   UnitCube () : grid_(1,0.0,1.0)
   {}
 
-  Dune::OneDGrid<1,1>& grid ()
+  Dune::OneDGrid& grid ()
   {
     return grid_;
   }
 
 private:
-  Dune::OneDGrid<1,1> grid_;
+  Dune::OneDGrid grid_;
 };
 
 #endif

@@ -71,10 +71,10 @@ int main (int argc , char ** argv)
   // start try/catch block to get error messages from dune
   try {
     UnitCube<Dune::YaspGrid<2,2>,1> uc;
-    UnitCube<Dune::OneDGrid<1,1>,1> uc0;
+    UnitCube<Dune::OneDGrid,1> uc0;
     UnitCube<Dune::SGrid<1,1>,1> uc1;
 #if HAVE_UG
-    UnitCube<Dune::UGGrid<2,2>,2> uc2;
+    UnitCube<Dune::UGGrid<2>,2> uc2;
 #endif
 #if HAVE_ALBERTA
 #if DUNE_PROBLEM_DIM==2
