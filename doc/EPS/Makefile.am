@@ -11,5 +11,6 @@ EXTRA_DIST = adaptiveintegration_alberta2d.eps \
 	ugcube3d.jpg ugsimplex2d.eps ugsimplex2d.jpg ugsimplex3d.eps \
 	ugsimplex3d.jpg yasp3d.eps yasp3d.jpg
 
+include $(top_srcdir)/am/global-rules
 include $(top_srcdir)/am/webstuff
 include $(top_srcdir)/am/latex
