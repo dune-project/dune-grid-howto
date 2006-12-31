@@ -43,5 +43,6 @@ grid-howto.html:  $(DOCSOURCE)
 	$(T4HT) grid-howto.tex
 	$(TEX) grid-howto.tex
 
+include $(top_srcdir)/am/global-rules
 include $(top_srcdir)/am/webstuff
 include $(top_srcdir)/am/latex
