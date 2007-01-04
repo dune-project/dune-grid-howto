@@ -25,5 +25,5 @@ parfinitevolume
 traversal
 visualization
 *.vtu
-dune-grid-howto-?.?.tar.gz
+dune-grid-howto-*.tar.gz
 dune-grid-howto-?.?
