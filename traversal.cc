@@ -8,6 +8,7 @@
 // Dune includes
 #include "config.h"           // file constructed by ./configure script
 #include <dune/grid/sgrid.hh> // load sgrid definition
+#include <dune/grid/yaspgrid.hh> // load sgrid definition
 
 // example for a generic algorithm that traverses
 // the entities of a given mesh in various ways
@@ -99,29 +100,43 @@ int main()
   // start try/catch block to get error messages from dune
   try {
     // make a grid
-    const int dim=2;
-    typedef Dune::SGrid<dim,dim> GridType;
+    const int dim=11;
+    typedef Dune::YaspGrid<dim,dim> GridType;
     Dune::FieldVector<int,dim> N(1);
     Dune::FieldVector<GridType::ctype,dim> L(-1.0);
     Dune::FieldVector<GridType::ctype,dim> H(1.0);
+#if 0
+    GridType* grid = new GridType(N,L,H);
+
+    // refine all elements once using the standard refinement rule
+    //    grid->globalRefine(1);                                /*@\label{tc:refine}@*/
+
+    // traverse the grid and print some info
+    traversal(*grid);                                     /*@\label{tc:call}@*/
+
+    std::cout << "sizeof(SGrid<" << dim << ">) = " << sizeof(*grid) << std::endl;
+#else
     GridType grid(N,L,H);
 
     // refine all elements once using the standard refinement rule
-    grid.globalRefine(1);                                /*@\label{tc:refine}@*/
+    //    grid->globalRefine(1);                                /*@\label{tc:refine}@*/
 
     // traverse the grid and print some info
     traversal(grid);                                     /*@\label{tc:call}@*/
+
+    std::cout << "sizeof(SGrid<" << dim << ">) = " << sizeof(grid) << std::endl;
+#endif
   }
   catch (std::exception & e) {
-    std::cout << "STL ERROR: " << e.what() << std::endl;
+    std::cerr << "STL ERROR: " << e.what() << std::endl;
     return 1;
   }
   catch (Dune::Exception & e) {
-    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    std::cerr << "DUNE ERROR: " << e.what() << std::endl;
     return 1;
   }
   catch (...) {
-    std::cout << "Unknown ERROR" << std::endl;
+    std::cerr << "Unknown ERROR" << std::endl;
     return 1;
   }
 

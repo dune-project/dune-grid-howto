@@ -14,11 +14,13 @@ if TEX4HT
  HTDOCS =  navigation.html css.html grid-howto.html
 endif
 
-
-EXTRA_DIST = $(DOCSOURCE) $(WMLDOCS) $(HTDOCS)
+# EXTRA_DIST = $(DOCSOURCE) $(WMLDOCS) $(HTDOCS)
+EXTRA_DIST = grid-howto.tex grid-howto.pdf
 
 if BUILD_DOCS
+if CONVERT
  DOCS = $(HTDOCS) $(MAINDOCS) $(WMLDOCS)
+endif
 endif
 
 

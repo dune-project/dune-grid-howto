@@ -16,6 +16,8 @@ AC_CHECK_PROGS([TEX4HT], [tex4ht], [true])
 AC_CHECK_PROGS([MK4HT], [mk4ht], [true])
 AC_CHECK_PROGS([T4HT], [t4ht], [true])
 AM_CONDITIONAL([TEX4HT], [test "x$TEX4HT" != xtrue])
+AC_CHECK_PROGS([CONVERT], [convert], [false])
+AM_CONDITIONAL([CONVERT], [test "x$CONVERT" != xfalse])
 
 # special variable to include the documentation into the website
 AC_ARG_WITH(duneweb,
