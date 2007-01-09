@@ -58,9 +58,9 @@ Oliver Sander$^\ddagger$}
 %\includegraphics[width=0.32\textwidth]{EPS/ug2dquad-view2}
 \\
 \vspace{10mm}
-{\normalsize $^\ast$Interdisziplinäres Zentrum für Wissenschaftliches Rechnen,
-Universität Heidelberg,\\
-Im Neuenheimer Feld 368, D-69120 Heidelberg, Germany}\\
+{\normalsize $^\ast$Abteilung `Simulation gro\ss er Systeme',
+Universität Stuttgart,\\
+Universitätsstr.~38, D-70569 Stuttgart, Germany}\\
 %
 \bigskip
 {\normalsize $^\dagger$Abteilung für Angewandte Mathematik, Universität Freiburg,\\
@@ -148,7 +148,7 @@ states of maturity. In particular these are:
   hierarchy for finite elements. Explicit cell-centered finite volume
   and discontinuous Galerkin methods for hyperbolic problems,
   e.~g.~transport in porous media and inviscid fluid flow have been implemented.
-\item \textit{Heidelberg Finite Element Hierarchy.} Another flexible
+\item \textit{Stuttgart Finite Element Hierarchy.} Another flexible
   class hierarchy for finite elements. Standard and discontinuous
   Galerkin finite elements for elliptic problems, e.~g.~Laplacian,
   linear elasticity and Stokes have been implemented.
@@ -229,7 +229,7 @@ software must be available on your machine:
 
 \noindent Add this section later\ldots
 
-\minisec{From tarballs downloaded via ViewCVS} 
+\minisec{From tarballs downloaded via ViewCVS}
 
 So you have downloaded the two files
 \lstinline!dune.tar.gz! and \lstinline!dune-grid-howto.tar.gz!. Put
@@ -241,12 +241,12 @@ them in a directory of your choice extract the archives
 > tar zxvf dune-grid-howto.tar.gz
 \end{lstlisting}
 
-Now you can join the folks who have downloaded the CVS repositories.
+Now you can join the folks who have downloaded the Subversion repositories.
 
-\minisec{From CVS download} 
+\minisec{From Subversion download} 
 
 You have checked out two directories \lstinline!dune! and 
-\lstinline!dune-grid-howto! from the CVS server. If you have not done
+\lstinline!dune-grid-howto! from the Subversion server. If you have not done
 that already put them in a directory of your choice next to each other.
 
 \noindent First we configure and build \Dune:
@@ -361,7 +361,7 @@ The \lstinline!SGrid! class template takes two template parameters
 which are the dimensionality of the grid (its dimension) and the
 dimension of the space where the grid is embedded (its world
 dimension). The \lstinline!SGrid! class does only support the case
-where dimension and world dimension are equal. For easy of writing we
+where dimension and world dimension are equal. For ease of writing we
 define in line \ref{gs:gridtype} the type \lstinline!GridType! using
 the selected value for the dimension. All identifiers of the \Dune{}
 framework are within the \lstinline!Dune! namespace.
@@ -375,8 +375,8 @@ or you could use \lstinline!operator[]! to assign values to individual
 components.  The variable \lstinline!N! defines the number of cells or
 elements to be used in the respective dimension of the grid.
 \lstinline!L! defines the coordinates of the lower left corner of the
-cube and \lstinline!H!  defines the extend of the cube in each space
-dimension. Finally in line \ref{gs:grid} we are now able to
+cube and \lstinline!H!  defines the coordinates of the upper right corner of the cube.
+Finally in line \ref{gs:grid} we are now able to
 instantiate the \lstinline!SGrid!  object.
 
 The only thing we do with the grid in this little example is printing
@@ -671,7 +671,7 @@ There are also many ways how to subdivide an individual element into
 smaller elements. Bisection always subdivides elements into two
 smaller elements, thus the resulting data structure is a binary tree
 (independent of the dimension of the grid). Bisection is sometimes
-calles ``green'' refinement. The so-called ``red'' refinement is the
+called ``green'' refinement. The so-called ``red'' refinement is the
 subdivision of an element into $2^d$ smaller elements, which is most
 obvious for cube elements. In many practical situation anisotropic
 refinement, i.~e.~refinement in a preferred direction, may be required.
@@ -792,7 +792,7 @@ and transparent way. In particular also for sequential grids.
 
 In the following a short description of each concept in the \Dune{}
 grid interface is given. For the details click on the link that leads
-you to the documentation of the correspondeing wrapper class template 
+you to the documentation of the corresponding wrapper class template 
 (in the engine sense).
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Grid.html}{Grid}}
@@ -801,7 +801,7 @@ you to the documentation of the correspondeing wrapper class template
     is a container of entities that allows to access these entities
     and that knows the number of its entities. You create instances of
     a grid class in your applications, while objects of the other
-    classes typically aggregated in the grid class and accessed via
+    classes are typically aggregated in the grid class and accessed via
     iterators. 
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Entity.html}{Entity}}
@@ -830,7 +830,7 @@ you to the documentation of the correspondeing wrapper class template
     LevelIterator  is an
     immutable iterator that provides access to an entity. It can be
     incremented to visit all entities of a given
-    codimension and level of the grid. EntityPointer is
+    codimension and level of the grid. An EntityPointer is
     assignable from a LevelIterator. 
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1LeafIterator.html}{LeafIterator}}
@@ -838,7 +838,7 @@ you to the documentation of the correspondeing wrapper class template
     LeafIterator is an
     immutable iterator that provides access to an entity. It can by
     incremented to visit all entities of a given
-    codimension of the leaf grid. EntityPointer is assignable
+    codimension of the leaf grid. An EntityPointer is assignable
     from a LeafIterator. 
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1HierarchicIterator.html}{HierarchicIterator}}
@@ -847,7 +847,7 @@ you to the documentation of the correspondeing wrapper class template
     is an immutable iterator that provides access to an entity. It can
     be incremented to visit all entities of
     codimension 0 that resulted from subdivision of a given entity of
-    codimension 0. EntityPointer is assgnable from a
+    codimension 0. An EntityPointer is assignable from a
     HierarchicIterator. 
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{IntersectionIterator}}
@@ -891,7 +891,7 @@ may occur if you try to mix these types.
 
 In order to avoid these problems the related types of an
 implementation are as public types from most classes of an
-implementation. E.~.~in order to extract the
+implementation. E.~g., in order to extract the
 \lstinline!XLevelIterator! (for codimension 0) from the
 \lstinline!XGrid! class you would write
 \begin{lstlisting}
@@ -967,7 +967,7 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_sgrid.hh}
 The following listing instantiates a \lstinline!YaspGrid! object. The
 \lstinline!variant! parameter specifies the number of elements in each
 direction of the cube. In the parallel case all available processes
-are used and the overlap is set to one element. Periodicity is not not
+are used and the overlap is set to one element. Periodicity is not
 used.  
 
 \begin{lst}[File dune-grid-howto/unitcube\_yaspgrid.hh] \mbox{}
