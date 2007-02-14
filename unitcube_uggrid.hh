@@ -5,8 +5,9 @@
 
 #if HAVE_UG
 #include <dune/grid/uggrid.hh>
-#include <dune/grid/io/file/amirameshreader.hh>
 
+#if HAVE_AMIRAMESH
+#include <dune/grid/io/file/amirameshreader.hh>
 // UGGrid 3d, variant 1 (hexahedra) specialization
 template<>
 class UnitCube<Dune::UGGrid<3>,1>
@@ -48,6 +49,7 @@ public:
 private:
   Dune::UGGrid<3> grid_;
 };
+#endif
 
 // UGGrid 2d, variant 1 (quadrilaterals) specialization
 template<>
