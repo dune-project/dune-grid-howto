@@ -850,9 +850,9 @@ you to the documentation of the corresponding wrapper class template
     codimension 0. An EntityPointer is assignable from a
     HierarchicIterator. 
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{IntersectionIterator}}
+\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{LevelIntersectionIterator}}
 
-    IntersectionIterator  provides access to all entities of
+    IntersectionIterator provides access to all entities of
     codimension 0 that have an intersection of codimension 1 with a
     given entity of codimension 0. In a conforming mesh these are the
     face neighbors of an element. For two entities with a common
@@ -860,6 +860,13 @@ you to the documentation of the corresponding wrapper class template
     about the geometric location of the intersection. Furthermore it
     also provides information about intersections of an entity with
     the internal or external boundaries. 
+    The LevelIntersectionIterator provides intersections between
+    codimension 0 entities having the same level.  
+    
+\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{LeafIntersectionIterator}}
+
+    This iterator has the same properties as the LevelIntersectionIterator
+    but provides intersections between leaf entities of the grid.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LeafIndexSet}}
 
