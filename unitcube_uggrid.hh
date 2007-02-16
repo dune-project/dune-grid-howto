@@ -15,7 +15,7 @@ class UnitCube<Dune::UGGrid<3>,1>
 public:
   typedef Dune::UGGrid<3> GridType;
 
-  UnitCube () : grid_(800,10)
+  UnitCube () : grid_(800)
   {
     Dune::AmiraMeshReader<Dune::UGGrid<3> >::read(grid_,"grids/ug3dhexagrid.am");
   }
@@ -36,7 +36,7 @@ class UnitCube<Dune::UGGrid<3>,2>
 public:
   typedef Dune::UGGrid<3> GridType;
 
-  UnitCube () : grid_(800,10)
+  UnitCube () : grid_(800)
   {
     Dune::AmiraMeshReader<Dune::UGGrid<3> >::read(grid_,"grids/ug3dtetragrid.am");
   }
@@ -58,7 +58,7 @@ class UnitCube<Dune::UGGrid<2>,1>
 public:
   typedef Dune::UGGrid<2> GridType;
 
-  UnitCube () : grid_(800,10)
+  UnitCube () : grid_(800)
   {
     //   Start grid creation
     grid_.createBegin();
@@ -107,7 +107,7 @@ class UnitCube<Dune::UGGrid<2>,2>
 public:
   typedef Dune::UGGrid<2> GridType;
 
-  UnitCube () : grid_(800,10)
+  UnitCube () : grid_(800)
   {
     //   Start grid creation
     grid_.createBegin();
