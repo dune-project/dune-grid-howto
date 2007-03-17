@@ -12,10 +12,12 @@ EXTRA_DIST = adaptiveintegration_alberta2d.jpg adaptiveintegration_ug3d.jpg \
     ug2dquad-view2.jpg ug2dtri-view1.jpg ug2dtri-view2.jpg ugcube2d.jpg \
     ugcube3d.jpg ugsimplex2d.jpg ugsimplex3d.jpg yasp3d.jpg
 
+if CONVERT
+CLEANFILES = $(EPS_FILES)
+
 all-am: $(EPS_FILES)
 
-if CONVERT
-.eps.jpg:
+%.eps: $(srcdir)/%.jpg
 	convert $< $@
 endif
 
