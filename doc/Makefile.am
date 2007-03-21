@@ -1,7 +1,5 @@
 # $id: $
 
-#SUBDIRS = EPS
-
 EPS_FILES = EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3d.eps \
     EPS/alberta2d.eps EPS/alberta2d-view1.eps EPS/alberta2d-view2.eps EPS/alberta3d.eps \
     EPS/alucube3d.eps EPS/alusimplex3d.eps EPS/conc.eps EPS/iso.eps EPS/ug2dquad-view1.eps \
@@ -34,9 +32,9 @@ endif
 BASEDIR=../..
 CURDIR=doc/grid-howto
 
-docdir=$(datadir)/doc/dune/grid-howto
+docdir=$(datadir)/doc/dune-grid-howto
 
-doc_DATA = $(DOCS)
+doc_DATA = grid-howto.pdf
 
 EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
@@ -57,6 +55,15 @@ grid-howto.html:  $(DOCSOURCE)
 	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(T4HT) grid-howto.tex
 	$(TEX) grid-howto.tex
+
+dist-hook:
+	cp $(srcdir)/Makefile.am.dist $(distdir)/Makefile.am
+
+
+# install html version of howto
+install-data-local: grid-howto.html
+	$(mkdir_p) $(DESTDIR)$(docdir)/html
+	$(INSTALL_DATA) grid-howto*.html *.png *.css $(DESTDIR)$(docdir)/html
 
 EXTRA_TEXINPUTS:=$(top_srcdir)
 
