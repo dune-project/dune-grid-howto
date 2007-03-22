@@ -59,12 +59,6 @@ grid-howto.html:  $(DOCSOURCE)
 dist-hook:
 	cp $(srcdir)/Makefile.am.dist $(distdir)/Makefile.am
 
-
-# install html version of howto
-install-data-local: grid-howto.html
-	$(mkdir_p) $(DESTDIR)$(docdir)/html
-	$(INSTALL_DATA) grid-howto*.html *.png *.css $(DESTDIR)$(docdir)/html
-
 EXTRA_TEXINPUTS:=$(top_srcdir)
 
 include $(top_srcdir)/am/global-rules
