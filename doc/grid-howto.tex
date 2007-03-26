@@ -36,7 +36,7 @@
 
 \pagestyle{scrheadings}
 
-\title{The Distributed and Unified Numerics Environment (DUNE) Grid
+\title{The Distributed and Unified Numerics Environment (\Dune{}) Grid
   Interface HOWTO}
 
 \author{Peter Bastian$^\ast$ \and 
@@ -105,7 +105,7 @@ subsequent documents. Now have fun!
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\section{What is Dune anyway?}
+\section{What is \Dune{} anyway?}
 
 \Dune{} is a software framework for the numerical solution of partial
 differential equations with grid-based methods. It is based on the
@@ -132,30 +132,37 @@ multiple element types and refinement rules are available. All these
 packages can be linked together in one executable.
 \end{itemize}
 
-The framework consists of a number of modules which are different
-states of maturity. In particular these are:
+The framework consists of a number of modules which are downloadable
+as separate packages.  The current core modules are:
 \begin{itemize}
-\item \textit{Grid interface.} This is the most mature module that is
-  covered in this document. It defines nonconforming, hierarchically
-  nested, multi-element-type, parallel grids in arbitrary space dimensions. 
-\item \textit{Iterative Solver Template Library.} Provides generic
-  sparse matrix/vector classes and a variety of solvers based on these
-  classes. A special feature is the use of templates to exploit the
-  recursive block structure of finite element matrices at compile
-  time. Available solvers include Krylov methods, (block-) incomplete
-  decompositions and aggregation-based algebraic multigrid.
-\item \textit{Freiburg Finite Element Hierarchy.} A flexible class
-  hierarchy for finite elements. Explicit cell-centered finite volume
-  and discontinuous Galerkin methods for hyperbolic problems,
-  e.~g.~transport in porous media and inviscid fluid flow have been implemented.
-\item \textit{Stuttgart Finite Element Hierarchy.} Another flexible
-  class hierarchy for finite elements. Standard and discontinuous
-  Galerkin finite elements for elliptic problems, e.~g.~Laplacian,
-  linear elasticity and Stokes have been implemented.
-\item \textit{Input/Output.} Graphical output with several packages is
-  available, e.~g.~file output to IBM data explorer and VTK (parallel
-  XML format for unstructured grids). The graphics package Grape,
-  \cite{Grape} has been integrated in interactive mode.
+\item \texttt{dune-common} contains the basic classes used by all
+  \Dune{}-modules.  It provides some infrastructural classes for
+  debugging and exception handling as well as a library to handle
+  dense matrices and vectors.
+\item \texttt{dune-grid} is the most mature module and is covered in
+  this document. It defines nonconforming, hierarchically nested,
+  multi-element-type, parallel grids in arbitrary space dimensions.
+  Graphical output with several packages is available, e.~g.~file
+  output to IBM data explorer and VTK (parallel XML format for
+  unstructured grids). The graphics package Grape, \cite{Grape} has
+  been integrated in interactive mode.
+\item \texttt{dune-istl} -- \textit{Iterative Solver Template
+    Library.} Provides generic sparse matrix/vector classes and a
+  variety of solvers based on these classes. A special feature is the
+  use of templates to exploit the recursive block structure of finite
+  element matrices at compile time. Available solvers include Krylov
+  methods, (block-) incomplete decompositions and aggregation-based
+  algebraic multigrid.
+\item \texttt{dune-fem} -- \textit{Freiburg Finite Element Hierarchy.}
+  A flexible class hierarchy for finite elements. Explicit
+  cell-centered finite volume and discontinuous Galerkin methods for
+  hyperbolic problems, e.~g.~transport in porous media and inviscid
+  fluid flow have been implemented.
+\item \texttt{dune-disc} -- \textit{Stuttgart Finite Element
+    Hierarchy.} A flexible class hierarchy for finite elements.
+  Standard and discontinuous Galerkin finite elements for elliptic
+  problems, e.~g.~Laplacian, linear elasticity and Stokes have been
+  implemented.
 \end{itemize}
 
 Before starting to work with \Dune{} you might want to update your
@@ -169,16 +176,11 @@ in \cite{Veldhui99} (if you can't find it on the web, contact us).
 
 \section{Download}
 
-\Dune{} and its applications are distributed under the GNU Lesser
-General Public License 
-Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
-{\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
-
-
-\minisec{Dune}
-
 The source code of the \Dune{} framework can be
-downloaded from the web page (follow the instructions given there)
+downloaded from the web page.  To get started, it is easiest to
+download the latest stable version of the tarballs of
+\texttt{dune-common}, \texttt{dune-grid} and \texttt{dune-grid-howto}.
+These are available on the \Dune{} download page:
 %
 \begin{center}
 \href{http://www.dune-project.org/download.html}%
@@ -186,14 +188,8 @@ downloaded from the web page (follow the instructions given there)
 \end{center}
 %
 
-\minisec{Dune grid HOWTO}
-
-With the \Dune{} library itself you cannot do much. You need an
-application that uses \Dune{} to do something useful. One such
-application is the \Dune{} grid HOWTO which contains the examples
-described in this
-document. It can be downloaded from the same web page as the \Dune{}
-library.
+Alternatively, you can download the latest development version via
+anonymous SVN.  For further information, please see the web page.
 
 \section{Installation}
 
@@ -204,97 +200,58 @@ The official installation instructions are available on the web page
 {\texttt{http://www.dune-project.org/doc/installation-notes.html}}
 \end{center}
 
-Obviously we do not want to copy all this information because it might
+Obviously, we do not want to copy all this information because it might
 get outdated and inconsistent then. To make this document
-self-contained we describe only how to install a vanilla version without
-any additional packages. Moreover, we assume that you use a UNIX
-system. If you have the Redmont system then ask them how to install it.
+self-contained, we describe only how to install \Dune{} from the
+tarballs.  If you prefer to use the version from SVN, see the web page
+for further information.  Moreover, we assume that you use a UNIX
+system. If you have the Redmond system then ask them how to install
+it.
 
-\minisec{Required software}
+In order to build the \Dune{} framework, you need a standards
+compliant C++ compiler.  We tested compiling with GNU \texttt{g++} in
+version $\geq 3.4.1$ and Intel \texttt{icc}, version 7.0 or 8.0.
 
-In order to build the \Dune{} framework the following
-software must be available on your machine:
+Now extract the tarballs of \texttt{dune-common}, \texttt{dune-grid}
+and \texttt{dune-grid-howto} into a common directory, say
+\texttt{dune-home}.  Change to this directory and call
+\begin{lstlisting}
+> dune-common-1.0/bin/dunecontrol all
+\end{lstlisting}
+Replace ``\texttt{1.0}'' by the actual version number of the package
+you downloaded if necessary.  This should configure and build all
+\Dune{} modules in \texttt{dune-home} with a basic configuration.
+
+For many of the examples in this howto you need adaptive grids or the
+parallel features of \Dune{}.  To use adaptive grids, you need to
+install one of the external grid packages which \Dune{} provides
+interfaces for, for instance Alberta, UG and ALUGrid.
 \begin{itemize}
-\item \lstinline!automake! in version $\geq 1.5$.
-\item \lstinline!autoconf! in version $\geq 2.50$.
-\item \lstinline!libtool!.
-\item \lstinline!pkg-config!.
-\item \lstinline!g++! (the GNU C++ compiler) in version $\geq 3.4.1$ or any
-  other C++-compiler that is able to compile it. E.~g.~the INTEL
-  compiler works as well.
+\item Alberta -- \href{http://www.alberta-fem.de/}{\texttt{http://www.alberta-fem.de/}}
+\item UG -- \href{http://sit.iwr.uni-heidelberg.de/~ug/}{\texttt{http://sit.iwr.uni-heidelberg.de/~ug/}}
+\item ALUGrid-- \href{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}{\texttt{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}}
 \end{itemize}
-
-
-\minisec{From official version download} 
-
-\noindent Add this section later\ldots
-
-\minisec{From tarballs downloaded via ViewCVS}
-
-So you have downloaded the two files
-\lstinline!dune.tar.gz! and \lstinline!dune-grid-howto.tar.gz!. Put
-them in a directory of your choice extract the archives
-
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-> cd <your directory>
-> tar zxvf dune.tar.gz
-> tar zxvf dune-grid-howto.tar.gz
+To use the parallel code of \Dune{}, you need an implementation of the
+Message Passing Interface (MPI), for example MPICH or LAM.  For the
+\Dune{} build system to find these libraries, the \texttt{configure}
+scripts of the particular \Dune{} modules must be passed the locations
+of the respective installations.  The \texttt{dunecontrol} script
+facilitates to pass options to the \texttt{configure} via a
+configuration file.  Such a configuration file might look like this:
+\begin{lstlisting}
+CONFIGURE_FLAGS="--with-alugrid=/path/to/alugrid/ "\
+"--with-alberta=/path/to/alberta "\
+"--with-ug=/path/to/ug --enable-parallel"
+MAKE_FLAGS="-j 2"
+\end{lstlisting}
+If this is saved under the name \texttt{dunecontrol.opts}, you
+can tell \texttt{dunecontrol} to cinsider the file by calling
+\begin{lstlisting}
+> dune-common-1.0/bin/dunecontrol --opts=dunecontrol.opts all
 \end{lstlisting}
 
-Now you can join the folks who have downloaded the Subversion repositories.
-
-\minisec{From Subversion download} 
-
-You have checked out two directories \lstinline!dune! and 
-\lstinline!dune-grid-howto! from the Subversion server. If you have not done
-that already put them in a directory of your choice next to each other.
-
-\noindent First we configure and build \Dune:
-
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-> cd <your directory>/dune
-> ./autogen.sh
-> ./configure CXXFLAGS="-g -O0" CFLAGS="-g -O0" CXX="g++-4.0" CC="gcc-4.0" --enable-dunedevel
-> make
-\end{lstlisting}
-This configures and builds \Dune{} with debugging flags using version
-$4.0$ of the GNU C++ and C compiler. You may supply your own compiler
-with your favourite options.
-
-\noindent Now we configure and build the \Dune{} grid HOWTO:
-
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-> cd <your directory>/dune-grid-howto
-> ./autogen.sh ../dune
-> ./configure --with-dune=../dune CXXFLAGS="-g -O0" CFLAGS="-g -O0" \
-  CXX="g++-4.0" CC="gcc-4.0" --enable-dunedevel
-> make gettingstarted
-> make traversal
-> make integration
-\end{lstlisting}
-
-For the remaining targets using adaptive grids you need to install one
-ore more of the additional libraries UG, Alberta and ALU3d.
-
-The \lstinline!./configure! script prints a list of add-on packages it
-has recognized. The output may look like this:
-
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-Alberta..........: no
-ALUGrid..........: no
-AmiraMesh........: no
-BLAS-lib.........: no
-Grape............: no
-MPI..............: MPICH
-METIS............: no
-ParMETIS.........: no
-OpenGL...........: yes
-UG...............: no
-\end{lstlisting}
-
-Here, the OpenGL library and and MPI (message passing interface)
-library have been found.
-
+For information on how to build and configure the respective grids,
+please see the \Dune{} web page.
 
 \section{Code documentation}
 
@@ -313,9 +270,29 @@ or its latest version is available at
 
 \section{Licence}
 
-\Dune{} is distributed under the GNU Lesser General Public License
-Version 2.1\footnote{\href{http://www.gnu.org/licenses/lgpl.html}%
-{\texttt{http://www.gnu.org/licenses/lgpl.html}}}.
+The \Dune{} library and headers are licensed under version 2 of the
+GNU General Public License%
+\footnote{\href{http://www.gnu.org/licenses/gpl.html}%
+  {\texttt{http://www.gnu.org/licenses/gpl.html}}}, with a special
+exception for linking and compiling against \Dune{}, the so-called
+``runtime exception.''  The license is intended to be similiar to the
+GNU Lesser General Public License, which by itself isn't suitable for
+a C++ template library.
+
+The exact wording of the exception reads as follows:
+
+\begin{quote}  
+   As a special exception, you may use the \Dune{} source files as part
+   of a software library or application without restriction.
+   Specifically, if other files instantiate templates or use macros or
+   inline functions from one or more of the \Dune{} source files, or you
+   compile one or more of the \Dune{} source files and link them with
+   other files to produce an executable, this does not by itself cause
+   the resulting executable to be covered by the GNU General Public
+   License.  This exception does not however invalidate any other
+   reasons why the executable file might be covered by the GNU General
+   Public License.
+\end{quote}
 
 %\section{Contributing to DUNE}
 
@@ -572,7 +549,7 @@ there are/is 4 element(s) on level 1
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\chapter{The DUNE grid interface}
+\chapter{The \Dune{} grid interface}
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -788,7 +765,7 @@ defines an interface to global communication operations in a portable
 and transparent way. In particular also for sequential grids. 
 
 
-\subsection{Concepts of the Dune grid interface}
+\subsection{Concepts of the \Dune{} grid interface}
 
 In the following a short description of each concept in the \Dune{}
 grid interface is given. For the details click on the link that leads
@@ -1880,7 +1857,7 @@ numberstyle=\tiny, numbersep=5pt]{../adaptivefinitevolume.cc}
 
 \chapter{Parallelism}
 
-\section{Dune Data Decomposition Model}
+\section{\Dune{} Data Decomposition Model}
 
 The parallelization concept in \Dune{} follows the Single Program
 Multiple Data (SPMD) data parallel programming paradigm. In this
@@ -2105,27 +2082,27 @@ The only essential difference to the sequential program is in line
 step is restricted to the process with rank 0.
 
 
-\chapter{Input and Output}
+% \chapter{Input and Output}
 
-\section{Visualization with Grape}
+% \section{Visualization with Grape}
 
 
 
-\section{Visualization with VTK}
+% \section{Visualization with VTK}
 
-\section{Dune portable grid format}
+% \section{Dune portable grid format}
 
-Dune provides a unified macro grid format called the 
-\textbf{D}une \textbf{G}rid \textbf{F}ormat, short the \textbf{DGF}. 
-This enables the user to use all types of grids with one and the same
-macro grid file. For the documentation of the DGF and the usage of the parser we refer to 
+% Dune provides a unified macro grid format called the 
+% \textbf{D}une \textbf{G}rid \textbf{F}ormat, short the \textbf{DGF}. 
+% This enables the user to use all types of grids with one and the same
+% macro grid file. For the documentation of the DGF and the usage of the parser we refer to 
 
-\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}%
-{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}
+% \href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}%
+% {{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}
  
-in the dune-grid documentation. 
+% in the dune-grid documentation. 
 
-\section{Amiramesh output}
+% \section{Amiramesh output}
 
 
 % \chapter{Iterative Solver Template Library}
@@ -2149,7 +2126,7 @@ in the dune-grid documentation.
 % \end{lst}
 
 
-\chapter{Outlook}
+% \chapter{Outlook}
 
 
 \begin{figure}
