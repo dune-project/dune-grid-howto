@@ -1,5 +1,7 @@
 Makefile
 Makefile.in
+Makefile.dist.in
+Makefile.dist
 auto
 *.aux
 *.bbl
