@@ -18,8 +18,7 @@ if TEX4HT
  HTDOCS =  navigation.html css.html grid-howto.html
 endif
 
-# EXTRA_DIST = $(DOCSOURCE) $(WMLDOCS) $(HTDOCS)
-EXTRA_DIST = grid-howto.pdf
+EXTRA_DIST = grid-howto.pdf Makefile.dist.in Makefile.dist.am
 
 if BUILD_DOCS
 if CONVERT
