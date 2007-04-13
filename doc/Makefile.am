@@ -57,7 +57,8 @@ grid-howto.html:  $(DOCSOURCE)
 	$(TEX) grid-howto.tex
 
 dist-hook:
-	cp $(srcdir)/Makefile.am.dist $(distdir)/Makefile.am
+	cp $(srcdir)/Makefile.dist.am $(distdir)/Makefile.am
+	cp $(srcdir)/Makefile.dist.in $(distdir)/Makefile.in
 
 EXTRA_TEXINPUTS:=$(top_srcdir)
 
