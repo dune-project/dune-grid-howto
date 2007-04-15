@@ -25,10 +25,10 @@ int main(int argc, char **argv)
     UnitCube<Dune::UGGrid<3>,2> uc6;
 #endif
 #if HAVE_ALBERTA
-#if DUNE_PROBLEM_DIM==2
+#if ALBERTA_DIM==2
     UnitCube<Dune::AlbertaGrid<2,2>,1> uc7;
 #endif
-#if DUNE_PROBLEM_DIM==3
+#if ALBERTA_DIM==3
     UnitCube<Dune::AlbertaGrid<3,3>,1> uc9;
 #endif
 #endif
