@@ -123,7 +123,7 @@ int main (int argc , char ** argv)
     UnitCube<Dune::UGGrid<3>,1> uc2;
 #endif
 #if HAVE_ALBERTA
-#if DUNE_PROBLEM_DIM==2
+#if ALBERTA_DIM==2
     UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
 #endif
 #endif
