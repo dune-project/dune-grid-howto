@@ -6,8 +6,6 @@
 #if HAVE_UG
 #include <dune/grid/uggrid.hh>
 
-#if HAVE_AMIRAMESH
-#include <dune/grid/io/file/amirameshreader.hh>
 
 // UGGrid 3d, variant 1 (hexahedra) specialization
 template<>
@@ -18,7 +16,31 @@ public:
 
   UnitCube () : grid_(800,10)
   {
-    Dune::AmiraMeshReader<Dune::UGGrid<3> >::read(grid_,"grids/ug3dhexagrid.am");
+    //   Start grid creation
+    grid_.createBegin();
+
+    //   Insert vertices
+    Dune::FieldVector<double,3> pos;
+
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
+
+
+    // Insert element
+    std::vector<unsigned int> cornerIDs(8);
+    for (int i=0; i<8; i++)
+      cornerIDs[i] = i;
+
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::cube,3), cornerIDs);
+
+    //   Finish initialization
+    grid_.createEnd();
   }
 
   Dune::UGGrid<3>& grid ()
@@ -39,7 +61,42 @@ public:
 
   UnitCube () : grid_(800,10)
   {
-    Dune::AmiraMeshReader<Dune::UGGrid<3> >::read(grid_,"grids/ug3dtetragrid.am");
+    //   Start grid creation
+    grid_.createBegin();
+
+    //   Insert vertices
+    Dune::FieldVector<double,3> pos;
+
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
+
+
+    // Insert element
+    std::vector<unsigned int> cornerIDs(4);
+
+    cornerIDs[0] = 0;  cornerIDs[1] = 1;  cornerIDs[2] = 2;  cornerIDs[3] = 4;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+
+    cornerIDs[0] = 1;  cornerIDs[1] = 3;  cornerIDs[2] = 2;  cornerIDs[3] = 7;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+
+    cornerIDs[0] = 1;  cornerIDs[1] = 7;  cornerIDs[2] = 2;  cornerIDs[3] = 4;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+
+    cornerIDs[0] = 1;  cornerIDs[1] = 7;  cornerIDs[2] = 4;  cornerIDs[3] = 5;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+
+    cornerIDs[0] = 4;  cornerIDs[1] = 7;  cornerIDs[2] = 2;  cornerIDs[3] = 6;
+    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+
+    //   Finish initialization
+    grid_.createEnd();
   }
 
   Dune::UGGrid<3>& grid ()
@@ -50,7 +107,6 @@ public:
 private:
   Dune::UGGrid<3> grid_;
 };
-#endif
 
 // UGGrid 2d, variant 1 (quadrilaterals) specialization
 template<>
