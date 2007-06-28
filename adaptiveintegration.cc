@@ -133,9 +133,9 @@ int main(int argc, char **argv)
 #endif
 
 #ifdef HAVE_UG
-    dowork(uc6.grid());
+    dowork(uc6.grid());   // Use UGGrid
 #else
-    dowork(uc2.grid());
+    dowork(uc0.grid());   // Use OneDGrid
 #endif
   }
   catch (std::exception & e) {
