@@ -65,12 +65,13 @@ void timeloop (const G& grid, double tend)
 
 int main (int argc , char ** argv)
 {
-  // initialize MPI, finalize is automatically done on exit
+  // initialize MPI, finalize is done automatically on exit
   Dune::MPIHelper::instance(argc,argv);
 
   // start try/catch block to get error messages from dune
   try {
     UnitCube<Dune::YaspGrid<2,2>,1> uc;
+    UnitCube<Dune::YaspGrid<3,3>,1> uc7;
     UnitCube<Dune::OneDGrid,1> uc0;
     UnitCube<Dune::SGrid<1,1>,1> uc1;
 #if HAVE_UG
@@ -82,8 +83,8 @@ int main (int argc , char ** argv)
 #endif
 #endif
 
-    uc0.grid().globalRefine(7);
-    timeloop(uc0.grid(),0.5);
+    uc7.grid().globalRefine(4);
+    timeloop(uc7.grid(),0.5);
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
