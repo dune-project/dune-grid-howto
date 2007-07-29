@@ -7,6 +7,9 @@
 #include <dune/grid/sgrid.hh> // load sgrid definition
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
+// checks for defined gridtype and inlcudes appropriate dgfparser implementation
+#include <dune/grid/io/file/dgfparser/gridtype.hh>
+
 #include "unitcube.hh"
 #include "functors.hh"
 #include "integrateentity.hh"
@@ -56,14 +59,17 @@ int main(int argc, char **argv)
 
   // start try/catch block to get error messages from dune
   try {
-    // make a grid
-    UnitCube<Dune::OneDGrid,1> uc0;
-    UnitCube<Dune::SGrid<2,2>,1> uc1;
-    UnitCube<Dune::YaspGrid<2,2>,1> uc2;
-    UnitCube<Dune::YaspGrid<3,3>,1> uc3;
+    using namespace Dune;
+
+    // use unitcube from grids
+    std::stringstream dgfFileName;
+    dgfFileName << "grids/unitcube" << GridType :: dimension << ".dgf";
+
+    // create grid pointer, GridType is defined by gridtype.hh
+    GridPtr<GridType> gridPtr( dgfFileName.str() );
 
     // integrate and compute error with extrapolation
-    uniformintegration(uc2.grid());
+    uniformintegration( *gridPtr );
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
