@@ -1021,6 +1021,51 @@ UG-specific code as in
 It is important that the file \lstinline!config.h! is the first
 include file in your application!
 
+\section{The DGF Parser -- reading common macro grid files}
+
+Dune has it's own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat. 
+A detailed description of the DGF and how to use it can be found on the
+homepage of Dune under the documentation section (see 
+\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}%
+{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}).
+
+Here we only give a short introduction. To use the DGF parser the configuration 
+option \\ 
+\lstinline!--with-grid-dim={1,2,3}! must be provided 
+during configuration run. Optional \\ 
+\lstinline!--with-grid-type=ALBERTAGRID!.
+Furthermore, \lstinline!ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM!, 
+\lstinline!ONEDGRID,SGRID,UGGRID!, and \lstinline!YASPGRID! can be chosen as grid types.
+can be chosen. Note that both values will also be changeable later. 
+If the \lstinline!--with-grid-dim! option was not provided during configuration the 
+DFG grid type definition will not work. Nevertheless, the grid parser will work 
+but the grid type has to be defined by the user and the appropriate DGF parser 
+specialization has to be included. 
+Assuming the \lstinline!--with-grid-dim! was provided the DGF grid type 
+definition works by first including \lstinline!gridtype.hh!.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+#include <dune/grid/io/file/dgfparser/gridtype.hh>
+\end{lstlisting}
+Depending on the pre-configured values of \lstinline!GRIDDIM! and
+\lstinline!GRIDTYPE! a typedef for the grid to use will be provided by
+including \lstinline!gridtype.hh!. The follwoing example show how an 
+instance of the defined grid is generated. Given a DGF file, for example 
+\lstinline!unitcube2.dgf!, a grid pointer is created as follows.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+GridPtr<GridType> gridPtr( "unitcube2.dgf" );
+\end{lstlisting}
+The grid is accessed be dereferencing the grid pointer.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+GridType& grid = *gridPtr; 
+\end{lstlisting}
+To change the grid one simply has to re-compile the code using the following make command.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+make GRIDDIM=2 GRIDTYPE=ALBERTAGRID integration 
+\end{lstlisting}
+This will compile the application \texttt{integration} with grid type \lstinline!ALBERTAGRID! and grid dimension $2$.
+Note that before the re-compilation works, 
+the corresponding object file has to be removed.
+
 
 %\section{Capabilities}
 
