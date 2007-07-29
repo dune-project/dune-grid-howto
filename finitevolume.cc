@@ -7,6 +7,9 @@
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
+// checks for defined gridtype and inlcudes appropriate dgfparser implementation
+#include <dune/grid/io/file/dgfparser/gridtype.hh>
+
 #include "vtkout.hh"
 #include "unitcube.hh"
 #include "transportproblem2.hh"
@@ -45,18 +48,38 @@ void timeloop (const G& grid, double tend)
   // now do the time steps
   double t=0,dt;
   int k=0;
-  const int modulo=5;
+  const double saveInterval = 0.1;
+  double saveStep = 0.1;
+  int counter = 0;
+
   while (t<tend)                                       /*@\label{fvc:loop0}@*/
   {
-    k++;
+    // augment time step counter
+    ++k;
+
+    // apply finite volume scheme
     evolve(grid,mapper,c,t,dt);
-    if (k%modulo==0) vtkout(grid,c,"concentration",k/modulo);
-    std::cout << "k=" << k << " t=" << t << " dt=" << dt << std::endl;
+
+    // augment time
     t += dt;
+
+    // check if data should be written
+    if (t >= saveStep)
+    {
+      // write data
+      vtkout(grid,c,"concentration",counter);
+
+      // increase counter and saveStep for next interval
+      saveStep += saveInterval;
+      ++counter;
+    }
+
+    // print info about time, timestep size and counter
+    std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
   }                                                    /*@\label{fvc:loop1}@*/
 
   // output results
-  vtkout(grid,c,"concentration",k/modulo);             /*@\label{fvc:file}@*/
+  vtkout(grid,c,"concentration",counter);             /*@\label{fvc:file}@*/
 }
 
 //===============================================================
@@ -70,21 +93,26 @@ int main (int argc , char ** argv)
 
   // start try/catch block to get error messages from dune
   try {
-    UnitCube<Dune::YaspGrid<2,2>,1> uc;
-    UnitCube<Dune::YaspGrid<3,3>,1> uc7;
-    UnitCube<Dune::OneDGrid,1> uc0;
-    UnitCube<Dune::SGrid<1,1>,1> uc1;
-#if HAVE_UG
-    UnitCube<Dune::UGGrid<2>,2> uc2;
-#endif
-#if HAVE_ALBERTA
-#if ALBERTA_DIM==2
-    UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
-#endif
-#endif
+    using namespace Dune;
 
-    uc7.grid().globalRefine(4);
-    timeloop(uc7.grid(),0.5);
+    // use unitcube from grids
+    std::stringstream dgfFileName;
+    dgfFileName << "grids/unitcube" << GridType :: dimension << ".dgf";
+
+    // create grid pointer, GridType is defined by gridtype.hh
+    GridPtr<GridType> gridPtr( dgfFileName.str() );
+
+    // grid reference
+    GridType& grid = *gridPtr;
+
+    // half grid width 4 times
+    int level = 4 * DGFGridInfo<GridType>::refineStepsForHalf();
+
+    // refine grid until upper limit of level
+    grid.globalRefine(level);
+
+    // do time loop until end time 0.5
+    timeloop(grid, 0.5);
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
