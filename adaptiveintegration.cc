@@ -132,12 +132,9 @@ int main(int argc, char **argv)
     // create grid pointer, GridType is defined by gridtype.hh
     GridPtr<GridType> gridPtr( dgfFileName.str() );
 
-    // grid reference
-    GridType& grid = *gridPtr;
-
     // do the adaptive integration
     // NOTE: for structured grids global refinement will be used
-    dowork(grid);
+    dowork( *gridPtr );
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
