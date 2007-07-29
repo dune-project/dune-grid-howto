@@ -3,8 +3,9 @@
 // $Id$
 
 // Dune includes
-#include "config.h"
-#include <dune/grid/sgrid.hh>
+#include "config.h"           // file constructed by ./configure script
+#include <dune/grid/sgrid.hh> // load sgrid definition
+#include <dune/common/mpihelper.hh> // include mpi helper class
 
 #include "unitcube.hh"
 #include "functors.hh"
@@ -50,9 +51,8 @@ void uniformintegration (Grid& grid)
 
 int main(int argc, char **argv)
 {
-#if HAVE_MPI
-  MPI_Init(&argc,&argv);
-#endif
+  // initialize MPI, finalize is done automatically on exit
+  Dune::MPIHelper::instance(argc,argv);
 
   // start try/catch block to get error messages from dune
   try {
@@ -77,10 +77,6 @@ int main(int argc, char **argv)
     std::cout << "Unknown ERROR" << std::endl;
     return 1;
   }
-
-#if HAVE_MPI
-  MPI_Finalize();
-#endif
 
   // done
   return 0;

@@ -5,6 +5,8 @@
 #include <fstream>                // for input/output to files
 #include <vector>                 // STL vector class
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
+#include <dune/common/mpihelper.hh> // include mpi helper class
+
 
 #include "vtkout.hh"
 #include "unitcube.hh"
@@ -110,9 +112,8 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
 
 int main (int argc , char ** argv)
 {
-#if HAVE_MPI
-  MPI_Init(&argc,&argv);
-#endif
+  // initialize MPI, finalize is done automatically on exit
+  Dune::MPIHelper::instance(argc,argv);
 
   // start try/catch block to get error messages from dune
   try {
@@ -146,10 +147,6 @@ int main (int argc , char ** argv)
     std::cout << "Unknown ERROR" << std::endl;
     return 1;
   }
-
-#if HAVE_MPI
-  MPI_Finalize();
-#endif
 
   // done
   return 0;

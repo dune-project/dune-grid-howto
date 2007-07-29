@@ -8,6 +8,8 @@
 // Dune includes
 #include "config.h"           // file constructed by ./configure script
 #include <dune/grid/sgrid.hh> // load sgrid definition
+#include <dune/common/mpihelper.hh> // include mpi helper class
+
 
 // example for a generic algorithm that traverses
 // the entities of a given mesh in various ways
@@ -94,8 +96,11 @@ void traversal (G& grid)
 }                                                      /*@\label{tc:tra1}@*/
 
 
-int main()
+int main(int argc, char **argv)
 {
+  // initialize MPI, finalize is done automatically on exit
+  Dune::MPIHelper::instance(argc,argv);
+
   // start try/catch block to get error messages from dune
   try {
     // make a grid
