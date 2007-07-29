@@ -4,7 +4,12 @@
 #include <iostream>               // for input/output to shell
 #include <fstream>                // for input/output to files
 #include <vector>                 // STL vector class
+
+// checks for defined gridtype and inlcudes appropriate dgfparser implementation
+#include <dune/grid/io/file/dgfparser/gridtype.hh>
+
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
+#include <dune/common/mpihelper.hh> // include mpi helper class
 
 #include "vtkout.hh"
 #include "unitcube.hh"
@@ -83,25 +88,52 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     finitevolumeadapt(grid,mapper,c,lmin,lmax,0);
     initialize(grid,mapper,c);
   }
+
+  // write initial data
   vtkout(grid,c,"concentration",0);
 
+  // variables for time, timestep etc.
   double dt, t=0;
-  int k=0;
-  int modulo=5;
-  std::cout << "s=" << grid.size(0) << " k=" << k
-            << " t=" << t << std::endl;
+  double saveStep = 0.1;
+  const double saveInterval = 0.1;
+  int counter = 0;
+  int k = 0;
+
+  std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << std::endl;
   while (t<tend)
   {
-    k++;
+    // augment time step counter
+    ++k;
+
+    // apply finite volume scheme
     evolve(grid,mapper,c,t,dt);
-    return;
+
+    // augment time
     t += dt;
-    if (k%modulo==0) vtkout(grid,c,"concentration",k/modulo);
-    std::cout << "s=" << grid.size(0) << " k=" << k
-              << " t=" << t << " dt=" << dt << std::endl;
-    //            finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
+
+    // check if data should be written
+    if (t >= saveStep)
+    {
+      // write data
+      vtkout(grid,c,"concentration",counter);
+
+      // increase counter and saveStep for next interval
+      saveStep += saveInterval;
+      ++counter;
+    }
+
+    // print info about time, timestep size and counter
+    std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
+
+    // for unstructured grids call adaptation algorithm
+    if( Dune :: Capabilities :: IsUnstructured<G> :: v )
+    {
+      finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
+    }
   }
-  vtkout(grid,c,"concentration",k/modulo);
+
+  // write last time step
+  vtkout(grid,c,"concentration",counter);
 }
 
 //===============================================================
@@ -110,29 +142,34 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
 
 int main (int argc , char ** argv)
 {
-#if HAVE_MPI
-  MPI_Init(&argc,&argv);
-#endif
+  // initialize MPI, finalize is done automatically on exit
+  Dune::MPIHelper::instance(argc,argv);
 
   // start try/catch block to get error messages from dune
   try {
-    UnitCube<Dune::OneDGrid,1> uc0;
-    UnitCube<Dune::SGrid<1,1>,1> uc1;
-    UnitCube<Dune::YaspGrid<2,2>,1> uc;
-#if HAVE_UG
-    UnitCube<Dune::UGGrid<3>,1> uc2;
-#endif
-#if HAVE_ALBERTA
-#if ALBERTA_DIM==2
-    UnitCube<Dune::AlbertaGrid<2,2>,1> uc3;
-#endif
-#endif
-    //    uc3.grid().globalRefine(8);
-    //    timeloop(uc3.grid(),0.5,8,18);
-    //    uc2.grid().globalRefine(3);
-    //    timeloop(uc2.grid(),0.5,3,7);
-    uc0.grid().globalRefine(4);
-    timeloop(uc0.grid(),0.5,4,8);
+    using namespace Dune;
+
+    // use unitcube from grids
+    std::stringstream dgfFileName;
+    dgfFileName << "grids/unitcube" << GridType :: dimension << ".dgf";
+
+    // create grid pointer, GridType is defined by gridtype.hh
+    GridPtr<GridType> gridPtr( dgfFileName.str() );
+
+    // grid reference
+    GridType& grid = *gridPtr;
+
+    // minimal allowed level during refinement
+    int minLevel = 2 * DGFGridInfo<GridType>::refineStepsForHalf();
+
+    // refine grid until upper limit of level
+    grid.globalRefine(minLevel);
+
+    // maximal allowed level during refinement
+    int maxLevel = minLevel + 3 * DGFGridInfo<GridType>::refineStepsForHalf();
+
+    // do time loop until end time 0.5
+    timeloop(grid, 0.5, minLevel, maxLevel);
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
@@ -146,10 +183,6 @@ int main (int argc , char ** argv)
     std::cout << "Unknown ERROR" << std::endl;
     return 1;
   }
-
-#if HAVE_MPI
-  MPI_Finalize();
-#endif
 
   // done
   return 0;
