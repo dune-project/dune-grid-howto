@@ -6,9 +6,14 @@
 #include "config.h"           // file constructed by ./configure script /*@\label{gs:inc0}@*/
 #include <dune/grid/sgrid.hh> // load sgrid definition
 #include <dune/grid/common/gridinfo.hh> // definition of gridinfo /*@\label{gs:inc1}@*/
+#include <dune/common/mpihelper.hh> // include mpi helper class
 
-int main()
+
+int main(int argc, char **argv)
 {
+  // initialize MPI, finalize is done automatically on exit
+  Dune::MPIHelper::instance(argc,argv);
+
   // start try/catch block to get error messages from dune
   try{
     // make a grid
