@@ -5,10 +5,13 @@
 #include "config.h"
 #include <iostream>
 #include <iomanip>
-#include <dune/grid/io/file/vtk/vtkwriter.hh>
+#include <dune/grid/io/file/vtk/vtkwriter.hh> // VTK output routines
+#include <dune/common/mpihelper.hh> // include mpi helper class
+
 #include "unitcube.hh"
 #include "functors.hh"
 #include "integrateentity.hh"
+
 
 //! adaptive refinement test
 template<class Grid, class Functor>
@@ -111,9 +114,8 @@ void dowork (Grid& grid)
 
 int main(int argc, char **argv)
 {
-#if HAVE_MPI
-  MPI_Init(&argc,&argv);
-#endif
+  // initialize MPI, finalize is done automatically on exit
+  Dune::MPIHelper::instance(argc,argv);
 
   // start try/catch block to get error messages from dune
   try {
@@ -150,10 +152,6 @@ int main(int argc, char **argv)
     std::cout << "Unknown ERROR" << std::endl;
     return 1;
   }
-
-#if HAVE_MPI
-  MPI_Finalize();
-#endif
 
   // done
   return 0;
