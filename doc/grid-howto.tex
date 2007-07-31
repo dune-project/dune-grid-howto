@@ -1606,7 +1606,7 @@ $\omega_i$. For a full documentation of the
 \href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}
 {{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}}}
 \end{center}
-An Intersections is with another element $\omega_j$ if the
+An Intersection is with another element $\omega_j$ if the
 \lstinline!neighbor()! method of the iterator returns true (line
 \ref{evh:neighbor}) or with the external boundary if
 \lstinline!boundary()! returns true (line \ref{evh:bndry}), see also
@@ -1672,7 +1672,7 @@ Finally, the main program:
 numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
 \end{lst}
 
-The function \lstinline!timeloop! constructs a mapper an allocates the
+The function \lstinline!timeloop! constructs a mapper and allocates the
 concentration vector with one entry per element in the leaf grid. In
 line \ref{fvc:init} this vector is initialized with the initial
 concentration and the loop in line \ref{fvc:loop0}-\ref{fvc:loop1}
@@ -2089,7 +2089,7 @@ grid as shown in lines \ref{peh:end}-\ref{peh:begin}.
 
 The next change is in line \ref{peh:inter} where the computation of
 the optimum stable time step is restricted to elements of partition
-type \textit{interior} because only thos elements have all neighboring
+type \textit{interior} because only those elements have all neighboring
 elements locally available. Next, the global minimum of the time steps
 sizes determined in each process is taken in line \ref{peh:min}. For
 collective communication each grid returns a collective communication
