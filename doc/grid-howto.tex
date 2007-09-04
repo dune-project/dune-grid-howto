@@ -314,21 +314,22 @@ This program is quite simple. It starts with some includes in lines
 produced by the \lstinline!configure! script in the application's
 build system. It contains the current configuration and can be used to
 compile different versions of your code depending on the configuration
-selected. It is important that this file is include before any other
+selected. It is important that this file is included before any other
 \Dune{} header files. The next file \lstinline!dune/grid/sgrid.hh!
 includes the headers for the \lstinline!SGrid! class which provides a
-special implementation of the \Dune{} grid interface with an
-equidistant structured mesh in a cube in any space dimension. Then
+special implementation of the \Dune{} grid interface with a
+structured mesh of arbitrary dimension. Then
 \lstinline!dune/grid/common/gridinfo.hh!  loads the headers of some
 functions which print useful information about a grid.
 
 Since the dimension will be used as a template parameter in many
 places below we define it as a constant in line number \ref{gs:dim}.
 The \lstinline!SGrid! class template takes two template parameters
-which are the dimensionality of the grid (its dimension) and the
-dimension of the space where the grid is embedded (its world
-dimension). The \lstinline!SGrid! class does only support the case
-where dimension and world dimension are equal. For ease of writing we
+which are the dimension of the grid and the
+dimension of the space where the grid is embedded in (its world
+dimension).   If the world dimension is strictly greater than the
+grid dimension the surplus coordinates of each grid vertex
+are set to zero.  For ease of writing we
 define in line \ref{gs:gridtype} the type \lstinline!GridType! using
 the selected value for the dimension. All identifiers of the \Dune{}
 framework are within the \lstinline!Dune! namespace.
