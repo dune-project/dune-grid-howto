@@ -8,7 +8,7 @@
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
 // checks for defined gridtype and inlcudes appropriate dgfparser implementation
-#include <dune/grid/io/file/dgfparser/gridtype.hh>
+#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
 
 #include "vtkout.hh"
 #include "unitcube.hh"
