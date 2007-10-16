@@ -10,7 +10,6 @@
 // checks for defined gridtype and inlcudes appropriate dgfparser implementation
 #include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
 
-#include "unitcube.hh"
 #include "functors.hh"
 #include "integrateentity.hh"
 
