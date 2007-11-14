@@ -40,7 +40,7 @@ void elementdata (const G& grid, const F& f)
        it!=grid.template leafend<0>(); ++it)
   {
     // cell geometry type
-    Dune::GeometryType gt = it->geometry().type();
+    Dune::GeometryType gt = it->type();
 
     // cell center in reference element
     const Dune::FieldVector<ct,dim>&

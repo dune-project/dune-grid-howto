@@ -17,7 +17,7 @@ double integrateentity (const Iterator& it, const Functor& f, int p)
   typedef typename Iterator::Entity::ctype ct;
 
   // get geometry type
-  Dune::GeometryType gt = it->geometry().type();
+  Dune::GeometryType gt = it->type();
 
   // get quadrature rule of order p
   const Dune::QuadratureRule<ct,dim>&

@@ -21,7 +21,7 @@ void initialize (const G& grid, const M& mapper, V& c)
   for (LeafIterator it = grid.template leafbegin<0>(); it!=endit; ++it)
   {
     // get geometry type
-    Dune::GeometryType gt = it->geometry().type();
+    Dune::GeometryType gt = it->type();
 
     // get cell center in reference element
     const Dune::FieldVector<ct,dim>&

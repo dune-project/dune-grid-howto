@@ -59,7 +59,7 @@ void gnuplot (G& grid, std::vector<double>& c)
   for (ElementLeafIterator it = grid.template leafbegin<0>();
        it!=grid.template leafend<0>(); ++it)
   {
-    Dune::GeometryType gt = it->geometry().type();
+    Dune::GeometryType gt = it->type();
     const Dune::FieldVector<ct,dim>&
     local = Dune::ReferenceElements<ct,dim>::general(gt).position(0,0);
     Dune::FieldVector<ct,dimworld>

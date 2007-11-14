@@ -38,7 +38,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   for (LeafIterator it = grid.template leafbegin<0,Dune::All_Partition>(); it!=endit; ++it) /*@\label{peh:begin}@*/
   {
     // cell geometry type
-    Dune::GeometryType gt = it->geometry().type();
+    Dune::GeometryType gt = it->type();
 
     // cell center in reference element
     const Dune::FieldVector<ct,dim>&
@@ -100,7 +100,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
              (it->level()==outside->level() && indexi<indexj) )
         {
           // compute factor in neighbor
-          Dune::GeometryType nbgt = outside->geometry().type();
+          Dune::GeometryType nbgt = outside->type();
           const Dune::FieldVector<ct,dim>&
           nblocal = Dune::ReferenceElements<ct,dim>::general(nbgt).position(0,0);
           double nbvolume = outside->geometry().integrationElement(nblocal)

@@ -37,7 +37,7 @@ void traversal (G& grid)
   for (ElementLeafIterator it = grid.template leafbegin<0>(); /*@\label{tc:forel}@*/
        it!=grid.template leafend<0>(); ++it)
   {                                                    /*@\label{tc:forel0}@*/
-    Dune::GeometryType gt = it->geometry().type();       /*@\label{tc:reftype}@*/
+    Dune::GeometryType gt = it->type();       /*@\label{tc:reftype}@*/
     std::cout << "visiting leaf " << gt                /*@\label{tc:print}@*/
               << " with first vertex at " << it->geometry()[0]
               << std::endl;
@@ -59,7 +59,7 @@ void traversal (G& grid)
   for (VertexLeafIterator it = grid.template leafbegin<dim>(); /*@\label{tc:forve}@*/
        it!=grid.template leafend<dim>(); ++it)
   {
-    Dune::GeometryType gt = it->geometry().type();
+    Dune::GeometryType gt = it->type();
     std::cout << "visiting " << gt
               << " at " << it->geometry()[0]
               << std::endl;
@@ -83,7 +83,7 @@ void traversal (G& grid)
     for (ElementLevelIterator it = grid.template lbegin<0>(level);
          it!=grid.template lend<0>(level); ++it)
     {
-      Dune::GeometryType gt = it->geometry().type();
+      Dune::GeometryType gt = it->type();
       std::cout << "visiting " << gt
                 << " with first vertex at " << it->geometry()[0]
                 << std::endl;
