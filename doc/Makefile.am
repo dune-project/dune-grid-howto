@@ -49,8 +49,9 @@ CLEANFILES += $(EPS_FILES)
 grid-howto.tex: $(EPS_FILES)
 endif
 
-grid-howto.html:  $(DOCSOURCE)
+grid-howto.html:  $(DOCSOURCE) dune.cfg tex4ht.env
 	$(MAKE) grid-howto.dvi
+	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(T4HT) grid-howto.tex
 	$(TEX) grid-howto.tex
