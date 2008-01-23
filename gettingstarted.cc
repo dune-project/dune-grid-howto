@@ -21,7 +21,7 @@ int main(int argc, char **argv)
     typedef Dune::SGrid<dim,dim> GridType;               /*@\label{gs:gridtype}@*/
     Dune::FieldVector<int,dim> N(3);;                    /*@\label{gs:par0}@*/
     Dune::FieldVector<GridType::ctype,dim> L(-1.0);
-    Dune::FieldVector<GridType::ctype,dim> H(1.0);;      /*@\label{gs:par1}@*/
+    Dune::FieldVector<GridType::ctype,dim> H(1.0);       /*@\label{gs:par1}@*/
     GridType grid(N,L,H);                                /*@\label{gs:grid}@*/
 
     // print some information about the grid
