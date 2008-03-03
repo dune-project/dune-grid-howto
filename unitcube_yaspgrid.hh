@@ -7,10 +7,10 @@
 
 // YaspGrid specialization
 template<int dim, int size>
-class UnitCube<Dune::YaspGrid<dim,dim>,size>
+class UnitCube<Dune::YaspGrid<dim>,size>
 {
 public:
-  typedef Dune::YaspGrid<dim,dim> GridType;
+  typedef Dune::YaspGrid<dim> GridType;
 
   UnitCube () : Len(1.0), s(size), p(false),
 #if HAVE_MPI
@@ -20,7 +20,7 @@ public:
 #endif
   {  }
 
-  Dune::YaspGrid<dim,dim>& grid ()
+  Dune::YaspGrid<dim>& grid ()
   {
     return grid_;
   }
@@ -29,7 +29,7 @@ private:
   Dune::FieldVector<double,dim> Len;
   Dune::FieldVector<int,dim> s;
   Dune::FieldVector<bool,dim> p;
-  Dune::YaspGrid<dim,dim> grid_;
+  Dune::YaspGrid<dim> grid_;
 };
 
 #endif

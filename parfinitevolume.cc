@@ -70,7 +70,7 @@ int main (int argc , char ** argv)
 
   // start try/catch block to get error messages from dune
   try {
-    UnitCube<Dune::YaspGrid<2,2>,64> uc;
+    UnitCube<Dune::YaspGrid<2>,64> uc;
     uc.grid().globalRefine(2);
     partimeloop(uc.grid(),0.5);
   }

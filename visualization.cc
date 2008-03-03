@@ -38,8 +38,8 @@ int main(int argc, char **argv)
   try {
     /*
        UnitCube<Dune::OneDGrid,1> uc0;
-       UnitCube<Dune::YaspGrid<3,3>,1> uc1;
-       UnitCube<Dune::YaspGrid<2,2>,1> uc2;
+       UnitCube<Dune::YaspGrid<3>,1> uc1;
+       UnitCube<Dune::YaspGrid<2>,1> uc2;
        UnitCube<Dune::SGrid<1,1>,1> uc3;
        UnitCube<Dune::SGrid<2,2>,1> uc4;
        UnitCube<Dune::SGrid<3,3>,1> uc5;
