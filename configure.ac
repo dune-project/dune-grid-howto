@@ -1,7 +1,7 @@
 #! /bin/bash
 # $Id$
 # Process this file with autoconf to produce a configure script.
-AC_INIT(dune-grid-howto, 0.0, dune@dune-project.org)
+DUNE_AC_INIT # gets module version from dune.module file
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([./gettingstarted.cc])
 AM_CONFIG_HEADER([config.h])
@@ -42,7 +42,7 @@ fi
 AC_SUBST(DUNEWEBDIR, $with_duneweb)
 
 # check all dune-module stuff
-DUNE_CHECK_ALL([dune-common], [dune-grid])
+DUNE_CHECK_ALL
 
 # preset variable to path such that #include <dune/...> works
 AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
