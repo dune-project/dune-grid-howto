@@ -118,10 +118,12 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
       // handle boundary face
       if (is.boundary())                               /*@\label{evh:bndry}@*/
-        if (factor<0)                 // inflow, apply boundary condition
+      {
+        if (factor<0)                   // inflow, apply boundary condition
           update[indexi] -= b(faceglobal,t)*factor;
-        else                 // outflow
+        else                   // outflow
           update[indexi] -= c[indexi]*factor;
+      }
     }             // end all intersections             /*@\label{evh:flux1}@*/
 
     // compute dt restriction
