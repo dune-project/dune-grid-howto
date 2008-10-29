@@ -1043,13 +1043,13 @@ DFG grid type definition will not work. Nevertheless, the grid parser will work
 but the grid type has to be defined by the user and the appropriate DGF parser 
 specialization has to be included. 
 Assuming the \lstinline!--with-grid-dim! was provided the DGF grid type 
-definition works by first including \lstinline!gridtype.hh!.
+definition works by first including \lstinline!dgfgridtype.hh!.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-#include <dune/grid/io/file/dgfparser/gridtype.hh>
+#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
 \end{lstlisting}
 Depending on the pre-configured values of \lstinline!GRIDDIM! and
 \lstinline!GRIDTYPE! a typedef for the grid to use will be provided by
-including \lstinline!gridtype.hh!. The follwoing example show how an 
+including \lstinline!dgfgridtype.hh!. The follwoing example show how an 
 instance of the defined grid is generated. Given a DGF file, for example 
 \lstinline!unitcube2.dgf!, a grid pointer is created as follows.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
