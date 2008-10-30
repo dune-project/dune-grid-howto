@@ -55,7 +55,7 @@ void elementdata (const G& grid, const F& f)
 
   // generate a VTK file
   // Dune::LeafP0Function<G,double> cc(grid,c);
-  Dune::VTKWriter<G> vtkwriter(grid);                  /*@\label{edh:vtk0}@*/
+  Dune::VTKWriter<typename G::LeafGridView> vtkwriter(grid.leafView());                  /*@\label{edh:vtk0}@*/
   vtkwriter.addCellData(c,"data");
   vtkwriter.write("elementdata",Dune::VTKOptions::binaryappended); /*@\label{edh:vtk1}@*/
 

@@ -45,7 +45,7 @@ void vertexdata (const G& grid, const F& f)
 
   // generate a VTK file
   //   Dune::LeafP1Function<G,double> cc(grid,c);
-  Dune::VTKWriter<G> vtkwriter(grid);
+  Dune::VTKWriter<typename G::LeafGridView> vtkwriter(grid.leafView());
   vtkwriter.addVertexData(c,"data");
   vtkwriter.write("vertexdata",Dune::VTKOptions::binaryappended);
 

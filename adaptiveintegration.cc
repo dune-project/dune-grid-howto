@@ -105,7 +105,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   }
 
   // write grid in VTK format
-  Dune::VTKWriter<Grid> vtkwriter(grid);
+  Dune::VTKWriter<typename Grid::LeafGridView> vtkwriter(grid.leafView());
   vtkwriter.write("adaptivegrid",Dune::VTKOptions::binaryappended);
 }
 
