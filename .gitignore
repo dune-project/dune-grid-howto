@@ -24,6 +24,7 @@ othergrids
 parfinitevolume
 traversal
 visualization
+*.swp
 *.vtu
 dependencies.m4
 dune-grid-howto-*.*.tar.gz

@@ -58,7 +58,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
     {
       // get geometry type of face
-      Dune::GeometryType gtf = is.intersectionSelfLocal().type();
+      Dune::GeometryType gtf = is->intersectionSelfLocal().type();
 
       // center in face's reference element
       const Dune::FieldVector<ct,dim-1>&
@@ -66,13 +66,13 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
       // get normal vector scaled with volume
       Dune::FieldVector<ct,dimworld> integrationOuterNormal
-        = is.integrationOuterNormal(facelocal);
+        = is->integrationOuterNormal(facelocal);
       integrationOuterNormal
         *= Dune::ReferenceElements<ct,dim-1>::general(gtf).volume();
 
       // center of face in global coordinates
       Dune::FieldVector<ct,dimworld>
-      faceglobal = is.intersectionGlobal().global(facelocal);
+      faceglobal = is->intersectionGlobal().global(facelocal);
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
@@ -84,10 +84,10 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      if (is.neighbor())             // "correct" version /*@\label{evh:neighbor}@*/
+      if (is->neighbor())             // "correct" version /*@\label{evh:neighbor}@*/
       {
         // access neighbor
-        EntityPointer outside = is.outside();
+        EntityPointer outside = is->outside();
         int indexj = mapper.map(*outside);
 
         // compute flux from one side only
@@ -117,11 +117,13 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       }
 
       // handle boundary face
-      if (is.boundary())                               /*@\label{evh:bndry}@*/
+      if (is->boundary())                               /*@\label{evh:bndry}@*/
+      {
         if (factor<0)                 // inflow, apply boundary condition
           update[indexi] -= b(faceglobal,t)*factor;
         else                 // outflow
           update[indexi] -= c[indexi]*factor;
+      }
     }             // end all intersections             /*@\label{evh:flux1}@*/
 
     // compute dt restriction

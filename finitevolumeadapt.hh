@@ -27,7 +27,8 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   typedef typename G::template Codim<0>::LeafIterator LeafIterator;
   typedef typename G::template Codim<0>::LevelIterator LevelIterator;
 
-  // entity pointer
+  // entity and entity pointer
+  typedef typename G::template Codim<0>::Entity Entity;
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
 
   // intersection iterator type
@@ -53,22 +54,26 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 
     IntersectionIterator isend = it->ileafend();
     for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
-      if (is.neighbor())
-      {
-        // access neighbor
-        EntityPointer outside = is.outside();
-        int indexj = mapper.map(*outside);
+    {
+      const typename IntersectionIterator::Intersection &intersection = *is;
+      if( !intersection.neighbor() )
+        continue;
 
-        // handle face from one side only
-        if ( it.level()>outside->level() ||
-             (it.level()==outside->level() && indexi<indexj) )
-        {
-          double localdelta = std::abs(c[indexj]-c[indexi]);
-          indicator[indexi] = std::max(indicator[indexi],localdelta);
-          indicator[indexj] = std::max(indicator[indexj],localdelta);
-        }
+      // access neighbor
+      const EntityPointer pOutside = intersection.outside();
+      const Entity &outside = *pOutside;
+      int indexj = mapper.map( outside );
+
+      // handle face from one side only
+      if ( it.level() > outside.level() ||
+           (it.level() == outside.level() && indexi<indexj) )
+      {
+        double localdelta = std::abs(c[indexj]-c[indexi]);
+        indicator[indexi] = std::max(indicator[indexi],localdelta);
+        indicator[indexj] = std::max(indicator[indexj],localdelta);
       }
-  }                                                    /*@\label{fah:loop1}@*/
+    }
+  }                                              /*@\label{fah:loop1}@*/
 
   // mark cells for refinement/coarsening
   double globaldelta = globalmax-globalmin;
@@ -79,21 +84,30 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
     if (indicator[mapper.map(*it)]>refinetol*globaldelta
         && (it.level()<lmax || !it->isRegular()))
     {
-      grid.mark(1,it);
-      marked++;
-      IntersectionIterator isend = it->ileafend();
-      for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
-        if (is.neighbor())
-          if (is.outside().level()<lmax || !is.outside()->isRegular())
-            grid.mark(1,is.outside());
+      const Entity &entity = *it;
+      grid.mark( 1, entity );
+      ++marked;
+      IntersectionIterator isend = entity.ileafend();
+      for( IntersectionIterator is = entity.ileafbegin(); is != isend; ++is )
+      {
+        const typename IntersectionIterator::Intersection intersection = *is;
+        if( !intersection.neighbor() )
+          continue;
+
+        const EntityPointer pOutside = intersection.outside();
+        const Entity &outside = *pOutside;
+        if( (outside.level() < lmax) || !outside.isRegular() )
+          grid.mark( 1, outside );
+      }
     }
     if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)
     {
-      grid.mark(-1,it);
-      marked++;
+      grid.mark( -1, *it );
+      ++marked;
     }
-  }                                                    /*@\label{fah:loop3}@*/
-  if (marked==0) return false;
+  }                                              /*@\label{fah:loop3}@*/
+  if( marked==0 )
+    return false;
 
   // restrict to coarse elements
   std::map<IdType,RestrictedValue> restrictionmap; // restricted concentration /*@\label{fah:loop4}@*/

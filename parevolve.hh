@@ -22,6 +22,9 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   // intersection iterator type
   typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
 
+  // type of intersection
+  typedef typename IntersectionIterator::Intersection Intersection;
+
   // entity pointer type
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
 
@@ -59,25 +62,28 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     double sumfactor = 0.0;
 
     // run through all intersections with neighbors and boundary
-    IntersectionIterator isend = it->ileafend();
-    for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
+    const IntersectionIterator isend = it->ileafend();
+    for( IntersectionIterator is = it->ileafbegin(); is != isend; ++is )
     {
+      const Intersection &intersection = *is;
+
       // get geometry type of face
-      Dune::GeometryType gtf = is.intersectionSelfLocal().type();
+      Dune::GeometryType gtf = intersection.intersectionSelfLocal().type();
+
+      const Dune::ReferenceElement< ct, dim-1 > &refElement
+        = Dune::ReferenceElements< ct, dim-1 >::general( gtf );
 
       // center in face's reference element
-      const Dune::FieldVector<ct,dim-1>&
-      facelocal = Dune::ReferenceElements<ct,dim-1>::general(gtf).position(0,0);
+      const Dune::FieldVector< ct, dim-1 > &facelocal = refElement.position( 0, 0 );
 
       // get normal vector scaled with volume
-      Dune::FieldVector<ct,dimworld> integrationOuterNormal
-        = is.integrationOuterNormal(facelocal);
-      integrationOuterNormal
-        *= Dune::ReferenceElements<ct,dim-1>::general(gtf).volume();
+      Dune::FieldVector< ct, dimworld > integrationOuterNormal
+        = intersection.integrationOuterNormal( facelocal );
+      integrationOuterNormal *= refElement.volume();
 
       // center of face in global coordinates
-      Dune::FieldVector<ct,dimworld>
-      faceglobal = is.intersectionGlobal().global(facelocal);
+      Dune::FieldVector< ct, dimworld > faceglobal
+        = intersection.intersectionGlobal().global( facelocal );
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
@@ -89,15 +95,18 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (factor>=0) sumfactor += factor;
 
       // handle interior face
-      if (is.neighbor())
+      if( intersection.neighbor() )
       {
         // access neighbor
-        EntityPointer outside = is.outside();
+        EntityPointer outside = intersection.outside();
         int indexj = mapper.map(*outside);
 
+        const int insideLevel = it->level();
+        const int outsideLevel = outside->level();
+
         // handle face from one side
-        if ( it->level()>outside->level() ||
-             (it->level()==outside->level() && indexi<indexj) )
+        if( (insideLevel > outsideLevel)
+            || ((insideLevel == outsideLevel) && (indexi < indexj)) )
         {
           // compute factor in neighbor
           Dune::GeometryType nbgt = outside->type();
@@ -107,12 +116,12 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
                             *Dune::ReferenceElements<ct,dim>::general(nbgt).volume();
           double nbfactor = velocity*integrationOuterNormal/nbvolume;
 
-          if (factor<0)                         // inflow
+          if( factor < 0 )       // inflow
           {
             update[indexi] -= c[indexj]*factor;
             update[indexj] += c[indexj]*nbfactor;
           }
-          else                         // outflow
+          else       // outflow
           {
             update[indexi] -= c[indexi]*factor;
             update[indexj] += c[indexi]*nbfactor;
@@ -121,12 +130,14 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       }
 
       // handle boundary face
-      if (is.boundary())
-        if (factor<0)                 // inflow, apply boundary condition
+      if( intersection.boundary() )
+      {
+        if( factor < 0 )       // inflow, apply boundary condition
           update[indexi] -= b(faceglobal,t)*factor;
-        else                 // outflow
+        else       // outflow
           update[indexi] -= c[indexi]*factor;
-    }             // end all intersections
+      }
+    }       // end all intersections
 
     // compute dt restriction
     if (it->partitionType()==Dune::InteriorEntity)       /*@\label{peh:inter}@*/
