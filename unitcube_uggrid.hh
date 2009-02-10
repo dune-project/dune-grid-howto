@@ -13,22 +13,22 @@ class UnitCube<Dune::UGGrid<3>,1>
 public:
   typedef Dune::UGGrid<3> GridType;
 
-  UnitCube () : grid_(800)
+  UnitCube ()
   {
     //   Start grid creation
-    grid_.createBegin();
+    Dune::GridFactory<GridType> factory;
 
     //   Insert vertices
     Dune::FieldVector<double,3> pos;
 
-    pos[0] = 0;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 0;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 0;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
-    pos[0] = 0;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 1;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 1;    factory.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 1;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 1;    factory.insertVertex(pos);
 
 
     // Insert element
@@ -36,19 +36,19 @@ public:
     for (int i=0; i<8; i++)
       cornerIDs[i] = i;
 
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::cube,3), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::cube,3), cornerIDs);
 
     //   Finish initialization
-    grid_.createEnd();
+    grid_ = factory.createGrid();
   }
 
-  Dune::UGGrid<3>& grid ()
+  GridType& grid ()
   {
-    return grid_;
+    return *grid_;
   }
 
 private:
-  Dune::UGGrid<3> grid_;
+  GridType* grid_;
 };
 
 // UGGrid 3d, variant 2 (tetrahedra) specialization
@@ -58,53 +58,53 @@ class UnitCube<Dune::UGGrid<3>,2>
 public:
   typedef Dune::UGGrid<3> GridType;
 
-  UnitCube () : grid_(800)
+  UnitCube ()
   {
     //   Start grid creation
-    grid_.createBegin();
+    Dune::GridFactory<GridType> factory;
 
     //   Insert vertices
     Dune::FieldVector<double,3> pos;
 
-    pos[0] = 0;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 0;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 0;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 1;  pos[2] = 0;    grid_.insertVertex(pos);
-    pos[0] = 0;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 0;  pos[2] = 1;    grid_.insertVertex(pos);
-    pos[0] = 0;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
-    pos[0] = 1;  pos[1] = 1;  pos[2] = 1;    grid_.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 0;    factory.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 0;  pos[2] = 1;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 0;  pos[2] = 1;    factory.insertVertex(pos);
+    pos[0] = 0;  pos[1] = 1;  pos[2] = 1;    factory.insertVertex(pos);
+    pos[0] = 1;  pos[1] = 1;  pos[2] = 1;    factory.insertVertex(pos);
 
 
     // Insert element
     std::vector<unsigned int> cornerIDs(4);
 
     cornerIDs[0] = 0;  cornerIDs[1] = 1;  cornerIDs[2] = 2;  cornerIDs[3] = 4;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
 
     cornerIDs[0] = 1;  cornerIDs[1] = 3;  cornerIDs[2] = 2;  cornerIDs[3] = 7;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
 
     cornerIDs[0] = 1;  cornerIDs[1] = 7;  cornerIDs[2] = 2;  cornerIDs[3] = 4;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
 
     cornerIDs[0] = 1;  cornerIDs[1] = 7;  cornerIDs[2] = 4;  cornerIDs[3] = 5;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
 
     cornerIDs[0] = 4;  cornerIDs[1] = 7;  cornerIDs[2] = 2;  cornerIDs[3] = 6;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,3), cornerIDs);
 
     //   Finish initialization
-    grid_.createEnd();
+    grid_ = factory.createGrid();
   }
 
-  Dune::UGGrid<3>& grid ()
+  GridType& grid ()
   {
-    return grid_;
+    return *grid_;
   }
 
 private:
-  Dune::UGGrid<3> grid_;
+  GridType* grid_;
 };
 
 // UGGrid 2d, variant 1 (quadrilaterals) specialization
@@ -114,25 +114,25 @@ class UnitCube<Dune::UGGrid<2>,1>
 public:
   typedef Dune::UGGrid<2> GridType;
 
-  UnitCube () : grid_(800)
+  UnitCube ()
   {
     //   Start grid creation
-    grid_.createBegin();
+    Dune::GridFactory<GridType> factory;
 
     //   Insert vertices
     Dune::FieldVector<double,2> pos;
 
     pos[0] = 0;  pos[1] = 0;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     pos[0] = 1;  pos[1] = 0;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     pos[0] = 0;  pos[1] = 1;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     pos[0] = 1;  pos[1] = 1;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     // Insert element
     std::vector<unsigned int> cornerIDs(4);
@@ -141,19 +141,19 @@ public:
     cornerIDs[2] = 2;
     cornerIDs[3] = 3;
 
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::cube,2), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::cube,2), cornerIDs);
 
     //   Finish initialization
-    grid_.createEnd();
+    grid_ = factory.createGrid();
   }
 
-  Dune::UGGrid<2>& grid ()
+  GridType& grid ()
   {
-    return grid_;
+    return *grid_;
   }
 
 private:
-  Dune::UGGrid<2> grid_;
+  GridType* grid_;
 };
 
 // UGGrid 2d, variant 2 (triangles) specialization
@@ -163,46 +163,46 @@ class UnitCube<Dune::UGGrid<2>,2>
 public:
   typedef Dune::UGGrid<2> GridType;
 
-  UnitCube () : grid_(800)
+  UnitCube ()
   {
     //   Start grid creation
-    grid_.createBegin();
+    Dune::GridFactory<GridType> factory;
 
     //   Insert vertices
     Dune::FieldVector<double,2> pos;
 
     pos[0] = 0;  pos[1] = 0;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     pos[0] = 1;  pos[1] = 0;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     pos[0] = 0;  pos[1] = 1;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     pos[0] = 1;  pos[1] = 1;
-    grid_.insertVertex(pos);
+    factory.insertVertex(pos);
 
     // Insert element
     std::vector<unsigned int> cornerIDs(3);
 
     cornerIDs[0] = 0;  cornerIDs[1] = 1;  cornerIDs[2] = 2;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,2), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,2), cornerIDs);
 
     cornerIDs[0] = 2;  cornerIDs[1] = 1;  cornerIDs[2] = 3;
-    grid_.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,2), cornerIDs);
+    factory.insertElement(Dune::GeometryType(Dune::GeometryType::simplex,2), cornerIDs);
 
     //   Finish initialization
-    grid_.createEnd();
+    grid_ = factory.createGrid();
   }
 
-  Dune::UGGrid<2>& grid ()
+  GridType& grid ()
   {
-    return grid_;
+    return *grid_;
   }
 
 private:
-  Dune::UGGrid<2> grid_;
+  GridType* grid_;
 };
 #endif
 
