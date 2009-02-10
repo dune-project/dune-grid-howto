@@ -40,7 +40,7 @@ void vertexdata (const G& grid, const F& f)
        it!=grid.template leafend<dim>(); ++it)
   {
     // evaluate functor and store value
-    c[mapper.map(*it)] = f(it->geometry()[0]);
+    c[mapper.map(*it)] = f(it->geometry().corner(0));
   }
 
   // generate a VTK file
