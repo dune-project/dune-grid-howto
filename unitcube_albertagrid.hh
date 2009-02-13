@@ -5,47 +5,38 @@
 
 #if HAVE_ALBERTA
 #include <dune/grid/albertagrid.hh>
+#include <dune/grid/albertagrid/gridfactory.hh>
 
-// AlbertaGrid 2d, variant 1 (2 triangles) specialization
-#if ALBERTA_DIM == 2 && ALBERTA_WORLD_DIM == 2
-template<>
-class UnitCube<Dune::AlbertaGrid<2,2>,1>
+template< int dim >
+class UnitCube< Dune::AlbertaGrid< dim, dim >, 1 >
+  : public BasicUnitCube< dim >
 {
 public:
-  typedef Dune::AlbertaGrid<2,2> GridType;
-
-  UnitCube () : grid_("grids/2dgrid.al")
-  {}
-
-  Dune::AlbertaGrid<2,2>& grid ()
-  {
-    return grid_;
-  }
+  typedef Dune::AlbertaGrid< dim, dim > GridType;
 
 private:
-  Dune::AlbertaGrid<2,2> grid_;
-};
-#endif
+  GridType *grid_;
 
-// AlbertaGrid 3d, variant 1 (6 tetrahedra) specialization
-#if ALBERTA_DIM == 3 && ALBERTA_WORLD_DIM == 3
-template<>
-class UnitCube<Dune::AlbertaGrid<3,3>,1>
-{
 public:
-  typedef Dune::AlbertaGrid<3,3> GridType;
-
-  UnitCube () : grid_("grids/3dgrid.al")
-  {}
-
-  Dune::AlbertaGrid<3,3>& grid ()
+  UnitCube ()
   {
-    return grid_;
+    Dune::GridFactory< GridType > factory;
+    BasicUnitCube< dim >::insertVertices( factory );
+    BasicUnitCube< dim >::insertSimplices( factory );
+    grid_ = factory.createGrid( "UnitCube", true );
   }
 
-private:
-  Dune::AlbertaGrid<3,3> grid_;
+  ~UnitCube ()
+  {
+    Dune::GridFactory< GridType >::destroyGrid( grid_ );
+  }
+
+  GridType &grid ()
+  {
+    return *grid_;
+  }
 };
-#endif
-#endif
+
+#endif // #if HAVE_ALBERTA
+
 #endif

@@ -14,15 +14,21 @@
 #include "functors.hh"
 #include "unitcube.hh"
 
+
+#ifdef GRIDDIM
+const int dimGrid = GRIDDIM;
+#endif
+
+
 //! supply functor
 template<class Grid>
-void dowork (Grid& grid)
+void dowork ( Grid &grid, int refSteps = 5 )
 {
   // make function object
   Exp<typename Grid::ctype,Grid::dimension> f;
 
   // refine the grid
-  grid.globalRefine(5);
+  grid.globalRefine( refSteps );
 
   // call the visualization functions
   elementdata(grid,f);
@@ -35,29 +41,32 @@ int main(int argc, char **argv)
   Dune::MPIHelper::instance(argc,argv);
 
   // start try/catch block to get error messages from dune
-  try {
+  try
+  {
     /*
        UnitCube<Dune::OneDGrid,1> uc0;
        UnitCube<Dune::YaspGrid<3>,1> uc1;
        UnitCube<Dune::YaspGrid<2>,1> uc2;
-       UnitCube<Dune::SGrid<1,1>,1> uc3;
-       UnitCube<Dune::SGrid<2,2>,1> uc4;
-       UnitCube<Dune::SGrid<3,3>,1> uc5;
-       #if HAVE_UG
-       UnitCube<Dune::UGGrid<3>,2> uc6;
-       #endif
-       #if HAVE_ALBERTA
-       #if ALBERTA_DIM==2
-       UnitCube<Dune::AlbertaGrid<2,2>,1> uc7;
-       #endif
-       #endif
      */
-    UnitCube<Dune::SGrid<2,2>,1> uc4;
-    dowork(uc4.grid());
+#if HAVE_UG
+    UnitCube< Dune::UGGrid< dimGrid >, 2 > uc6;
+    dowork( uc6.grid(), 3 );
+#endif
+
+#ifdef GRIDDIM
+#if HAVE_ALBERTA
+    UnitCube< Dune::AlbertaGrid< dimGrid, dimGrid >, 1 > uc7;
+    // note: The 3d cube cannot be bisected recursively
+    dowork( uc7.grid(), (dimGrid < 3 ? 6 : 0 ) );
+#endif
+#endif
+
+    UnitCube< Dune::SGrid< dimGrid, dimGrid >, 1 > uc4;
+    dowork( uc4.grid(), 3 );
 
 #if HAVE_ALUGRID
-    UnitCube<Dune::ALUSimplexGrid<3,3> ,1> uc8;
-    dowork(uc8.grid());
+    UnitCube< Dune::ALUSimplexGrid< dimGrid, dimGrid > , 1 > uc8;
+    dowork( uc8.grid(), 3 );
 #endif
   }
   catch (std::exception & e) {
