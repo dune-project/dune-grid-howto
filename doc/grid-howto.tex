@@ -249,7 +249,7 @@ Documentation of the files and classes in \Dune{} is provided in code and
 can be extracted using the
 doxygen\footnote{\href{http://www.stack.nl/~dimitri/doxygen/}{\texttt{http://www.stack.nl/$\sim$dimitri/doxygen/}}}
 software available elsewhere. The code documentation can either be built
-locally on your machine (in html and other formats, e.~g.~\LaTeX) 
+locally on your machine (in html and other formats, e.g.~\LaTeX) 
 or its latest version is available at
 \begin{center}
 \href{http://www.dune-project.org/doc/}%
@@ -385,6 +385,14 @@ this case all entities are of type ``cube''.
   modest. Also try dimensions 4 and 5!
 \end{exc}
 
+\begin{exc} 
+  The static methods \lstinline!Dune::gridlevellist! and
+  \lstinline!Dune::gridleaflist! produce a very detailed output of the grid's
+  elements on a specified grid level. Change the code and print out this
+  information for the leaf grid or a grid on lower level. Try to understand the
+  output. 
+\end{exc}
+
 \section{Traversing a grid --- A first look at the grid interface}
 
 After looking at very first simple example we are now ready to go on
@@ -397,7 +405,7 @@ numberstyle=\tiny, numbersep=5pt]{../traversal.cc}
 \end{lst}
 
 The \lstinline!main! function near the end of the listing is pretty
-similar to previous one except that we use a 2d grid for the unit
+similar to the previous one except that we use a 2d grid for the unit
 square that just consists of one cell. In line \ref{tc:refine} this
 cell is refined once using the standard method of grid refinement of
 the implementation. Here, the cell is refined into four smaller cells.
@@ -426,22 +434,28 @@ several. As in the STL the elements of any container can be accessed
 with iterators which are generalized pointers. Again, a \Dune{} grid
 knows several different iterators which provide access to the
 different kinds of entities and which also provide different patterns
-of access. 
+of access.
 
-Line \ref{tc:ittype} extracts the type of an iterator from the grid
+As we usually do not want to use the entire hierarchy of the grid, we first
+define a view on that part of the grid we are interested in. This can be a
+level or the leaf part of the grid. In line \ref{tc:lfgv} a type for a
+\lstinline!GridView! on the leaf grid is defined.
+
+Line \ref{tc:ittype} extracts the type of an iterator from this view 
 class. \lstinline!Codim! is a \lstinline!struct! within the grid class
 that takes an integer template parameter specifying the codimension
 over which to iterate. Within the \lstinline!Codim! structure the type
-\lstinline!LeafIterator! is defined. Since we specified codimension 0
+\lstinline!Iterator! is defined. Since we specified codimension 0
 this iterator is used to iterate
-over the elements which are not refined any further, i.~e.~which are
+over the elements which are not refined any further, i.e.~which are
 the leaves of the refinement trees.
 
 The \lstinline!for!-loop in line \ref{tc:forel} now visits every such
-element. The \lstinline!leafbegin! and \lstinline!leafend! on the grid
-class deliver the first leaf element and one past the last leaf
-element. Note that the \lstinline!template! keyword must be used and
-template parameters are passed explicitely. Within the loop body in
+element. The \lstinline!begin! and \lstinline!end! on the
+\lstinline!LeafGridView!
+class deliver the first leaf element and one past the last leaf element. Note
+that the \lstinline!template! keyword must be used and template parameters are
+passed explicitely. Within the loop body in
 lines \ref{tc:forel0}-\ref{tc:forel1} the iterator \lstinline!it! acts
 like a pointer to an entity of dimension \lstinline!dim! and
 codimension 0. The exact type would be
@@ -457,8 +471,8 @@ mapping is also called the ``local to global'' mapping.  The
 corresponding reference element has a certain type which is extracted
 in line \ref{tc:reftype}. Since the reference elements are polyhedra
 they consist of a finite number of corners. The images of the corners
-under the local to global map can be accessed via an
-\lstinline!operator[]!. Line \ref{tc:print} prints the geometry type
+under the local to global map can be accessed via the
+\lstinline!corner(int n)! method. Line \ref{tc:print} prints the geometry type
 and the position of the first corner of the element. Then line
 \ref{tc:count} just counts the number of elements visited.
 
@@ -480,12 +494,13 @@ degrees of freedom associated to, say, faces).
 
 Finally, we show in lines \ref{tc:level0}-\ref{tc:level1} how the
 hierarchic structure of the mesh can be accessed. To that end a
-\lstinline!LevelIterator! is used. It provides access to all entities
-of a given codimension (here 0) on a given grid level. The coarsest
+\lstinline!LevelGridView! is used. It provides via an \lstinline!Iterator!
+access to all entities of a given codimension (here 0) on a given grid level.
+The coarsest
 grid level (the initial macro grid) has number zero and the number of
 the finest grid level is returned by the \lstinline!maxLevel()! method
-of the grid.  The methods \lstinline!lbegin()! and \lstinline!lend()!
-on the grid deliver iterators to the first and one-past-the-last
+of the grid.  The methods \lstinline!begin()! and \lstinline!end()!
+on the view deliver iterators to the first and one-past-the-last
 entity of a given grid level supplied as an integer argument to these
 methods.
 
@@ -674,7 +689,7 @@ definition it is clear that the concept does not necessarily exist as
 program text. 
 
 A class that implements a concept is called a
-\textit{model} of the concept. E.~g.~in the standard template library (STL)
+\textit{model} of the concept. E.g.~in the standard template library (STL)
 the class \lstinline!std::vector<int>! is a model of the concept
 ``container''. If all instances of a class template are a model of
 a given concept we can also say that the class template is a model of
@@ -685,7 +700,7 @@ In standard OO language a concept would be formulated as
 an abstract base class and all the models would be implemented as
 derived classes. However, for reasons of efficiency we do not want to
 use dynamic polymorphism. Moreover, concepts are more powerful because
-the models of a concept can use different types, e.~g.~as return types of
+the models of a concept can use different types, e.g.~as return types of
 methods. As an example consider the STL where the begin method on a
 vector of int returns \lstinline!std::vector<int>::iterator! and on a
 list of int it returns \lstinline!std::list<int>::iterator! which may
@@ -772,6 +787,14 @@ you to the documentation of the corresponding wrapper class template
     classes are typically aggregated in the grid class and accessed via
     iterators. 
 
+\minisec{\href{TODO}{GridView}}
+
+    The GridView gives a view on a level or the leaf part of a grid. It
+    provides iterators for access to the elements of this view and a
+    communication method for parallel computations. Alternatively, a
+    LevelIterator of a LeafIterator  can be directly accessed from a grid.
+    These iterator types are described below.
+
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Entity.html}{Entity}}
 
     The entity class encapsulates
@@ -793,61 +816,47 @@ you to the documentation of the corresponding wrapper class template
     entity. Moreover it is immutable, i.e. the referenced entity can
     not be modified. 
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1LevelIterator.html}{LevelIterator}}
+\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Iterator.html}{Iterator}}
 
-    LevelIterator  is an
-    immutable iterator that provides access to an entity. It can be
-    incremented to visit all entities of a given
-    codimension and level of the grid. An EntityPointer is
-    assignable from a LevelIterator. 
-
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1LeafIterator.html}{LeafIterator}}
-
-    LeafIterator is an
+    Iterator is an
     immutable iterator that provides access to an entity. It can by
     incremented to visit all entities of a given
-    codimension of the leaf grid. An EntityPointer is assignable
-    from a LeafIterator. 
+    codimension of a GridView. An EntityPointer is assignable
+    from an Iterator. 
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1HierarchicIterator.html}{HierarchicIterator}}
-
-    HierarchicIterator 
-    is an immutable iterator that provides access to an entity. It can
-    be incremented to visit all entities of
-    codimension 0 that resulted from subdivision of a given entity of
-    codimension 0. An EntityPointer is assignable from a
-    HierarchicIterator. 
-
-\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{LevelIntersectionIterator}}
+\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{IntersectionIterator}}
 
     IntersectionIterator provides access to all entities of
     codimension 0 that have an intersection of codimension 1 with a
     given entity of codimension 0. In a conforming mesh these are the
     face neighbors of an element. For two entities with a common
-    intersection the IntersectionIterator also provides information
-    about the geometric location of the intersection. Furthermore it
-    also provides information about intersections of an entity with
+    intersection the IntersectionIterator can be dereferenced as an Intersection
+    object which in turn provides information about the geometric location of
+    the intersection.  Furthermore this Intersection class also provides
+    information about intersections of an entity
+    with
     the internal or external boundaries. 
-    The LevelIntersectionIterator provides intersections between
-    codimension 0 entities having the same level.  
+    The IntersectionIterator provides intersections between
+    codimension 0 entities among the same GridView.
     
-\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{LeafIntersectionIterator}}
-
-    This iterator has the same properties as the LevelIntersectionIterator
-    but provides intersections between leaf entities of the grid.
-
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LeafIndexSet}}
 
     LevelIndexSet and LeafIndexSet which are both models of
     Dune::IndexSet are used to attach any kind of user-defined data to
     (subsets of) entities of the grid. This data is supposed to be
-    stored in one-dimensional arrays for reasons of efficiency. 
+    stored in one-dimensional arrays for reasons of efficiency. An IndexSet is
+    usually not used directly but through a Mapper (c.f.~chapter
+    \ref{ch:mappers}).
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IdSet.html}{LocalIdSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IdSet.html}{GlobalIdSet}}
 
     LocalIdSet and GlobalIdSet which are both models of Dune::IdSet
     are used to save user data during a grid refinement phase and
-    during dynamic load balancing in the parallel case. 
+    during dynamic load balancing in the parallel case. The LocalIdSet is
+    unique for all entities on the current partition, whereas the GlobalIdSet
+    gives a unique mapping over all grid partitions. An IdSet is usually not used
+    directly but through a Mapper (c.f.~chapter
+    \ref{ch:mappers}).
 
 
 \section{Propagation of type information}
@@ -865,8 +874,8 @@ compiler. As in the Standard Template Library strange error messages
 may occur if you try to mix these types.
 
 In order to avoid these problems the related types of an
-implementation are as public types from most classes of an
-implementation. E.~g., in order to extract the
+implementation are provided as public types by most classes of an
+implementation. E.g., in order to extract the
 \lstinline!XLevelIterator! (for codimension 0) from the
 \lstinline!XGrid! class you would write
 \begin{lstlisting}
@@ -951,11 +960,28 @@ used.
 numberstyle=\tiny, numbersep=5pt]{../unitcube_yaspgrid.hh}
 \end{lst}
 
+\minisec{GridFactory}
+
+The file \lstinline!basicunitcube.hh!\ provides an interface class for the
+set-up of a unit cube in two or three dimensions with simplicial or cubic
+elements with help of the dune-grid class \lstinline!GridFactory!. This class
+hides grid specific methods for insertion of vertices and elements in the macro
+grid. Specializations of the \lstinline!GridFactory!\ exist for
+\lstinline!UGGrid!, \lstinline!AlbertaGrid!\ and the three dimensional
+\lstinline!ALUGrid!\ objects. 
+
+\begin{lst}[File dune-grid-howto/basicunitcube.hh] \mbox{}
+\nopagebreak
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+numberstyle=\tiny, numbersep=5pt]{../basicunitcube.hh}
+\end{lst}
+
 \minisec{UGGrid}
 
-The following listing shows how to create \lstinline!UGGrid!
-objects. Two and three-dimensional versions are available. The
-\lstinline!variant! parameter can take on two values: 1 for
+The following listing shows how to create \lstinline!UGGrid!\
+objects based on the \lstinline!BasicUnitCube!. Two and three-dimensional
+versions are available. The \lstinline!variant! parameter can take on two
+values: 1 for
 quadrilateral/hexahedral grids and 2 for triangular/tetrahedral
 grids. The initial grids are read in AmiraMesh format.
 
@@ -969,14 +995,17 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
 
 The following listing contains specializations of the
 \lstinline!UnitCube! template for Alberta in two and three
-dimensions. When using Alberta the \Dune{} framework has to be
-configured with a dimension (\lstinline!--with-alberta-dim=2!,
+dimensions. When using Alberta versions less than $2.0$ the \Dune{} framework
+has to be configured with a dimension (\lstinline!--with-alberta-dim=2!,
 \lstinline!--with-alberta-world-dim=2!) and only this dimension can then be
 used. 
 The dimension from the configure run is available in the macro
 \lstinline!ALBERTA_DIM! and \lstinline!ALBERTA_WORLD_DIM! 
 in the file \lstinline!config.h! (see
-next section). The \lstinline!variant! parameter must be 1.
+next section). The \lstinline!variant! parameter must be 1. Like in the
+\lstinline!UGGrid!\ implementation the grid factory concept is used as the
+\lstinline!UnitCube!\ specializations are based on the
+\lstinline!BasicUnitCube!.
 
 \begin{lst}[File dune-grid-howto/unitcube\_albertagrid.hh] \mbox{}
 \nopagebreak
@@ -986,13 +1015,15 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_albertagrid.hh}
 
 \minisec{ALUGrid}
 
-The next listing shows the instantiation of \lstinline!ALUSimplexGrid! or 
-\lstinline!ALUCubeGrid! objects. 
-The ALUGrid implementation supports either simplicial grids ,i.e. 
+The next listing shows the instantiation of \lstinline!ALUSimplexGrid!\ or 
+\lstinline!ALUCubeGrid!\ objects. 
+The ALUGrid implementation supports either simplicial grids, i.e.\ 
 tetrahedral or triangular grids, and hexahedral grids and the
 element type has to be chosen at compile-time. This is done by choosing 
 either \lstinline!ALUSimplexGrid! or \lstinline!ALUCubeGrid!. 
-The \lstinline!variant! parameter must be 1. 
+The \lstinline!variant!\ parameter must be 1. 
+For three dimensional versions the grid objects are set up with help of the
+\lstinline!BasicUnitCube!\ class.
 
 \begin{lst}[File dune-grid-howto/unitcube\_alugrid.hh] \mbox{}
 \nopagebreak
@@ -1003,20 +1034,18 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_alugrid.hh}
 \section{Using configuration information provided by configure}
 
 The \lstinline!./configure! script in the application
-(\lstinline!dune-grid-howto! here) produces a file
-\lstinline!config.h! that contains information about the configuration
-parameters. E.~g.~which of the optional grid implementations is
+(\lstinline!dune-grid-howto!\ here) produces a file
+\lstinline!config.h!\ that contains information about the configuration
+parameters. E.g.~which of the optional grid implementations is
 available and which dimension has been selected (if applicable). This
 information can then be used at compile-time to include header files
 or code that depend on optional packages.
 
-As an example, the macro \lstinline!HAVE_UG! can be used to compile
+As an example, the macro \lstinline!HAVE_UG!\ can be used to compile
 UG-specific code as in
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 #if HAVE_UG
 #include"dune/grid/uggrid.hh"
-#include"dune/io/file/amirameshreader.hh"
-#endif
 \end{lstlisting}
 
 It is important that the file \lstinline!config.h! is the first
@@ -1028,28 +1057,28 @@ Dune has its own macro grid format, the \underline{D}une \underline{G}rid \under
 A detailed description of the DGF and how to use it can be found on the
 homepage of Dune under the documentation section (see 
 \href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}%
-{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}).
+{DuneGridFormatParser}\footnote{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}%
+{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}}).
 
-Here we only give a short introduction. To use the DGF parser the configuration 
-option \\ 
-\lstinline!--with-grid-dim={1,2,3}! must be provided 
-during configuration run. Optional \\ 
-\lstinline!--with-grid-type=ALBERTAGRID!.
-Furthermore, \lstinline!ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM!, 
-\lstinline!ONEDGRID,SGRID,UGGRID!, and \lstinline!YASPGRID! can be chosen as grid types.
-can be chosen. Note that both values will also be changeable later. 
+Here we only give a short introduction. The configuration
+\lstinline!--with-grid-dim={1,2,3}! must be provided during configuration run
+in order to use the DGF parser. A default grid type can be chosen with the
+configuration option  \lstinline!--with-grid-type=ALBERTAGRID!.
+Further possible grid types are \lstinline!ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM!, 
+\lstinline!ONEDGRID,SGRID,UGGRID!, and \lstinline!YASPGRID!.
+Note that both values will also be changeable later. 
 If the \lstinline!--with-grid-dim! option was not provided during configuration the 
 DFG grid type definition will not work. Nevertheless, the grid parser will work 
 but the grid type has to be defined by the user and the appropriate DGF parser 
 specialization has to be included. 
-Assuming the \lstinline!--with-grid-dim! was provided the DGF grid type 
+Assuming the \lstinline!--with-grid-dim!\ was provided the DGF grid type 
 definition works by first including \lstinline!gridtype.hh!.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-#include <dune/grid/io/file/dgfparser/gridtype.hh>
+#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
 \end{lstlisting}
-Depending on the pre-configured values of \lstinline!GRIDDIM! and
+Depending on the pre-configured values of \lstinline!GRIDDIM!\ and
 \lstinline!GRIDTYPE! a typedef for the grid to use will be provided by
-including \lstinline!gridtype.hh!. The follwoing example show how an 
+including \lstinline!dgfgridtype.hh!. The follwoing example show how an 
 instance of the defined grid is generated. Given a DGF file, for example 
 \lstinline!unitcube2.dgf!, a grid pointer is created as follows.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
@@ -1184,7 +1213,7 @@ refined. Then
 E \approx |I_f-I_c|
 \end{equation}
 is an estimate for the error. If
-the refinement is such that every element is halfened in every
+the refinement is such that every element is bisected in every
 coordinate direction, the function to be integrated is sufficiently
 smooth and the order of the quadrature rule is $p+1$,
 then the error should be reduced by a factor of $(1/2)^p$ after
@@ -1242,7 +1271,7 @@ whether an entity has already been visited by some algorithm or
 not. In this chapter we will show with some examples how arbitrary
 user data can be attached to a grid.
 
-\section{Mappers}
+\section{Mappers}\label{ch:mappers}
 
 The general situation is that a user wants to store some arbitrary
 data with a subset of the entities of a grid. Remember that entities
@@ -1269,7 +1298,7 @@ index. The set of indices starts at zero and is consecutive.
 
 Let us assume that the set of all entities in the grid is $E$ and
 that $E^\prime\subseteq E$ is the subset of entities for which data is
-to be stored. E.~g.~this could be all the vertices in the leaf grid in
+to be stored. E.g.~this could be all the vertices in the leaf grid in
 the case of $P_1$ finite elements. Then the access from grid entities
 to user data is a two stage process: A so-called \textit{mapper}
 provides a map
@@ -1306,7 +1335,7 @@ shown below.
 
 \minisec{Id based mappers}
 
-Id-based mapper can also be used while a grid changes, i.~e.~it is
+Id-based mappers can also be used while a grid changes, i.e.~it is
 ensured that the map $m$ can still be evaluated for all entities $e$
 that are still in the grid after modification. For that it
 has to be implemented on the basis of a \lstinline!Dune::IdSet!. This may be
@@ -1323,7 +1352,7 @@ id-based mapper would be used to transfer the required data
 
 \section{Visualization of discrete functions}
 
-Let use mappers to evaluate a function $f:\Omega\to\mathbb{R}$ for
+Let us use mappers to evaluate a function $f:\Omega\to\mathbb{R}$ for
 certain entities and store the values in a vector. Then, in order to
 do something useful, we use the vector to produce a graphical
 visualization of the function.
@@ -1406,7 +1435,7 @@ the second last argument of \lstinline!grape.displayVector!. This argument is th
   degree of the approximation.
 \end{itemize}
 
-Finally the following listing shows the main programm that drives the
+Finally the following listing shows the main program that calls the
 two functions just discussed:
 
 \begin{lst}[File dune-grid-howto/visualization.cc] \mbox{}
@@ -1542,7 +1571,7 @@ can also be parallelized in a straightforward way.
 
 \subsection{Implementation}
 
-First, we need to specify the problem parameters, i.~e.~initial
+First, we need to specify the problem parameters, i.e.~initial
 condition, boundary condition and velocity field. This is done by the
 following functions.
 
@@ -1557,8 +1586,8 @@ condition should also be straightforward now. The function
 \lstinline!initialize! works on a concentration vector \lstinline!c!
 that can be stored in any container type with a vector interface
 (\lstinline!operator[]!, \lstinline!size()! and copy constructor are
-needed). Moreover the grid and a mapper for element-wise data have to
-passed as well. 
+needed). Moreover the grid and a mapper for element-wise data have to be passed
+as well. 
 
 \begin{lst}[File dune-grid-howto/initialize.hh] \mbox{}
 \nopagebreak
@@ -1601,12 +1630,10 @@ with copy constructor and size method.
 The computation of the fluxes is done in lines
 \ref{evh:flux0}-\ref{evh:flux1}. An \lstinline!IntersectionIterator!
 is used to access all intersections $\gamma_{ij}$ of a leaf element
-$\omega_i$. For a full documentation of the
-\lstinline!IntersectionIterator! we refer to
-\begin{center}
-\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}
-{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}}}
-\end{center}
+$\omega_i$. For a full documentation on the
+\lstinline!Intersection!\ class, we refer to the doxygen module page on 
+\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}{Intersections}\footnote{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}
+{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}}}}
 An Intersection is with another element $\omega_j$ if the
 \lstinline!neighbor()! method of the iterator returns true (line
 \ref{evh:neighbor}) or with the external boundary if
@@ -1664,6 +1691,14 @@ XML file format.
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../vtkout.hh}
 \end{lst}
+
+In addition to the snapshots that are produced at each timestep, this function
+also generates a series file which stores the actual \lstinline!time! of an
+evolution scheme together with the snapshots' filenames.  After executing the
+shell script \lstinline!writePVD!\ on this series file, we get a
+\underline{P}ara\underline{v}iew {D}ata (PVD) file with the same name as the
+snapshots. This file opened with paraview then gives us a neat animation over
+the time period.
 
 Finally, the main program:
 
@@ -1770,10 +1805,10 @@ numberstyle=\tiny, numbersep=5pt]{../adaptiveintegration.cc}
 
 The work is done in the function \lstinline!adaptiveintegration!.
 Lines \ref{aic:int0}-\ref{aic:int1} compute the value of the integral
-on the current mesh. After printing the result the decission whether
+on the current mesh. After printing the result the decision whether
 to continue or not is done in line \ref{aic:finish}. The extrapolation
 strategy relies on the fact that every element has a father. To ensure
-this the grid is at least once refined globally in the first step
+this, the grid is at least once refined globally in the first step
 (line \ref{aic:gr}). Now the refinement threshold $\kappa$ can be
 computed in lines \ref{aic:kappa0}-\ref{aic:kappa1}. Finally the last
 loop in lines \ref{aic:mark0}-\ref{aic:mark1} marks elements for
@@ -1821,7 +1856,7 @@ heuristic strategy that works as follows:
 \item Compute global maximum and minimum of element concentrations:
   $$\overline{C}=\max_i C_i,  \ \ \ \underline{C}=\min_i C_i.$$
 \item As the local indicator in cell $\omega_i$ we define $$\eta_i =
-  \max_{\gamma_{ij}} |C_i-C_j|$$. Here $\gamma_{ij}$ denotes
+  \max_{\gamma_{ij}} |C_i-C_j|.$$ Here $\gamma_{ij}$ denotes
   intersections with other elements in the leaf grid.
 \item If for $\omega_i$ we have
   $\eta_i>\overline{\text{tol}}\cdot (\overline{C}-\underline{C})$
@@ -1848,8 +1883,8 @@ for an element:
   old mesh as a non-leaf element: Compute the cell value as an average
   of the son elements in the old mesh.
 \item The element is a leaf element in the new mesh and is obtained
-  from through refining some element in the old mesh: Copy the value
-  from this element in the old mesh.
+  through refining some element in the old mesh: Copy the value
+  from the element in the old mesh to the new mesh.
 \end{itemize}
 
 The complete mesh adaptation is done by the function
@@ -1873,7 +1908,7 @@ grid levels and thereby adding the value in an element to the father
 element. The key into the map is the global id of an element. Thus the
 value is accessible also after mesh modification.
 
-Now grid can really be modified in line \ref{fah:adapt} by calling the
+Now the grid can really be modified in line \ref{fah:adapt} by calling the
 \lstinline!adapt()! method on the grid object. The mapper is updated
 to reflect the changes in the grid in line \ref{fah:update} and the
 concentration vector is resized to the new size in line
@@ -1890,6 +1925,22 @@ Here is the new main program with an adapted \lstinline!timeloop!:
 numberstyle=\tiny, numbersep=5pt]{../adaptivefinitevolume.cc}
 \end{lst}
 
+The program works analogously to the non adaptive \lstinline!finitevolume!\
+version from the previous chapter. The only differences are inside the
+\lstinline!timeloop!\ function. During the initialization of the concentration
+vector in line \ref{afv:in} and after each time step in line \ref{afv:ad} the
+function \lstinline!finitevolumeadapt! is called in order to refine the grid.
+The initial adaptation is repeated $\overline{M}$ times.  Note that adaptation
+after each time steps is deactivated during the compiler phase for unstructured
+grids with help of the \lstinline!Capabilities!\ class. This is because
+structured grids do not allow a conforming refinement and are therefore
+unusable for adaptive schemes. In fact, the \lstinline!adapt! method on a grid
+of \lstinline!YaspGrid! e.g.~ results in a {\em global} grid refinement.
+
+\begin{exc}
+  Compile the program with the gridtype set to \lstinline!ALUGRID_SIMPLEX!
+  and \lstinline!ALUGRID_CONFORM! and compare the results visually.  
+\end{exc}
 
 \chapter{Parallelism}
 
@@ -1924,8 +1975,8 @@ values:
 Entities of codimension 0 are restricted to the three partition types
 \textit{interior}, \textit{overlap} and \textit{ghost}. Entities of
 codimension greater than 0 may take all partition type values. 
-The codimension 0 entities with partition type \textit{interior} for a
-non-overlapping decomposition of the entity set, i.~e.~for each
+The codimension 0 entities with partition type \textit{interior} form a
+non-overlapping decomposition of the entity set, i.e.~for each
 entity of codimension 0 there is exactly one process where this entity
 has partition type \textit{interior}.
 Moreover, the codimension 0 leaf entities in process number $i$ form a
@@ -2055,7 +2106,7 @@ the receiving end. Here the data is read from the message buffer and
 stored in the user's data structures. The message buffer is realized
 as an input stream delivering items of type \lstinline!DataType!. In
 the \lstinline!scatter! method it is up to the user how the data is to
-be processed, e.~g.~one can simply overwrite (as is done here), add or
+be processed, e.g.~one can simply overwrite (as is done here), add or
 compute a maximum.
 
 \section{Parallel finite volume scheme}
@@ -2073,7 +2124,7 @@ numberstyle=\tiny, numbersep=5pt]{../parevolve.hh}
 
 The first difference to the sequential version is in line
 \ref{peh:assert} where it is checked that the grid provides an overlap
-of at least one element. The overlap my be either of partition type
+of at least one element. The overlap may be either of partition type
 \textit{overlap} or \textit{ghost}. The finite volume scheme itself
 only computes the updates for the elements with partition type
 \textit{interior}.
@@ -2113,9 +2164,16 @@ Finally, we need a new main program, which is in the following listing:
 numberstyle=\tiny, numbersep=5pt]{../parfinitevolume.cc}
 \end{lst}
 
-The only essential difference to the sequential program is in line
+Essential differences to the sequential program are in line
 \ref{pfc:rank0} where the printing of the data of the current time
-step is restricted to the process with rank 0.
+step is restricted to the process with rank 0 and in line \ref{pfv:lb} where
+the method \lstinline!loadBalance!\ is called on the grid. This method
+re-partitions the grid in a way such that on every partition there is an equal
+amount of grid elements. Some parallel grids like e.g.~\lstinline!YaspGrid!
+however do not support load balancing and therefore need to start with a
+sufficiently fine grid that allows a reasonable partition on all processes.
+Note that during each global refinement step the overlap region of a
+\lstinline!YaspGrid!\ grows and therefore the communication overhead increases. 
 
 
 % \chapter{Input and Output}
