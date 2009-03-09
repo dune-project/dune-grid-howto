@@ -48,12 +48,12 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
   for (int i=grid.maxLevel(); i<lmax; i++)
   {
     if (grid.maxLevel()>=lmax) break;
-    finitevolumeadapt(grid,mapper,c,lmin,lmax,0);
+    finitevolumeadapt(grid,mapper,c,lmin,lmax,0);           /*@\label{afv:in}@*/
     initialize(grid,mapper,c);
   }
 
   // write initial data
-  vtkout(grid,c,"concentration",0);
+  vtkout(grid,c,"concentration",0,0);
 
   // variables for time, timestep etc.
   double dt, t=0;
@@ -78,7 +78,7 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     if (t >= saveStep)
     {
       // write data
-      vtkout(grid,c,"concentration",counter);
+      vtkout(grid,c,"concentration",counter,t);
 
       // increase counter and saveStep for next interval
       saveStep += saveInterval;
@@ -86,17 +86,20 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     }
 
     // print info about time, timestep size and counter
-    std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
+    std::cout << "s=" << grid.size(0)
+              << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
 
     // for unstructured grids call adaptation algorithm
     if( Dune :: Capabilities :: IsUnstructured<G> :: v )
     {
-      finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
+      finitevolumeadapt(grid,mapper,c,lmin,lmax,k);          /*@\label{afv:ad}@*/
     }
   }
 
   // write last time step
-  vtkout(grid,c,"concentration",counter);
+  vtkout(grid,c,"concentration",counter,tend);
+
+  // write
 }
 
 //===============================================================

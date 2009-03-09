@@ -42,21 +42,41 @@ void partimeloop (const G& grid, double tend)
 
   // initialize concentration with initial values
   initialize(grid,mapper,c);
-  vtkout(grid,c,"pconc",0);
+  vtkout(grid,c,"pconc",0,0.0,grid.comm().rank());
 
   // now do the time steps
   double t=0,dt;
   int k=0;
+  const double saveInterval = 0.1;
+  double saveStep = 0.1;
+  int counter = 1;
   while (t<tend)
   {
+    // augment time step counter
     k++;
+
+    // apply finite volume scheme
     parevolve(grid,mapper,c,t,dt);
+
+    // augment time
     t += dt;
+
+    // check if data should be written
+    if (t >= saveStep)
+    {
+      // write data
+      vtkout(grid,c,"pconc",counter,t,grid.comm().rank());
+
+      //increase counter and saveStep for next interval
+      saveStep += saveInterval;
+      ++counter;
+    }
+
+    // print info about time, timestep size and counter
     if (grid.comm().rank()==0)                         /*@\label{pfc:rank0}@*/
       std::cout << "k=" << k << " t=" << t << " dt=" << dt << std::endl;
-    if (k%20==0) vtkout(grid,c,"pconc",k/20);
   }
-  vtkout(grid,c,"pconc",k/20);
+  vtkout(grid,c,"pconc",counter,tend,grid.comm().rank());
 }
 
 //===============================================================
