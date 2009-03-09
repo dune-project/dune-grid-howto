@@ -100,7 +100,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
       double lowresult=integrateentity(it,f,loworder);
       double highresult=integrateentity(it,f,highorder);
       double error = std::abs(lowresult-highresult);
-      if (error>kappa) grid.mark(1,it);
+      if (error>kappa) grid.mark(1,*it);
     }                                                  /*@\label{aic:mark1}@*/
 
     // adapt the mesh
