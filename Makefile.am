@@ -9,7 +9,7 @@ examples_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
 	finitevolumeadapt.hh transportproblem.hh unitcube_yaspgrid.hh \
 	functors.hh unitcube_albertagrid.hh vertexdata.hh \
 	initialize.hh unitcube_alugrid.hh vtkout.hh integrateentity.hh \
-	unitcube.hh parevolve.hh unitcube_onedgrid.hh basicunitcube.hh
+	unitcube.hh parevolve.hh unitcube_onedgrid.hh
 
 examples_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
