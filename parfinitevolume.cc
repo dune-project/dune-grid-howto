@@ -7,9 +7,11 @@
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
+
+// checks for defined gridtype and inlcudes appropriate dgfparser implementation
 #include "vtkout.hh"
 #include "unitcube.hh"
-#include "transportproblem.hh"
+#include "transportproblem2.hh"
 #include "initialize.hh"
 #include "parfvdatahandle.hh"
 #include "parevolve.hh"
@@ -90,9 +92,41 @@ int main (int argc , char ** argv)
 
   // start try/catch block to get error messages from dune
   try {
-    UnitCube<Dune::YaspGrid<2>,64> uc;
+    using namespace Dune;
+
+    UnitCube<YaspGrid<2>,64> uc;
     uc.grid().globalRefine(2);
     partimeloop(uc.grid(),0.5);
+
+    /* To use an alternative grid implementations for parallel computations,
+       uncomment exactly one definition of uc2 and the line below. */
+    //    #define LOAD_BALANCING
+
+    //  UGGrid supports parallelization in 2 or 3 dimensions
+#if HAVE_UG
+    //    typedef UGGrid< 2 > GridType;
+    //    UnitCube< GridType, 2 > uc2;
+#endif
+
+    //  ALUGRID supports parallelization in 3 dimensions only
+#if HAVE_ALUGRID
+    //    typedef ALUCubeGrid< 3, 3 > GridType;
+    //    typedef ALUSimplexGrid< 3, 3 > GridType;
+    //    UnitCube< GridType , 1 > uc2;
+#endif
+
+#ifdef LOAD_BALANCING
+
+    // refine grid until upper limit of level
+    uc2.grid().globalRefine( 6 );
+
+    // re-partition grid for better load balancing
+    uc2.grid().loadBalance();                               /*@\label{pfv:lb}@*/
+
+    // do time loop until end time 0.5
+    partimeloop(uc2.grid(), 0.5);
+#endif
+
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
