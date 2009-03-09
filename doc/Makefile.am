@@ -33,7 +33,7 @@ CURDIR=doc/grid-howto
 
 docdir=$(datadir)/doc/dune-grid-howto
 
-doc_DATA = grid-howto.pdf grid-howto.html
+doc_DATA = grid-howto.pdf
 
 EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
