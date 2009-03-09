@@ -21,8 +21,13 @@
 template<class Grid, class Functor>
 void adaptiveintegration (Grid& grid, const Functor& f)
 {
+  // get grid view type for leaf grid part
+  typedef typename Grid::LeafGridView GridView;
   // get iterator type
-  typedef typename Grid::template Codim<0>::LeafIterator ElementLeafIterator;
+  typedef typename GridView::template Codim<0>::Iterator ElementLeafIterator;
+
+  // get grid view on leaf part
+  GridView gridView = grid.leafView();
 
   // algorithm parameters
   const double tol=1E-8;
@@ -35,8 +40,8 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   {
     // compute integral on current mesh
     double value=0;                                      /*@\label{aic:int0}@*/
-    for (ElementLeafIterator it = grid.template leafbegin<0>();
-         it!=grid.template leafend<0>(); ++it)
+    for (ElementLeafIterator it = gridView.template begin<0>();
+         it!=gridView.template end<0>(); ++it)
       value += integrateentity(it,f,highorder);           /*@\label{aic:int1}@*/
 
     // print result
@@ -89,8 +94,8 @@ void adaptiveintegration (Grid& grid, const Functor& f)
     double kappa = std::min(maxextrapolatederror,0.5*maxerror);       /*@\label{aic:kappa1}@*/
 
     // mark elements for refinement
-    for (ElementLeafIterator it = grid.template leafbegin<0>();       /*@\label{aic:mark0}@*/
-         it!=grid.template leafend<0>(); ++it)
+    for (ElementLeafIterator it = gridView.template begin<0>();       /*@\label{aic:mark0}@*/
+         it!=gridView.template end<0>(); ++it)
     {
       double lowresult=integrateentity(it,f,loworder);
       double highresult=integrateentity(it,f,highorder);
@@ -105,7 +110,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   }
 
   // write grid in VTK format
-  Dune::VTKWriter<typename Grid::LeafGridView> vtkwriter(grid.leafView());
+  Dune::VTKWriter<typename Grid::LeafGridView> vtkwriter(gridView);
   vtkwriter.write("adaptivegrid",Dune::VTKOptions::binaryappended);
 }
 

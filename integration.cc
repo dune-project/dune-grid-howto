@@ -20,8 +20,14 @@ void uniformintegration (Grid& grid)
   // function to integrate
   Exp<typename Grid::ctype,Grid::dimension> f;
 
+  // get GridView on leaf grid - type
+  typedef typename Grid :: LeafGridView GridView;
+
+  // get GridView instance
+  GridView gridView = grid.leafView();
+
   // get iterator type
-  typedef typename Grid::template Codim<0>::LeafIterator LeafIterator;
+  typedef typename GridView :: template Codim<0> :: Iterator LeafIterator;
 
   // loop over grid sequence
   double oldvalue=1E100;
@@ -29,8 +35,8 @@ void uniformintegration (Grid& grid)
   {
     // compute integral with some order
     double value = 0.0;
-    LeafIterator eendit = grid.template leafend<0>();
-    for (LeafIterator it = grid.template leafbegin<0>(); it!=eendit; ++it)
+    LeafIterator eendit = gridView.template end<0>();
+    for (LeafIterator it = gridView.template begin<0>(); it!=eendit; ++it)
       value += integrateentity(it,f,1);                /*@\label{ic:call}@*/
 
     // print result and error estimate

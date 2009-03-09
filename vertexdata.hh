@@ -25,8 +25,12 @@ void vertexdata (const G& grid, const F& f)
   // get dimension and coordinate type from Grid
   const int dim = G::dimension;
   typedef typename G::ctype ct;
+  typedef typename G::LeafGridView GridView;
   // dertermine type of LeafIterator for codimension = dimension
-  typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator;
+  typedef typename GridView::template Codim<dim>::Iterator VertexLeafIterator;
+
+  // get grid view on the leaf part
+  GridView gridView = grid.leafView();
 
   // make a mapper for codim 0 entities in the leaf grid
   Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P1Layout>
@@ -36,8 +40,8 @@ void vertexdata (const G& grid, const F& f)
   std::vector<double> c(mapper.size());
 
   // iterate through all entities of codim 0 at the leafs
-  for (VertexLeafIterator it = grid.template leafbegin<dim>();
-       it!=grid.template leafend<dim>(); ++it)
+  for (VertexLeafIterator it = gridView.template begin<dim>();
+       it!=gridView.template end<dim>(); ++it)
   {
     // evaluate functor and store value
     c[mapper.map(*it)] = f(it->geometry().corner(0));
@@ -59,7 +63,7 @@ void vertexdata (const G& grid, const F& f)
     // display data
     grape.displayVector("concentration", // name of data that appears in grape
                         c,  // data vector
-                        grid.leafIndexSet(), // used index set
+                        gridView.indexSet(), // used index set
                         polynomialOrder, // polynomial order of data
                         dimRange); // dimRange of data
   }

@@ -15,12 +15,15 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   // type used for coordinates in the grid
   typedef typename G::ctype ct;
 
+  // type for grid view on leaf part
+  typedef typename G::LeafGridView GridView;
+
   // iterator type
-  typedef typename G::template Codim<0>::
-  template Partition<Dune::All_Partition>::LeafIterator LeafIterator;       /*@\label{peh:pit}@*/
+  typedef typename GridView::template Codim<0>::
+  template Partition<Dune::All_Partition>::Iterator LeafIterator;       /*@\label{peh:pit}@*/
 
   // intersection iterator type
-  typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
+  typedef typename GridView::IntersectionIterator IntersectionIterator;
 
   // type of intersection
   typedef typename IntersectionIterator::Intersection Intersection;
@@ -35,10 +38,13 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   // initialize dt very large
   dt = 1E100;
 
+  // get grid view instance on leaf grid
+  GridView gridView = grid.leafView();
+
   // compute update vector and optimum dt in one grid traversal
   // iterate over all entities, but update is only used on interior entities
-  LeafIterator endit = grid.template leafend<0,Dune::All_Partition>(); /*@\label{peh:end}@*/
-  for (LeafIterator it = grid.template leafbegin<0,Dune::All_Partition>(); it!=endit; ++it) /*@\label{peh:begin}@*/
+  LeafIterator endit = gridView.template end<0,Dune::All_Partition>(); /*@\label{peh:end}@*/
+  for (LeafIterator it = gridView.template begin<0,Dune::All_Partition>(); it!=endit; ++it) /*@\label{peh:begin}@*/
   {
     // cell geometry type
     Dune::GeometryType gt = it->type();
@@ -62,8 +68,8 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     double sumfactor = 0.0;
 
     // run through all intersections with neighbors and boundary
-    const IntersectionIterator isend = it->ileafend();
-    for( IntersectionIterator is = it->ileafbegin(); is != isend; ++is )
+    const IntersectionIterator isend = gridView.iend(*it);
+    for( IntersectionIterator is = gridView.ibegin(*it); is != isend; ++is )
     {
       const Intersection &intersection = *is;
 
