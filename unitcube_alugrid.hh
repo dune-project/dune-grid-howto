@@ -5,25 +5,38 @@
 
 #if HAVE_ALUGRID
 #include <dune/grid/alugrid.hh>
+#include <dune/grid/alugrid/3d/alu3dgridfactory.hh>
 
-// ALU3dGrid tetrahedra specialization. Note: element type determined by type
+// ALU3dGrid and ALU2dGrid simplex specialization.
+// Note: element type determined by type
 template<>
 class UnitCube<Dune::ALUSimplexGrid<3,3>,1>
+  : public BasicUnitCube< 3 >
 {
 public:
   typedef Dune::ALUSimplexGrid<3,3> GridType;
 
-  UnitCube () : filename("grids/cube.tetra"), grid_(filename.c_str())
-  {}
+private:
+  GridType * grid_;
 
-  GridType& grid ()
+public:
+  UnitCube ()
   {
-    return grid_;
+    Dune::GridFactory< GridType > factory;
+    BasicUnitCube< 3 >::insertVertices( factory );
+    BasicUnitCube< 3 >::insertSimplices( factory );
+    grid_ = factory.createGrid( );
   }
 
-private:
-  std::string filename;
-  GridType grid_;
+  ~UnitCube()
+  {
+    delete grid_;
+  }
+
+  GridType &grid ()
+  {
+    return *grid_;
+  }
 };
 
 // ALU2SimplexGrid 2d specialization. Note: element type determined by type
@@ -49,21 +62,32 @@ private:
 // ALU3dGrid hexahedra specialization. Note: element type determined by type
 template<>
 class UnitCube<Dune::ALUCubeGrid<3,3>,1>
+  : public BasicUnitCube< 3 >
 {
 public:
   typedef Dune::ALUCubeGrid<3,3> GridType;
 
-  UnitCube () : filename("grids/cube.hexa"), grid_(filename.c_str())
-  {}
+private:
+  GridType * grid_;
 
-  GridType& grid ()
+public:
+  UnitCube ()
   {
-    return grid_;
+    Dune::GridFactory< GridType > factory;
+    BasicUnitCube< 3 >::insertVertices( factory );
+    BasicUnitCube< 3 >::insertCubes( factory );
+    grid_ = factory.createGrid( );
   }
 
-private:
-  std::string filename;
-  GridType grid_;
+  ~UnitCube()
+  {
+    delete grid_;
+  }
+
+  GridType &grid ()
+  {
+    return *grid_;
+  }
 };
 #endif
 

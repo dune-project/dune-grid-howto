@@ -26,7 +26,8 @@ public:
     else if( variant == 2 )
       BasicUnitCube< dim >::insertSimplices( factory );
     else
-      DUNE_THROW( Dune::NotImplemented, "Variant " << variant << " of UG unit cube not implemented." );
+      DUNE_THROW( Dune::NotImplemented, "Variant "
+                  << variant << " of UG unit cube not implemented." );
     grid_ = factory.createGrid();
   }
 
