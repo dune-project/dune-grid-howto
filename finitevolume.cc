@@ -43,14 +43,14 @@ void timeloop (const G& grid, double tend)
 
   // initialize concentration with initial values
   initialize(grid,mapper,c);                           /*@\label{fvc:init}@*/
-  vtkout(grid,c,"concentration",0);
+  vtkout(grid,c,"concentration",0,0.0);
 
   // now do the time steps
   double t=0,dt;
   int k=0;
   const double saveInterval = 0.1;
   double saveStep = 0.1;
-  int counter = 0;
+  int counter = 1;
 
   while (t<tend)                                       /*@\label{fvc:loop0}@*/
   {
@@ -67,7 +67,7 @@ void timeloop (const G& grid, double tend)
     if (t >= saveStep)
     {
       // write data
-      vtkout(grid,c,"concentration",counter);
+      vtkout(grid,c,"concentration",counter,t);
 
       // increase counter and saveStep for next interval
       saveStep += saveInterval;
@@ -75,11 +75,12 @@ void timeloop (const G& grid, double tend)
     }
 
     // print info about time, timestep size and counter
-    std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
+    std::cout << "s=" << grid.size(0)
+              << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
   }                                                    /*@\label{fvc:loop1}@*/
 
   // output results
-  vtkout(grid,c,"concentration",counter);             /*@\label{fvc:file}@*/
+  vtkout(grid,c,"concentration",counter,tend);     /*@\label{fvc:file}@*/
 }
 
 //===============================================================
@@ -95,7 +96,7 @@ int main (int argc , char ** argv)
   try {
     using namespace Dune;
 
-    // use unitcube from grids
+    // use unitcube from dgf grids
     std::stringstream dgfFileName;
     dgfFileName << "grids/unitcube" << GridType :: dimension << ".dgf";
 

@@ -34,43 +34,6 @@ struct P0Layout
 };
 
 template<class G>
-void gnuplot (G& grid, std::vector<double>& c)
-{
-  // first we extract the dimensions of the grid
-  const int dim = G::dimension;
-  const int dimworld = G::dimensionworld;
-
-  // type used for coordinates in the grid
-  // such a type is exported by every grid implementation
-  typedef typename G::ctype ct;
-
-  // the grid has an iterator providing the access to
-  // all elements (better codim 0 entities) which are leafs
-  // of the refinement tree.
-  // Note the use of the typename keyword and the traits class
-  typedef typename G::template Codim<0>::LeafIterator ElementLeafIterator;
-
-  // make a mapper for codim 0 entities in the leaf grid
-  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P0Layout>
-  mapper(grid);
-
-  // iterate through all entities of codim 0 at the leafs
-  int count = 0;
-  for (ElementLeafIterator it = grid.template leafbegin<0>();
-       it!=grid.template leafend<0>(); ++it)
-  {
-    Dune::GeometryType gt = it->type();
-    const Dune::FieldVector<ct,dim>&
-    local = Dune::ReferenceElements<ct,dim>::general(gt).position(0,0);
-    Dune::FieldVector<ct,dimworld>
-    global = it->geometry().global(local);
-    std::cout << global[0] << " " << c[mapper.map(*it)] << std::endl;
-    count++;
-  }
-}
-
-
-template<class G>
 void timeloop (G& grid, double tend, int lmin, int lmax)
 {
   // make a mapper for codim 0 entities in the leaf grid
@@ -85,12 +48,12 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
   for (int i=grid.maxLevel(); i<lmax; i++)
   {
     if (grid.maxLevel()>=lmax) break;
-    finitevolumeadapt(grid,mapper,c,lmin,lmax,0);
+    finitevolumeadapt(grid,mapper,c,lmin,lmax,0);           /*@\label{afv:in}@*/
     initialize(grid,mapper,c);
   }
 
   // write initial data
-  vtkout(grid,c,"concentration",0);
+  vtkout(grid,c,"concentration",0,0);
 
   // variables for time, timestep etc.
   double dt, t=0;
@@ -115,7 +78,7 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     if (t >= saveStep)
     {
       // write data
-      vtkout(grid,c,"concentration",counter);
+      vtkout(grid,c,"concentration",counter,t);
 
       // increase counter and saveStep for next interval
       saveStep += saveInterval;
@@ -123,17 +86,20 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
     }
 
     // print info about time, timestep size and counter
-    std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
+    std::cout << "s=" << grid.size(0)
+              << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
 
     // for unstructured grids call adaptation algorithm
     if( Dune :: Capabilities :: IsUnstructured<G> :: v )
     {
-      finitevolumeadapt(grid,mapper,c,lmin,lmax,k);
+      finitevolumeadapt(grid,mapper,c,lmin,lmax,k);          /*@\label{afv:ad}@*/
     }
   }
 
   // write last time step
-  vtkout(grid,c,"concentration",counter);
+  vtkout(grid,c,"concentration",counter,tend);
+
+  // write
 }
 
 //===============================================================

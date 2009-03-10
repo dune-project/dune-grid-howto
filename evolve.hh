@@ -12,14 +12,20 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   // type used for coordinates in the grid
   typedef typename G::ctype ct;
 
-  // iterator type
-  typedef typename G::template Codim<0>::LeafIterator LeafIterator;
+  // type of grid view on leaf part
+  typedef typename G::LeafGridView GridView;
+
+  // element iterator type
+  typedef typename GridView::template Codim<0>::Iterator LeafIterator;
 
   // intersection iterator type
-  typedef typename G::template Codim<0>::LeafIntersectionIterator IntersectionIterator;
+  typedef typename GridView::IntersectionIterator IntersectionIterator;
 
   // entity pointer type
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
+
+  // get grid view on leaf part
+  GridView gridView = grid.leafView();
 
   // allocate a temporary vector for the update
   V update(c.size());                                  /*@\label{evh:update}@*/
@@ -29,8 +35,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   dt = 1E100;
 
   // compute update vector and optimum dt in one grid traversal
-  LeafIterator endit = grid.template leafend<0>();     /*@\label{evh:loop0}@*/
-  for (LeafIterator it = grid.template leafbegin<0>(); it!=endit; ++it)
+  LeafIterator endit = gridView.template end<0>();     /*@\label{evh:loop0}@*/
+  for (LeafIterator it = gridView.template begin<0>(); it!=endit; ++it)
   {
     // cell geometry type
     Dune::GeometryType gt = it->type();
@@ -54,8 +60,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     double sumfactor = 0.0;
 
     // run through all intersections with neighbors and boundary
-    IntersectionIterator isend = it->ileafend();       /*@\label{evh:flux0}@*/
-    for (IntersectionIterator is = it->ileafbegin(); is!=isend; ++is)
+    IntersectionIterator isend = gridView.iend(*it);       /*@\label{evh:flux0}@*/
+    for (IntersectionIterator is = gridView.ibegin(*it); is!=isend; ++is)
     {
       // get geometry type of face
       Dune::GeometryType gtf = is->intersectionSelfLocal().type();

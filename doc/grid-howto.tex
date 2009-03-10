@@ -2164,17 +2164,25 @@ Finally, we need a new main program, which is in the following listing:
 numberstyle=\tiny, numbersep=5pt]{../parfinitevolume.cc}
 \end{lst}
 
-Essential differences to the sequential program are in line
+A difference to the sequential program can be found in line
 \ref{pfc:rank0} where the printing of the data of the current time
-step is restricted to the process with rank 0 and in line \ref{pfv:lb} where
-the method \lstinline!loadBalance!\ is called on the grid. This method
-re-partitions the grid in a way such that on every partition there is an equal
-amount of grid elements. Some parallel grids like e.g.~\lstinline!YaspGrid!
-however do not support load balancing and therefore need to start with a
-sufficiently fine grid that allows a reasonable partition on all processes.
-Note that during each global refinement step the overlap region of a
-\lstinline!YaspGrid!\ grows and therefore the communication overhead increases. 
+step is restricted to the process with rank 0. 
+\lstinline!YaspGrid! does not support dynamical load balancing and therefore
+needs to start with a sufficiently fine grid that allows a reasonable partition
+where each processes gets a non-empty part of grid. This is why we do not use
+DGF Files in the parallel example and initialize the grid by the UnitCube class
+instead. For \lstinline!YaspGrid! this allows an easy selection of the grid's
+initial coarseness through the second template argument of the
+\lstinline!UnitCube!. This argument should be chosen sufficiently high, because
+after each global refinement step the overlap region grows and therefore the
+communicaton overhead increases.
 
+If you want to use a grid with support for dynamical load balancing, define the
+macro \lstinline!LOAD\_BALANCING!\ and uncomment on of the possible definitions
+for such a grid in the code. In this case in line \ref{pfv:lb} the method
+\lstinline!loadBalance!\ is called on the grid.
+This method re-partitions the grid in a way such that on every partition there
+is an equal amount of grid elements.
 
 % \chapter{Input and Output}
 

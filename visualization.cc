@@ -45,28 +45,33 @@ int main(int argc, char **argv)
   {
     /*
        UnitCube<Dune::OneDGrid,1> uc0;
-       UnitCube<Dune::YaspGrid<3>,1> uc1;
-       UnitCube<Dune::YaspGrid<2>,1> uc2;
-     */
-#if HAVE_UG
-    UnitCube< Dune::UGGrid< dimGrid >, 2 > uc6;
-    dowork( uc6.grid(), 3 );
-#endif
+       UnitCube<Dune::YaspGrid<dimGrid>,1> uc1;
 
-#ifdef GRIDDIM
-#if HAVE_ALBERTA
-    UnitCube< Dune::AlbertaGrid< dimGrid, dimGrid >, 1 > uc7;
-    // note: The 3d cube cannot be bisected recursively
-    dowork( uc7.grid(), (dimGrid < 3 ? 6 : 0 ) );
-#endif
-#endif
+       #if HAVE_UG
+       UnitCube< Dune::UGGrid< dimGrid >, 2 > uc2;
+       dowork( uc2.grid(), 3 );
+       #endif
+
+       #ifdef GRIDDIM
+       #if HAVE_ALBERTA
+       UnitCube< Dune::AlbertaGrid< dimGrid, dimGrid >, 1 > uc3;
+       // note: The 3d cube cannot be bisected recursively
+       dowork( uc3.grid(), (dimGrid < 3 ? 6 : 0 ) );
+       #endif
+       #endif
+     */
 
     UnitCube< Dune::SGrid< dimGrid, dimGrid >, 1 > uc4;
     dowork( uc4.grid(), 3 );
 
 #if HAVE_ALUGRID
-    UnitCube< Dune::ALUSimplexGrid< dimGrid, dimGrid > , 1 > uc8;
-    dowork( uc8.grid(), 3 );
+    UnitCube< Dune::ALUSimplexGrid< dimGrid, dimGrid > , 1 > uc5;
+    dowork( uc5.grid(), 3 );
+
+#if GRIDDIM == 3
+    UnitCube< Dune::ALUCubeGrid< dimGrid, dimGrid > , 1 > uc6;
+    dowork( uc6.grid(), 3 );
+#endif
 #endif
   }
   catch (std::exception & e) {

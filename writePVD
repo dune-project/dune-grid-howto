@@ -1,0 +1,64 @@
+#! /bin/bash
+
+# read parameters
+if [ -z "$1" ]; then
+  echo "Usage: writePVD [file_prefix]"
+  exit
+fi
+
+param=$1
+SERIESFILE="${param##*/}"
+DIR="${param%$SERIESFILE}"
+DIR="${DIR:-.}"
+FILEPREFIX="${SERIESFILE%.*}"
+SERIESFILE=$1
+
+echo $SERIESFILE $DIR $FILEPREFIX
+
+THISDIR=$PWD
+# cd $DIR
+
+# output file name
+OUTPUTFILE=$FILEPREFIX.pvd
+
+#write header
+echo "Writing file: $OUTPUTFILE"
+echo "<?xml version=\"1.0\"?>" > $OUTPUTFILE
+echo "<VTKFile type=\"Collection\" version=\"0.1\" byte_order=\"LittleEndian\">" >> $OUTPUTFILE
+echo " <Collection>" >> $OUTPUTFILE
+echo "" >> $OUTPUTFILE
+
+# Set loop separator to end of line
+BAKIFS=$IFS
+IFS=$(echo -en "\n\b")
+# the following applied to the series file
+exec 3<&0
+exec 0<$SERIESFILE
+while read line
+do
+  # file name and time stamp
+  NAME=$(echo $line | cut -d " " -f 2)
+  TIME=$(echo $line | cut -d " " -f 3)
+  # strip unnecessary path from file name
+  while ! test -e $NAME
+  do 
+    NAME="${NAME#*/}"
+    if [ $NAME == "" ]; 
+    then # file does not exists
+      NAME=$(echo $line | cut -d " " -f 2)
+      echo $NAME " not found!"
+      exit
+    fi
+  done
+  # write line into output file
+	echo "<DataSet timestep=\"$TIME\" group=\"\" part=\"0\" file=\"$NAME\"/>" >> $OUTPUTFILE
+done
+exec 0<&3
+# restore $IFS which was used to determine what the field separators are
+IFS=$BAKIFS
+
+# write the end of file
+echo "" >> $OUTPUTFILE
+echo " </Collection>" >> $OUTPUTFILE
+echo "</VTKFile>" >> $OUTPUTFILE
+

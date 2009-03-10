@@ -13,12 +13,18 @@ void initialize (const G& grid, const M& mapper, V& c)
   // type used for coordinates in the grid
   typedef typename G::ctype ct;
 
+  // type of grid view on leaf part
+  typedef typename G::LeafGridView GridView;
+
   // leaf iterator type
-  typedef typename G::template Codim<0>::LeafIterator LeafIterator;
+  typedef typename GridView::template Codim<0>::Iterator LeafIterator;
+
+  // get grid view on leaf part
+  GridView gridView = grid.leafView();
 
   // iterate through leaf grid an evaluate c0 at cell center
-  LeafIterator endit = grid.template leafend<0>();
-  for (LeafIterator it = grid.template leafbegin<0>(); it!=endit; ++it)
+  LeafIterator endit = gridView.template end<0>();
+  for (LeafIterator it = gridView.template begin<0>(); it!=endit; ++it)
   {
     // get geometry type
     Dune::GeometryType gt = it->type();

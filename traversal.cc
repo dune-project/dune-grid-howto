@@ -26,20 +26,25 @@ void traversal (G& grid)
   // Leaf Traversal
   std::cout << "*** Traverse codim 0 leaves" << std::endl;
 
-  // the grid has an iterator providing the access to
-  // all elements (better codim 0 entities) which are leafs
-  // of the refinement tree.
-  // Note the use of the typename keyword and the traits class
-  typedef typename G::template Codim<0>::LeafIterator ElementLeafIterator; /*@\label{tc:ittype}@*/
+  // type of the GridView used for traversal
+  // every grid exports a LeafGridView and a LevelGridView
+  typedef typename G :: LeafGridView LeafGridView;     /*@\label{tc:lfgv}@*/
+
+  // get the instance of the LeafGridView
+  LeafGridView leafView = grid.leafView();             /*@\label{tc:lfv}@*/
+
+  // Get the iterator type
+  // Note the use of the typename and template keywords
+  typedef typename LeafGridView::template Codim<0>::Iterator ElementLeafIterator; /*@\label{tc:ittype}@*/
 
   // iterate through all entities of codim 0 at the leafs
   int count = 0;
-  for (ElementLeafIterator it = grid.template leafbegin<0>(); /*@\label{tc:forel}@*/
-       it!=grid.template leafend<0>(); ++it)
+  for (ElementLeafIterator it = leafView.template begin<0>();      /*@\label{tc:forel}@*/
+       it!=leafView.template end<0>(); ++it)
   {                                                    /*@\label{tc:forel0}@*/
     Dune::GeometryType gt = it->type();       /*@\label{tc:reftype}@*/
     std::cout << "visiting leaf " << gt                /*@\label{tc:print}@*/
-              << " with first vertex at " << it->geometry()[0]
+              << " with first vertex at " << it->geometry().corner(0)
               << std::endl;
     count++;                                           /*@\label{tc:count}@*/
   }                                                    /*@\label{tc:forel1}@*/
@@ -52,16 +57,17 @@ void traversal (G& grid)
 
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::template Codim<dim>::LeafIterator VertexLeafIterator; /*@\label{tc:vertit}@*/
+  typedef typename LeafGridView :: template Codim<dim>
+  :: Iterator VertexLeafIterator;                  /*@\label{tc:vertit}@*/
 
   // iterate through all entities of codim 0 on the given level
   count = 0;
-  for (VertexLeafIterator it = grid.template leafbegin<dim>(); /*@\label{tc:forve}@*/
-       it!=grid.template leafend<dim>(); ++it)
+  for (VertexLeafIterator it = leafView.template begin<dim>(); /*@\label{tc:forve}@*/
+       it!=leafView.template end<dim>(); ++it)
   {
     Dune::GeometryType gt = it->type();
     std::cout << "visiting " << gt
-              << " at " << it->geometry()[0]
+              << " at " << it->geometry().corner(0)
               << std::endl;
     count++;
   }
@@ -72,20 +78,28 @@ void traversal (G& grid)
   std::cout << std::endl;
   std::cout << "*** Traverse codim 0 level-wise" << std::endl;
 
+  // type of the GridView used for traversal
+  // every grid exports a LeafGridView and a LevelGridView
+  typedef typename G :: LevelGridView LevelGridView;   /*@\label{tc:level0}@*/
+
   // Get the iterator type
   // Note the use of the typename and template keywords
-  typedef typename G::template Codim<0>::LevelIterator ElementLevelIterator; /*@\label{tc:level0}@*/
+  typedef typename LevelGridView :: template Codim<0>
+  :: Iterator ElementLevelIterator;
 
   // iterate through all entities of codim 0 on the given level
   for (int level=0; level<=grid.maxLevel(); level++)
   {
+    // get the instance of the LeafGridView
+    LevelGridView levelView = grid.levelView(level);
+
     count = 0;
-    for (ElementLevelIterator it = grid.template lbegin<0>(level);
-         it!=grid.template lend<0>(level); ++it)
+    for (ElementLevelIterator it = levelView.template begin<0>();
+         it!=levelView.template end<0>(); ++it)
     {
       Dune::GeometryType gt = it->type();
       std::cout << "visiting " << gt
-                << " with first vertex at " << it->geometry()[0]
+                << " with first vertex at " << it->geometry().corner(0)
                 << std::endl;
       count++;
     }

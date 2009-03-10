@@ -6,10 +6,8 @@
 #include <dune/common/exceptions.hh>
 #include <dune/common/fvector.hh>
 
-#include "basicunitcube.hh"
-
 // default implementation for any template parameter
-template<typename T, int variant>
+template<typename T, int variant>                      /*@\label{uc:uc0}@*/
 class UnitCube
 {
 public:
@@ -29,7 +27,10 @@ public:
 private:
   // the constructed grid object
   T grid_;
-};
+};                                                     /*@\label{uc:uc1}@*/
+
+// include basic unitcube using GridFactory concept
+#include "basicunitcube.hh"
 
 // include specializations
 #include "unitcube_onedgrid.hh"
