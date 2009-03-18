@@ -17,6 +17,8 @@
 
 #ifdef GRIDDIM
 const int dimGrid = GRIDDIM;
+#else
+const int dimGrid = 2;
 #endif
 
 
@@ -52,13 +54,13 @@ int main(int argc, char **argv)
        dowork( uc2.grid(), 3 );
        #endif
 
-       #ifdef GRIDDIM
        #if HAVE_ALBERTA
-       UnitCube< Dune::AlbertaGrid< dimGrid, dimGrid >, 1 > uc3;
+       {
+       UnitCube< Dune::AlbertaGrid< dimGrid, dimGrid >, 1 > unitcube;
        // note: The 3d cube cannot be bisected recursively
-       dowork( uc3.grid(), (dimGrid < 3 ? 6 : 0 ) );
-       #endif
-       #endif
+       dowork( unitcube.grid(), (dimGrid < 3 ? 6 : 0) );
+       }
+       #endif // #if HAVE_ALBERTA
      */
 
     UnitCube< Dune::SGrid< dimGrid, dimGrid >, 1 > uc4;
@@ -71,8 +73,8 @@ int main(int argc, char **argv)
 #if GRIDDIM == 3
     UnitCube< Dune::ALUCubeGrid< dimGrid, dimGrid > , 1 > uc6;
     dowork( uc6.grid(), 3 );
-#endif
-#endif
+#endif // #if GRIDDIM == 3
+#endif // #if HAVE_ALUGRID
   }
   catch (std::exception & e) {
     std::cout << "STL ERROR: " << e.what() << std::endl;
