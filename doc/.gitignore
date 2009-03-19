@@ -2,6 +2,7 @@ Makefile
 Makefile.in
 Makefile.dist.in
 Makefile.dist
+config.tex
 auto
 *.aux
 *.bbl
@@ -15,6 +16,7 @@ auto
 *.idv
 *.idx
 *.lg
+*.swp
 *.tid
 *.tmp
 *.tms

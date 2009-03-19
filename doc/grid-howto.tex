@@ -39,15 +39,18 @@
 \title{The Distributed and Unified Numerics Environment (\Dune{}) Grid
   Interface HOWTO}
 
+\input{config.tex}
+
 \author{Peter Bastian$^\ast$ \and 
 Markus Blatt$^\ast$ \and
 Andreas Dedner$^\dagger$ \and 
 Christian Engwer$^\ast$ \and  
 Robert Kl\"ofkorn$^\dagger$ \and 
-Mario Ohlberger$^\dagger$ \and  
+Martin Nolte$^\dagger$ \and
+Mario Ohlberger$^\mathparagraph$ \and  
 Oliver Sander$^\ddagger$}
 
-\date{\today}
+\date{Version \version, \today}
 
 \publishers{%
 \vspace{10mm}
@@ -65,6 +68,10 @@ Universit\"atsstr.~38, D-70569 Stuttgart, Germany}\\
 \bigskip
 {\normalsize $^\dagger$Abteilung f\"ur Angewandte Mathematik, Universit\"at Freiburg,\\
 Hermann-Herder-Str.~10, D-79104 Freiburg, Germany}\\
+%
+\bigskip
+{\normalsize $^\mathparagraph$Institut f\"ur Numerische und Angewandte Mathematik, Universit\"at M\"unster,\\
+Einsteinstr.~62, D-48149 M\"unster, Germany}\\
 %
 \bigskip
 {\normalsize $^\ddagger$Institut f\"ur Mathematik II,\\ Freie Universit\"at Berlin,
@@ -94,6 +101,10 @@ of \Dune{} which is currently the most developed part. However, part of
 large variety of solvers for sparse linear systems) and a flexible class
 hierarchy for finite element methods. These will be described in
 subsequent documents. Now have fun!
+
+\vspace*{\fill}
+Thanks to Martin Drohmann for adapting this howto to version 1.2 of the
+DUNE grid interface.
 \end{abstract}
 
 \tableofcontents
