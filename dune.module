@@ -1,5 +1,5 @@
 # parameters for dune control
 Module: dune-grid-howto
 Maintainer: dune@dune-project.org
-Version: 1.2beta1
+Version: 1.2beta2
 Depends: dune-common dune-grid
