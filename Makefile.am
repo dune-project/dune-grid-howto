@@ -9,7 +9,7 @@ examples_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
 	finitevolumeadapt.hh transportproblem.hh unitcube_yaspgrid.hh \
 	functors.hh unitcube_albertagrid.hh vertexdata.hh \
 	initialize.hh unitcube_alugrid.hh vtkout.hh integrateentity.hh \
-	unitcube.hh parevolve.hh unitcube_onedgrid.hh
+	unitcube.hh parevolve.hh unitcube_onedgrid.hh basicunitcube.hh
 
 examples_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
@@ -65,4 +65,5 @@ EXTRA_DIST=dune.module
 # pass most important options when "make distcheck" is used
 DISTCHECK_CONFIGURE_FLAGS = --with-dune-common=$(DUNE_COMMON_ROOT) --with-dune-grid="$(DUNE_GRID_ROOT)" --with-dune-istl="$(DUNE_ISTL_ROOT)" --with-dune-disc="$(DUNE_DISC_ROOT)" CXX="$(CXX)" CC="$(CC)" --enable-parallel=@ENABLE_PARALLEL@ MPICC="$(MPICC)" --disable-documentation
 
+include $(top_srcdir)/am/top-rules
 include $(top_srcdir)/am/global-rules
