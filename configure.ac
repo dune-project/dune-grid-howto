@@ -60,7 +60,8 @@ AC_CONFIG_FILES([Makefile
 		doc/config.tex
 		doc/Makefile.dist
 		grids/Makefile
-		bin/wmlwrap])
+		bin/wmlwrap
+                dune-grid-howto.pc])
 AC_OUTPUT
 
 chmod +x bin/wmlwrap
