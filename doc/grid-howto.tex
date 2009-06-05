@@ -6,6 +6,7 @@
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{theorem}
+\usepackage{xspace}
 \usepackage{color}
 \usepackage{listings}
 \lstset{language=C++, basicstyle=\ttfamily, 
@@ -24,7 +25,7 @@
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
-\newcommand{\Dune}{{\sf\bfseries DUNE}}
+\newcommand{\Dune}{{\sf\bfseries DUNE}\xspace}
 
 %The theorems
 \theorembodyfont{\upshape}
@@ -899,6 +900,297 @@ struct template, named \lstinline!Codim! here, where the template
 parameters of the struct are those of the type. This concept may even
 be applied recursively. 
 
+\chapter{Constructing Grid Objects}
+
+So far we have talked about the grid interface and how you can access and
+manipulate grids.  This chapter will show you how you create grids in the
+first place.  There are several ways to do this.
+
+The central idea of \Dune is that all grid implementations behave equally
+and conform to the same interface.  However, this concept fails when it
+comes to constructing grid objects, because grid implementations differ too
+much to make one construction method work for all.  For example, for an
+unstructured grid you have to specify all vertex positions, whereas for a
+structured grid this would be a waste of time.  On the other hand, for
+a structured grid you may need to give the bounding box which, for an
+unstructured grid, is not necessary.  In practice, these differences do
+not pose serious problems.
+
+In this chapter, creating a grid always means creating a grid with only
+a single level.  Such grid is alternatively called a {\em coarse grid}
+or a {\em macro grid}.  There is currently no functionality in \Dune to
+set up hierarchical grids directly.  The underlying assumption is that
+the user will create a coarse grid first and then generate a hierarchy
+using refinement.  Despite the name (and grid implementations permitting),
+the coarse grid can of course be as large and fine as desired.
+
+\section{Creating Structured Grids}
+
+Creating structured grids is comparatively simple, as little information
+needs to be provided.  In general, for uniform structured grids, the grid
+dimension, bounding box, and number of elements in each direction suffices.
+Such information can be given directly with the constructor of the grid
+object. \Dune does not currently specify the signature of grid constructors,
+and hence they are all slightly different.  For example, to create a 2D
+\lstinline!SGrid! in $[0,1]^2 \subset \mathbb{R}^2$ with 10 elements in
+each direction call
+\begin{lstlisting}
+    Dune::FieldVector<int,2> n;
+    n[0] = n[1] = 10;
+
+    Dune::FieldVector<double,2> lower;
+    lower[0] = lower[1] = 1.0;
+
+    Dune::FieldVector<double,2> upper;
+    upper[0] = upper[1] = 1.0;
+
+    Dune::SGrid<2,2> grid(n, lower, upper);
+\end{lstlisting}
+If you want to do the same for a sequential \lstinline!YaspGrid! the code is
+\begin{lstlisting}
+    Dune::FieldVector<int,2> n;
+    n[0] = n[1] = 10;
+
+    Dune::FieldVector<double,2> upper;
+    upper[0] = upper[1] = 1.0;
+
+    Dune::FieldVector<bool,dim> periodic(false);
+    
+    YaspGrid<2> grid(upper, n, periodic, 0);
+\end{lstlisting}
+Note that you do not have to specify the lower left corner as \lstinline!YaspGrid!
+hardwires it to zero.  The unstructured one-dimensional \lstinline!OneDGrid!
+also has a constructor
+\begin{lstlisting}
+    OneDGrid grid(10,    // number of elements 
+                  0.0,   // left domain boundary
+                  1.0    // right domain boundary
+                  );
+\end{lstlisting}
+for uniform grids.
+
+\section{Reading Unstructured Grids from Files}
+
+Unstructured grids usually require much more information than what can
+reasonable be provided within the program code.  Instead, they are usually
+read from special files.  A large variety of different file formats for
+finite element grids exists, and \Dune provides support for some of them
+Again, no interface specification exists for file readers in \Dune.
+
+Arguably the most important file format currently supported by \Dune is
+the \lstinline!gmsh! format.  \lstinline!Gmsh!\footnote{\url{http://geuz.org/gmsh/}}
+is an open-source grid generator.  It creates simplicial grids in 2d and 3d
+and stores them in files ending in \lstinline!.msh!.  To read such a
+file into a FooGrid, include \lstinline!dune/grid/io/file/gmshreader.hh!
+and write
+\begin{lstlisting}
+    FooGrid* grid = GmshReader<GridType>::read(filename);
+\end{lstlisting}
+
+A second format is AmiraMesh, which is the native format of the Amira
+visualization toolbox.\footnote{\url{http://www.amiravis.de/}}
+To read AmiraMesh files you need to have the library libamiramesh%
+\footnote{http://www.amiravis.com/Ext411-01-libamiramesh/index.html}
+installed.  Then
+\begin{lstlisting}
+    FooGrid* grid = AmiraMeshReader<GridType>::read(filename);
+\end{lstlisting}
+reads the grid in \lstinline!filename! into the FooGrid.
+
+Further available formats are StarCD and the native Alberta format.
+See the class documentation of dune-grid for an up-to-date list.
+Demo grids for each format can be found in \lstinline!dune-grid/doc/grids!.
+
+
+
+\section{The \texorpdfstring{\Dune}{Dune} Grid Format (DGF)}
+
+Dune has its own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat. 
+A detailed description of the DGF and how to use it can be found on the
+homepage of \Dune% 
+\footnote{\url{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}}.
+
+Here we only give a short introduction. The configuration
+\lstinline!--with-grid-dim={1,2,3}! must be provided during configuration run
+in order to use the DGF parser. A default grid type can be chosen with the
+configuration option  \lstinline!--with-grid-type=ALBERTAGRID!.
+Further possible grid types are \lstinline!ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM!, 
+\lstinline!ONEDGRID,SGRID,UGGRID!, and \lstinline!YASPGRID!.
+Note that both values will also be changeable later. 
+If the \lstinline!--with-grid-dim! option was not provided during configuration the 
+DFG grid type definition will not work. Nevertheless, the grid parser will work 
+but the grid type has to be defined by the user and the appropriate DGF parser 
+specialization has to be included. 
+Assuming the \lstinline!--with-grid-dim!\ was provided the DGF grid type 
+definition works by first including \lstinline!gridtype.hh!.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
+\end{lstlisting}
+Depending on the pre-configured values of \lstinline!GRIDDIM!\ and
+\lstinline!GRIDTYPE! a typedef for the grid to use will be provided by
+including \lstinline!dgfgridtype.hh!. The following example shows how an 
+instance of the defined grid is generated. Given a DGF file, for example 
+\lstinline!unitcube2.dgf!, a grid pointer is created as follows.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+GridPtr<GridType> gridPtr( "unitcube2.dgf" );
+\end{lstlisting}
+The grid is accessed be dereferencing the grid pointer.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+GridType& grid = *gridPtr; 
+\end{lstlisting}
+To change the grid one simply has to re-compile the code using the following make command.
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
+make GRIDDIM=2 GRIDTYPE=ALBERTAGRID integration 
+\end{lstlisting}
+This will compile the application \texttt{integration} with grid type \lstinline!ALBERTAGRID! and grid dimension $2$.
+Note that before the re-compilation works, 
+the corresponding object file has to be removed.
+
+\section{The Grid Factory}
+\label{sec:grid_factory}
+
+While there is currently no convention on how a file reader should look like,
+there is a formally specified low-level interface for the construction of
+unstructured coarse grids.  This interface, which goes by the name of
+GridFactory, provides methods to, e.g., insert vertices and elements one by one.
+It is the basis of the file readers described in the previous section.
+The main reason why you may want to program the GridFactory directly is
+when writing your own grid readers.  However, in some cases it may also be
+most convenient to be able to specify your coarse grid entirely in the
+C++ code.  You can do that using the GridFactory.
+
+The GridFactory is programmed as a factory class (hence the name).
+You default construct an object of the factory class, provide it with all
+necessary information, and it will create and hand over a grid for you.
+In the following we will describe the use of the GridFactory in more detail.
+Say you are interested in creating a new grid of type \lstinline!FooGrid!.  Then
+you proceed as follows:
+
+\begin{enumerate}
+\item Create a GridFactory Object
+
+Get a new GridFactory object by calling
+
+\begin{lstlisting}[basicstyle=\small]
+    GridFactory< FooGrid > factory;
+\end{lstlisting}
+
+\item Enter the Vertices
+
+Insert the grid vertices by calling
+
+\begin{lstlisting}[basicstyle=\small]
+    factory.insertVertex(const FieldVector<ctype,dimworld>& position);
+\end{lstlisting}
+
+for each vertex. The order of insertion determines the level- and leaf indices of your level 0 vertices.
+
+\item Enter the elements
+
+For each element call
+
+\begin{lstlisting}[basicstyle=\small]
+    factory.insertElement(Dune::GeometryType type, const std::vector<int>& vertices);
+\end{lstlisting}
+
+The parameters are
+
+\begin{itemize}
+    \item type - The element type. The grid implementation is expected to throw
+	an exception if an element type that cannot be handled is encountered.
+    \item vertices - The indices of the vertices of this element.
+\end{itemize}
+
+The numbering of the vertices of each element is expected to follow the \Dune
+conventions. Refer to the page on reference elements for the details.
+
+\item Parametrized Domains
+
+\lstinline!FooGrid! may support parametrized domains. That means that you can provide a smooth description of your grid boundary. The actual grid may always be piecewise linear; however, as you refine, the grid will approach your prescribed boundary. You don't have to do this. If you do not specify the boundary geometry it is left to the grid implementation.
+
+In order to create curved boundary segments, for each segment you have to write a class which implements the correct geometry. These classes are then handed over to the 
+factory. Boundary segment implementations must be derived from
+
+\begin{lstlisting}[basicstyle=\small]
+    template <int dim, int dimworld> Dune::BoundarySegment
+\end{lstlisting}
+
+This is an abstract base class which requires you to overload the method
+
+\begin{lstlisting}[basicstyle=\small]
+    virtual FieldVector< double, dimworld > 
+         operator() (const FieldVector< double, dim-1 > &local)
+\end{lstlisting}
+
+This methods must compute the world coordinates from the local ones on the boundary segment. Give these classes to your grid by calling
+
+\begin{lstlisting}[basicstyle=\small]
+    grid.insertBoundarySegment(const std::vector<int>& vertices, 
+                               const BoundarySegment<dim,dimworld> *
+                                     boundarySegment = NULL);
+\end{lstlisting}
+
+Control over the allocated objects is taken from you, and the grid object will take care of their destruction.
+
+Note that you can call \lstinline!insertBoundarySegment! with only the first argument.
+In that case, the boundary geometry is left to the grid implementation.  However,
+the boundary segments get ordered in the way you inserted them.  This may be
+helpful if you have data attached to your coarse grid boundary 
+(see Sec.~\ref{sec:import_data_for_new_grids}).
+
+\item Finish construction
+
+To finish off the construction of the FooGrid object call
+
+\begin{lstlisting}[basicstyle=\small]
+    FooGrid* grid = factory.createGrid();
+\end{lstlisting}
+
+This time it is you who gets full responsibility for the allocated object.
+\end{enumerate}
+
+\section{Attaching Data to a New Grid}
+\label{sec:import_data_for_new_grids}
+
+In many cases there is data attached to new grids.  This data may be initial
+values, spatially distributed material parameters, boundary conditions, etc.
+It is associated to elements or vertices, or the boundary segments of the
+coarse grid.  The data may be available in a separate data file or even
+included in the same file with the grid. 
+
+ The connection with the grid in
+the grid file is usually make implicitly.  For example, vertex data is ordered
+in the same order as the vertices itself.  Hence the grid-reading process must 
+guarantee that vertices and elements are not reordered during grid creation.
+More specifically, \Dune guarantees the following: {\em the level and leaf
+indices of zero-level vertices and elements are defined by the order in which they
+were inserted into the grid factory}.  Note that this does not mean that
+the vertices and elements are traversed in this order by the Level- and
+LeafIterators.  What matters are the indices.  Note also that no such
+promise is made concerning edges, faces and the like.  Hence it is currently
+not possible to read edge and face data along with a grid without some
+trickery.
+
+It is also possible to attach data to boundary segments of the coarse grids.
+For this, the method \lstinline!Intersection::boundaryId! (which should
+really be called \lstinline!boundaryIndex!) returns an index when called
+for a boundary intersection.  If the boundary intersection is on level zero
+the index is consecutive and zero-starting.  For all other boundary intersections
+it is the index of the zero-level ancestor boundary segment of the intersection.
+
+If you have a list of data associated to certain boundary segments of your
+coarse grid, you need some control on how the boundary ids are set.  Remember
+from Sec.\,\ref{sec:grid_factory} that you can create a grid without mentioning
+the boundary at all.  If you do that, the boundary ids are set automatically
+by the grid implementation and the exact order is implementation-specific.
+If you set boundary segments explicitly using the \lstinline!insertBoundarySegment!
+method, then {\em the boundary segments are numbered in the order of their
+insertion}.  If you do not set all boundary segments the remaining ones
+get automatic, implementation-specific ids.  This is why the second argument
+of \lstinline!insertBoundarySegment! is optional: you may want to
+influence the ordering of the boundary segments, but leave the boundary
+geometry to the grid implementation.  Calling \lstinline!insertBoundarySegment!
+with a single argument allows you to do just this.
 
 
 \chapter{Grid implementations}
@@ -1062,50 +1354,7 @@ UG-specific code as in
 It is important that the file \lstinline!config.h! is the first
 include file in your application!
 
-\section{The DGF Parser -- reading common macro grid files}
 
-Dune has its own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat. 
-A detailed description of the DGF and how to use it can be found on the
-homepage of Dune under the documentation section (see 
-\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}%
-{DuneGridFormatParser}\footnote{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}%
-{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}}).
-
-Here we only give a short introduction. The configuration
-\lstinline!--with-grid-dim={1,2,3}! must be provided during configuration run
-in order to use the DGF parser. A default grid type can be chosen with the
-configuration option  \lstinline!--with-grid-type=ALBERTAGRID!.
-Further possible grid types are \lstinline!ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM!, 
-\lstinline!ONEDGRID,SGRID,UGGRID!, and \lstinline!YASPGRID!.
-Note that both values will also be changeable later. 
-If the \lstinline!--with-grid-dim! option was not provided during configuration the 
-DFG grid type definition will not work. Nevertheless, the grid parser will work 
-but the grid type has to be defined by the user and the appropriate DGF parser 
-specialization has to be included. 
-Assuming the \lstinline!--with-grid-dim!\ was provided the DGF grid type 
-definition works by first including \lstinline!gridtype.hh!.
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
-\end{lstlisting}
-Depending on the pre-configured values of \lstinline!GRIDDIM!\ and
-\lstinline!GRIDTYPE! a typedef for the grid to use will be provided by
-including \lstinline!dgfgridtype.hh!. The follwoing example show how an 
-instance of the defined grid is generated. Given a DGF file, for example 
-\lstinline!unitcube2.dgf!, a grid pointer is created as follows.
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-GridPtr<GridType> gridPtr( "unitcube2.dgf" );
-\end{lstlisting}
-The grid is accessed be dereferencing the grid pointer.
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-GridType& grid = *gridPtr; 
-\end{lstlisting}
-To change the grid one simply has to re-compile the code using the following make command.
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-make GRIDDIM=2 GRIDTYPE=ALBERTAGRID integration 
-\end{lstlisting}
-This will compile the application \texttt{integration} with grid type \lstinline!ALBERTAGRID! and grid dimension $2$.
-Note that before the re-compilation works, 
-the corresponding object file has to be removed.
 
 
 %\section{Capabilities}
