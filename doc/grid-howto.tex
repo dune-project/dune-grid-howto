@@ -979,9 +979,13 @@ Again, no interface specification exists for file readers in \Dune.
 
 Arguably the most important file format currently supported by \Dune is
 the \lstinline!gmsh! format.  \lstinline!Gmsh!\footnote{\url{http://geuz.org/gmsh/}}
-is an open-source grid generator.  It creates simplicial grids in 2d and 3d
+is an open-source grid generator and modeller.  It allows to define
+geometries using a boundary representation (interactively and via its
+own modelling language resulting in \lstinline!.geo!-files), 
+creates simplicial grids in 2d and 3d (using
+\lstinline!tetgen! or \lstinline!netgen!)
 and stores them in files ending in \lstinline!.msh!. \lstinline!Gmsh!
-can be compiled with \lstinline!OpenCascade!, an open-source CAD
+can also be compiled with \lstinline!OpenCascade!, an open-source CAD
 kernel. Via \lstinline!gmsh!
 CAD geometries, e.~g.~from IGES or STEP files, can be meshed and subsequently be used in
 \Dune. Moreover, the reader supports second order
