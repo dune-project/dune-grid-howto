@@ -15,12 +15,16 @@ auto
 *.css
 *.idv
 *.idx
+*.ilg
+*.ind
 *.lg
 *.swp
 *.tid
 *.tmp
 *.tms
 *.xref
+*.backup
+
 grid-howto.pdf
 grid-howto.ps
 grid-howto.dvi
