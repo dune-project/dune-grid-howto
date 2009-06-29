@@ -74,7 +74,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       const Intersection &intersection = *is;
 
       // get geometry type of face
-      Dune::GeometryType gtf = intersection.intersectionSelfLocal().type();
+      Dune::GeometryType gtf = intersection.type();
 
       const Dune::ReferenceElement< ct, dim-1 > &refElement
         = Dune::ReferenceElements< ct, dim-1 >::general( gtf );
@@ -89,7 +89,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
       // center of face in global coordinates
       Dune::FieldVector< ct, dimworld > faceglobal
-        = intersection.intersectionGlobal().global( facelocal );
+        = intersection.geometry().global( facelocal );
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
