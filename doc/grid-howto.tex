@@ -76,7 +76,7 @@ Einsteinstr.~62, D-48149 M\"unster, Germany}\\
 %
 \bigskip
 {\normalsize $^\ddagger$Institut f\"ur Mathematik II,\\ Freie Universit\"at Berlin,
-Arnimallee 2-6, D-14195 Berlin, Germany}\\
+Arnimallee 6, D-14195 Berlin, Germany}\\
 %
 \bigskip
 {\normalsize \texttt{\url{http://www.dune-project.org/}}}\\
@@ -1342,27 +1342,6 @@ For three dimensional versions the grid objects are set up with help of the
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../unitcube_alugrid.hh}
 \end{lst}
-
-\section{Using configuration information provided by configure}
-
-The \lstinline!./configure! script in the application
-(\lstinline!dune-grid-howto!\ here) produces a file
-\lstinline!config.h!\ that contains information about the configuration
-parameters. E.g.~which of the optional grid implementations is
-available and which dimension has been selected (if applicable). This
-information can then be used at compile-time to include header files
-or code that depend on optional packages.
-
-As an example, the macro \lstinline!HAVE_UG!\ can be used to compile
-UG-specific code as in
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-#if HAVE_UG
-#include"dune/grid/uggrid.hh"
-\end{lstlisting}
-
-It is important that the file \lstinline!config.h! is the first
-include file in your application!
-
 
 
 
