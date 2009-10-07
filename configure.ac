@@ -47,13 +47,6 @@ DUNE_CHECK_ALL
 # preset variable to path such that #include <dune/...> works
 AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
 
-echo
-echo Note: Most of the libraries checked for above are only used for the self-test
-echo of Dune.  The library itself will build and the headers will work even if
-echo Alberta, MPI, etc. cannot be found.  An exception to this are UG and AmiraMesh
-echo which need to be found right now if you want to use them later.
-echo
-
 # write output
 AC_CONFIG_FILES([Makefile
 		doc/Makefile
