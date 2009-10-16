@@ -64,7 +64,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     for (IntersectionIterator is = gridView.ibegin(*it); is!=isend; ++is)
     {
       // get geometry type of face
-      Dune::GeometryType gtf = is->intersectionSelfLocal().type();
+      Dune::GeometryType gtf = is->type();
 
       // center in face's reference element
       const Dune::FieldVector<ct,dim-1>&
@@ -77,8 +77,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
         *= Dune::ReferenceElements<ct,dim-1>::general(gtf).volume();
 
       // center of face in global coordinates
-      Dune::FieldVector<ct,dimworld>
-      faceglobal = is->intersectionGlobal().global(facelocal);
+      Dune::FieldVector<ct,dimworld> faceglobal = is->geometry().global(facelocal);
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
