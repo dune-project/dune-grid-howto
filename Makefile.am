@@ -2,6 +2,9 @@
 
 SUBDIRS = doc grids
 
+GRIDTYPE=YASPGRID
+GRIDDIM=2
+
 examplesdir=$(datadir)/doc/dune-grid-howto/examples
 
 examples_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
