@@ -115,24 +115,28 @@ int main (int argc , char ** argv)
   try {
     using namespace Dune;
 
+    // the GridSelector :: GridType is defined in gridtype.hh and is
+    // set during compilation
+    typedef GridSelector :: GridType Grid;
+
     // use unitcube from grids
     std::stringstream dgfFileName;
-    dgfFileName << "grids/unitcube" << GridType :: dimension << ".dgf";
+    dgfFileName << "grids/unitcube" << Grid :: dimension << ".dgf";
 
-    // create grid pointer, GridType is defined by gridtype.hh
-    GridPtr<GridType> gridPtr( dgfFileName.str() );
+    // create grid pointer
+    GridPtr<Grid> gridPtr( dgfFileName.str() );
 
     // grid reference
-    GridType& grid = *gridPtr;
+    Grid& grid = *gridPtr;
 
     // minimal allowed level during refinement
-    int minLevel = 2 * DGFGridInfo<GridType>::refineStepsForHalf();
+    int minLevel = 2 * DGFGridInfo<Grid>::refineStepsForHalf();
 
     // refine grid until upper limit of level
     grid.globalRefine(minLevel);
 
     // maximal allowed level during refinement
-    int maxLevel = minLevel + 3 * DGFGridInfo<GridType>::refineStepsForHalf();
+    int maxLevel = minLevel + 3 * DGFGridInfo<Grid>::refineStepsForHalf();
 
     // do time loop until end time 0.5
     timeloop(grid, 0.5, minLevel, maxLevel);

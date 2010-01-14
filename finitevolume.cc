@@ -96,18 +96,22 @@ int main (int argc , char ** argv)
   try {
     using namespace Dune;
 
+    // the GridSelector :: GridType is defined in gridtype.hh and is
+    // set during compilation
+    typedef GridSelector :: GridType Grid;
+
     // use unitcube from dgf grids
     std::stringstream dgfFileName;
-    dgfFileName << "grids/unitcube" << GridType :: dimension << ".dgf";
+    dgfFileName << "grids/unitcube" << Grid :: dimension << ".dgf";
 
-    // create grid pointer, GridType is defined by gridtype.hh
-    GridPtr<GridType> gridPtr( dgfFileName.str() );
+    // create grid pointer
+    GridPtr<Grid> gridPtr( dgfFileName.str() );
 
     // grid reference
-    GridType& grid = *gridPtr;
+    Grid& grid = *gridPtr;
 
     // half grid width 4 times
-    int level = 4 * DGFGridInfo<GridType>::refineStepsForHalf();
+    int level = 4 * DGFGridInfo<Grid>::refineStepsForHalf();
 
     // refine grid until upper limit of level
     grid.globalRefine(level);
