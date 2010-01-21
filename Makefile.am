@@ -12,15 +12,16 @@ examples_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
 	finitevolumeadapt.hh transportproblem.hh unitcube_yaspgrid.hh \
 	functors.hh unitcube_albertagrid.hh vertexdata.hh \
 	initialize.hh unitcube_alugrid.hh vtkout.hh integrateentity.hh \
-	unitcube.hh parevolve.hh unitcube_onedgrid.hh basicunitcube.hh
+	unitcube.hh parevolve.hh unitcube_onedgrid.hh basicunitcube.hh \
+	shapefunctions.hh
 
 examples_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
-	visualization
+	visualization finiteelements
 
 examples_DATA = gettingstarted.cc traversal.cc integration.cc othergrids.cc \
 	adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc \
-	parfinitevolume.cc visualization.cc
+	parfinitevolume.cc visualization.cc finiteelements.cc
 
 gettingstarted_SOURCES = gettingstarted.cc
 gettingstarted_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
@@ -57,6 +58,10 @@ parfinitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PK
 visualization_SOURCES = visualization.cc
 visualization_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
 visualization_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+
+finiteelements_SOURCES = finiteelements.cc
+finiteelements_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
+finiteelements_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
 
 # don't follow the full GNU-standard
 # we need automake 1.5
