@@ -1,6 +1,5 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
-#include <dune/grid/common/referenceelements.hh>
 #include <dune/grid/common/mcmgmapper.hh>
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
 #if HAVE_GRAPE
@@ -28,6 +27,7 @@ void elementdata (const G& grid, const F& f)
   typedef typename G::ctype ct;
   typedef typename G::LeafGridView GridView;
   typedef typename GridView::template Codim<0>::Iterator ElementLeafIterator;
+  typedef typename ElementLeafIterator::Entity::Geometry LeafGeometry;
 
   // get grid view on leaf part
   GridView gridView = grid.leafView();
@@ -44,14 +44,10 @@ void elementdata (const G& grid, const F& f)
        it!=gridView.template end<0>(); ++it)
   {
     // cell geometry type
-    Dune::GeometryType gt = it->type();
-
-    // cell center in reference element
-    const Dune::FieldVector<ct,dim>&
-    local = Dune::ReferenceElements<ct,dim>::general(gt).position(0,0);
+    const LeafGeometry & gt = it->geometry();
 
     // get global coordinate of cell center
-    Dune::FieldVector<ct,dimworld> global = it->geometry().global(local);
+    Dune::FieldVector<ct,dimworld> global = gt.center();
 
     // evaluate functor and store value
     c[mapper.map(*it)] = f(global);                    /*@\label{edh:feval}@*/
