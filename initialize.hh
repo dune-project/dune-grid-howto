@@ -1,6 +1,5 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
-#include <dune/grid/common/referenceelements.hh>
 
 //! initialize the vector of unknowns with initial value
 template<class G, class M, class V>
@@ -19,6 +18,9 @@ void initialize (const G& grid, const M& mapper, V& c)
   // leaf iterator type
   typedef typename GridView::template Codim<0>::Iterator LeafIterator;
 
+  // geometry type
+  typedef typename LeafIterator::Entity::Geometry Geometry;
+
   // get grid view on leaf part
   GridView gridView = grid.leafView();
 
@@ -26,16 +28,11 @@ void initialize (const G& grid, const M& mapper, V& c)
   LeafIterator endit = gridView.template end<0>();
   for (LeafIterator it = gridView.template begin<0>(); it!=endit; ++it)
   {
-    // get geometry type
-    Dune::GeometryType gt = it->type();
-
-    // get cell center in reference element
-    const Dune::FieldVector<ct,dim>&
-    local = Dune::ReferenceElements<ct,dim>::general(gt).position(0,0);
+    // get geometry
+    const Geometry &gt = it->geometry();
 
     // get global coordinate of cell center
-    Dune::FieldVector<ct,dimworld> global =
-      it->geometry().global(local);
+    Dune::FieldVector<ct,dimworld> global = gt.center();
 
     // initialize cell concentration
     c[mapper.map(*it)] = c0(global);
