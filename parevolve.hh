@@ -1,6 +1,5 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
-#include <dune/grid/common/referenceelements.hh>
 
 template<class G, class M, class V>
 void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
@@ -22,11 +21,17 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   typedef typename GridView::template Codim<0>::
   template Partition<Dune::All_Partition>::Iterator LeafIterator;       /*@\label{peh:pit}@*/
 
+  // leaf entity geometry
+  typedef typename LeafIterator::Entity::Geometry LeafGeometry;
+
   // intersection iterator type
   typedef typename GridView::IntersectionIterator IntersectionIterator;
 
   // type of intersection
   typedef typename IntersectionIterator::Intersection Intersection;
+
+  // intersection geometry
+  typedef typename Intersection::Geometry IntersectionGeometry;
 
   // entity pointer type
   typedef typename G::template Codim<0>::EntityPointer EntityPointer;
@@ -46,20 +51,11 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   LeafIterator endit = gridView.template end<0,Dune::All_Partition>(); /*@\label{peh:end}@*/
   for (LeafIterator it = gridView.template begin<0,Dune::All_Partition>(); it!=endit; ++it) /*@\label{peh:begin}@*/
   {
-    // cell geometry type
-    Dune::GeometryType gt = it->type();
+    // cell geometry
+    const LeafGeometry & gt = it->geometry();
 
-    // cell center in reference element
-    const Dune::FieldVector<ct,dim>&
-    local = Dune::ReferenceElements<ct,dim>::general(gt).position(0,0);
-
-    // cell center in global coordinates
-    Dune::FieldVector<ct,dimworld>
-    global = it->geometry().global(local);
-
-    // cell volume, assume linear map here
-    double volume = it->geometry().integrationElement(local)
-                    *Dune::ReferenceElements<ct,dim>::general(gt).volume();
+    // cell volume
+    double volume = gt.volume();
 
     // cell index
     int indexi = mapper.map(*it);
@@ -74,22 +70,15 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       const Intersection &intersection = *is;
 
       // get geometry type of face
-      Dune::GeometryType gtf = intersection.type();
-
-      const Dune::ReferenceElement< ct, dim-1 > &refElement
-        = Dune::ReferenceElements< ct, dim-1 >::general( gtf );
-
-      // center in face's reference element
-      const Dune::FieldVector< ct, dim-1 > &facelocal = refElement.position( 0, 0 );
+      const IntersectionGeometry & gtf = intersection.geometry();
 
       // get normal vector scaled with volume
       Dune::FieldVector< ct, dimworld > integrationOuterNormal
-        = intersection.integrationOuterNormal( facelocal );
-      integrationOuterNormal *= refElement.volume();
+        = intersection.centerUnitOuterNormal();
+      integrationOuterNormal *= gtf.volume();
 
       // center of face in global coordinates
-      Dune::FieldVector< ct, dimworld > faceglobal
-        = intersection.geometry().global( facelocal );
+      Dune::FieldVector< ct, dimworld > faceglobal = gtf.center();
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
@@ -115,11 +104,8 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
             || ((insideLevel == outsideLevel) && (indexi < indexj)) )
         {
           // compute factor in neighbor
-          Dune::GeometryType nbgt = outside->type();
-          const Dune::FieldVector<ct,dim>&
-          nblocal = Dune::ReferenceElements<ct,dim>::general(nbgt).position(0,0);
-          double nbvolume = outside->geometry().integrationElement(nblocal)
-                            *Dune::ReferenceElements<ct,dim>::general(nbgt).volume();
+          const LeafGeometry & nbgt = outside->geometry();
+          double nbvolume = nbgt.volume();
           double nbfactor = velocity*integrationOuterNormal/nbvolume;
 
           if( factor < 0 )       // inflow
