@@ -24,44 +24,44 @@ examples_DATA = gettingstarted.cc traversal.cc integration.cc othergrids.cc \
 	parfinitevolume.cc visualization.cc finiteelements.cc
 
 gettingstarted_SOURCES = gettingstarted.cc
-gettingstarted_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-gettingstarted_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+gettingstarted_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+gettingstarted_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 traversal_SOURCES = traversal.cc
-traversal_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-traversal_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+traversal_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+traversal_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 integration_SOURCES = integration.cc
-integration_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-integration_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+integration_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+integration_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 othergrids_SOURCES = othergrids.cc
-othergrids_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-othergrids_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+othergrids_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+othergrids_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 adaptiveintegration_SOURCES = adaptiveintegration.cc
-adaptiveintegration_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-adaptiveintegration_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+adaptiveintegration_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+adaptiveintegration_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 finitevolume_SOURCES = finitevolume.cc
-finitevolume_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-finitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+finitevolume_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+finitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 adaptivefinitevolume_SOURCES = adaptivefinitevolume.cc
-adaptivefinitevolume_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-adaptivefinitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+adaptivefinitevolume_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+adaptivefinitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 parfinitevolume_SOURCES = parfinitevolume.cc
-parfinitevolume_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-parfinitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+parfinitevolume_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+parfinitevolume_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 visualization_SOURCES = visualization.cc
-visualization_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-visualization_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+visualization_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+visualization_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 finiteelements_SOURCES = finiteelements.cc
-finiteelements_CXXFLAGS = $(MPI_CPPFLAGS) $(ALL_PKG_CPPFLAGS)
-finiteelements_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(MPI_LDFLAGS)
+finiteelements_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
+finiteelements_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 # don't follow the full GNU-standard
 # we need automake 1.5
