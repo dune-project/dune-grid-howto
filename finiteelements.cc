@@ -250,6 +250,9 @@ int main(int argc, char** argv)
   static const int dim = 2;
   const char* gridfile = "grids/2dgrid.al";
 
+#if HAVE_ALBERTA
+#if ALBERTA_DIM==2
+
   typedef Dune::AlbertaGrid<dim,dim> GridType;
   typedef GridType::LeafGridView GV;
 
@@ -280,4 +283,7 @@ int main(int argc, char** argv)
   Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafView());
   vtkwriter.addVertexData(p1.u, "u");
   vtkwriter.write("test", Dune::VTKOptions::binaryappended);
+
+#endif
+#endif
 }
