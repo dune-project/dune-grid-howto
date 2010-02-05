@@ -3,6 +3,8 @@
 #ifndef UNITCUBE_SGRID_HH
 #define UNITCUBE_SGRID_HH
 
+#include "unitcube.hh"
+
 #include <dune/grid/sgrid.hh>
 
 // SGrid specialization

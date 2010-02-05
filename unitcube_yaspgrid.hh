@@ -3,6 +3,8 @@
 #ifndef UNITCUBE_YASPGRID_HH
 #define UNITCUBE_YASPGRID_HH
 
+#include "unitcube.hh"
+
 #include <dune/grid/yaspgrid.hh>
 
 // YaspGrid specialization

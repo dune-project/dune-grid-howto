@@ -1,5 +1,9 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#ifndef __DUNE_GRID_HOWTO_EVOLVE_HH__
+#define __DUNE_GRID_HOWTO_EVOLVE_HH__
+
+#include <dune/common/fvector.hh>
 
 template<class G, class M, class V>
 void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
@@ -134,3 +138,5 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
   return;
 }
+
+#endif //__DUNE_GRID_HOWTO_EVOLVE_HH__

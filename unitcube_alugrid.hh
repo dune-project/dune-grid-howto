@@ -3,6 +3,8 @@
 #ifndef UNITCUBE_ALU3DGRID_HH
 #define UNITCUBE_ALU3DGRID_HH
 
+#include "unitcube.hh"
+
 #if HAVE_ALUGRID
 #include <dune/grid/alugrid.hh>
 #include <dune/grid/alugrid/3d/alu3dgridfactory.hh>

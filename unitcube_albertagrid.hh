@@ -3,6 +3,8 @@
 #ifndef UNITCUBE_ALBERTAGRID_HH
 #define UNITCUBE_ALBERTAGRID_HH
 
+#include "unitcube.hh"
+
 #if HAVE_ALBERTA
 #include <dune/grid/albertagrid.hh>
 #include <dune/grid/albertagrid/gridfactory.hh>

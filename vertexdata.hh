@@ -1,5 +1,8 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#ifndef __DUNE_GRID_HOWTO_VERTEXDATA_HH__
+#define __DUNE_GRID_HOWTO_VERTEXDATA_HH__
+
 #include <dune/grid/common/mcmgmapper.hh>
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
 #if HAVE_GRAPE
@@ -68,3 +71,4 @@ void vertexdata (const G& grid, const F& f)
   }
 #endif
 }
+#endif // __DUNE_GRID_HOWTO_VERTEXDATA_HH__

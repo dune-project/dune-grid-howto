@@ -1,5 +1,12 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#ifndef __DUNE_GRID_HOWTO_PAREVOLVE_HH__
+#define __DUNE_GRID_HOWTO_PAREVOLVE_HH__
+
+#include "parfvdatahandle.hh"
+
+#include <dune/grid/common/gridenums.hh>
+#include <dune/common/fvector.hh>
 
 template<class G, class M, class V>
 void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
@@ -154,3 +161,5 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 
   return;
 }
+
+#endif //__DUNE_GRID_HOWTO_PAREVOLVE_HH__
