@@ -3,6 +3,8 @@
 #ifndef UNITCUBE_ONEDGRID_HH
 #define UNITCUBE_ONEDGRID_HH
 
+#include "unitcube.hh"
+
 #include <dune/grid/onedgrid.hh>
 
 // OneDGrid specialization

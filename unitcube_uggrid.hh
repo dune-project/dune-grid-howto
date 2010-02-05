@@ -3,6 +3,8 @@
 #ifndef UNITCUBE_UGGRID_HH
 #define UNITCUBE_UGGRID_HH
 
+#include "unitcube.hh"
+
 #if HAVE_UG
 #include <dune/grid/uggrid.hh>
 

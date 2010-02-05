@@ -1,5 +1,7 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#ifndef __DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__
+#define __DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__
 #include <map>
 
 struct RestrictedValue
@@ -207,3 +209,5 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 
   return rv;
 }
+
+#endif //__DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__

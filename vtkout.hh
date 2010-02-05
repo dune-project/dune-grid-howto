@@ -1,5 +1,8 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#ifndef __DUNE_GRID_HOWTO_VTKOUT_HH__
+#define __DUNE_GRID_HOWTO_VTKOUT_HH__
+
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
 #include <stdio.h>
 
@@ -21,3 +24,5 @@ void vtkout (const G& grid, const V& c, const char* name, int k, double time=0.0
     serstream.close();
   }
 }
+
+#endif // __DUNE_GRID_HOWTO_VTKOUT_HH__

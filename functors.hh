@@ -1,5 +1,9 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#ifndef __DUNE_GRID_HOWTO_FUNCTORS_HH__
+#define __DUNE_GRID_HOWTO_FUNCTORS_HH__
+
+#include <dune/common/fvector.hh>
 // a smooth function
 template<typename ct, int dim>
 class Exp {
@@ -33,3 +37,5 @@ public:
 private:
   Dune::FieldVector<ct,dim> midpoint;
 };
+
+#endif // __DUNE_GRID_HOWTO_FUNCTORS_HH__
