@@ -241,14 +241,17 @@ class Bump {
 public:
   ctype operator() (Dune::FieldVector<ctype,dim> x) const
   {
-    return 2.0 * (x[0]*(1-x[0]) + x[1]*(1-x[1]));
+    ctype result = 0;
+    for (int i=0 ; i < dim ; i++)
+      result += 2.0 * x[i]* (1-x[i]);
+    return result;
   }
 };
 
 int main(int argc, char** argv)
 {
-  static const int dim = 2;
-  const char* gridfile = "grids/2dgrid.al";
+  static const int dim = 2;             /*@\label{fem:dim}@*/
+  const char* gridfile = "grids/2dgrid.al";             /*@\label{fem:file}@*/
 
 #if HAVE_ALBERTA
 #if ALBERTA_DIM==2
@@ -265,7 +268,7 @@ int main(int argc, char** argv)
   Func f;
   P1Elements<GV,Func> p1(gv, f);
 
-  grid.globalRefine(1);
+  grid.globalRefine(16);
 
   std::cout << "-----------------------------------" << "\n";
   std::cout << "number of unknowns: " << grid.size(dim) << "\n";
@@ -282,7 +285,7 @@ int main(int argc, char** argv)
   std::cout << "visualizing..." << "\n";
   Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafView());
   vtkwriter.addVertexData(p1.u, "u");
-  vtkwriter.write("test", Dune::VTKOptions::binaryappended);
+  vtkwriter.write("fem2d", Dune::VTKOptions::binaryappended);
 
 #endif
 #endif
