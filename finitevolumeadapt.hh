@@ -3,6 +3,7 @@
 #ifndef __DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__
 #define __DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__
 #include <map>
+#include <cmath>
 
 struct RestrictedValue
 {
