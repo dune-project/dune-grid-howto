@@ -49,14 +49,10 @@ AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
 
 # write output
 AC_CONFIG_FILES([Makefile
-		doc/Makefile
-		doc/config.tex
-		doc/Makefile.dist
-		grids/Makefile
-		bin/wmlwrap
-                dune-grid-howto.pc])
+        doc/Makefile
+        doc/config.tex
+        grids/Makefile
+        dune-grid-howto.pc])
 AC_OUTPUT
-
-chmod +x bin/wmlwrap
 
 DUNE_SUMMARY_ALL
