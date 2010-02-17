@@ -250,11 +250,10 @@ public:
 
 int main(int argc, char** argv)
 {
-  static const int dim = 2;             /*@\label{fem:dim}@*/
-  const char* gridfile = "grids/2dgrid.al";             /*@\label{fem:file}@*/
-
 #if HAVE_ALBERTA
 #if ALBERTA_DIM==2
+  static const int dim = 2;             /*@\label{fem:dim}@*/
+  const char* gridfile = "grids/2dgrid.al";             /*@\label{fem:file}@*/
 
   typedef Dune::AlbertaGrid<dim,dim> GridType;
   typedef GridType::LeafGridView GV;

@@ -42,7 +42,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   typedef typename LeafGridView::IntersectionIterator LeafIntersectionIterator;
 
   // global id set types, local means that the numbering is unique in a single process only.
-  typedef typename G::template Codim<0>::LocalIdSet IdSet;
+  typedef typename G::LocalIdSet IdSet;
   // type for the index set, note that this is _not_ an integer
   typedef typename IdSet::IdType IdType;
 
