@@ -8,32 +8,30 @@ EPS_FILES = EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3d.e
 
 DOCSOURCE = grid-howto.tex navigation.html css.html
 
-MAINDOCS = grid-howto.dvi grid-howto.pdf grid-howto.ps
+MAINDOCS = grid-howto.pdf
 
 if WML
  WMLDOCS = index.html
 endif
 
 if TEX4HT
- HTDOCS =  navigation.html css.html grid-howto.html
+# HTDOCS =  navigation.html css.html grid-howto.html
 endif
-
-EXTRA_DIST = grid-howto.pdf Makefile.dist.in Makefile.dist.am
 
 if BUILD_DOCS
 if CONVERT
- DOCS = $(HTDOCS) $(MAINDOCS) $(WMLDOCS)
+ DOCFILES = $(HTDOCS) $(MAINDOCS) $(WMLDOCS)
 endif
 endif
 
+EXTRA_DIST = $(DOCFILES) grid-howto.tex
 
 # setting like in dune-web
 BASEDIR=../..
 CURDIR=doc/grid-howto
 
 docdir=$(datadir)/doc/dune-grid-howto
-
-doc_DATA = $(DOCS)
+EXTRA_DIST=$(EPS_FILES)
 
 EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
@@ -55,10 +53,6 @@ grid-howto.html:  $(DOCSOURCE) dune.cfg tex4ht.env
 	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(T4HT) grid-howto.tex
 	$(TEX) grid-howto.tex
-
-dist-hook:
-	sed $(srcdir)/Makefile.dist.am -e 's/Makefile\.dist/Makefile/g' > $(distdir)/Makefile.am
-	sed $(srcdir)/Makefile.dist.in -e 's/Makefile\.dist/Makefile/g' > $(distdir)/Makefile.in
 
 EXTRA_TEXINPUTS:=$(top_srcdir)
 

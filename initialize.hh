@@ -10,7 +10,7 @@ template<class G, class M, class V>
 void initialize (const G& grid, const M& mapper, V& c)
 {
   // first we extract the dimensions of the grid
-  const int dim = G::dimension;
+  //const int dim = G::dimension;
   const int dimworld = G::dimensionworld;
 
   // type used for coordinates in the grid

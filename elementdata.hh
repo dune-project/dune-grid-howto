@@ -25,7 +25,7 @@ template<class G, class F>
 void elementdata (const G& grid, const F& f)
 {
   // the usual stuff
-  const int dim = G::dimension;
+  //const int dim = G::dimension;
   const int dimworld = G::dimensionworld;
   typedef typename G::ctype ct;
   typedef typename G::LeafGridView GridView;
