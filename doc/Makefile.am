@@ -6,17 +6,17 @@ EPS_FILES = EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3d.e
     EPS/ug2dquad-view2.eps EPS/ug2dtri-view1.eps EPS/ug2dtri-view2.eps EPS/ugcube2d.eps \
     EPS/ugcube3d.eps EPS/ugsimplex2d.eps EPS/ugsimplex3d.eps EPS/yasp3d.eps
 
-DOCSOURCE = grid-howto.tex navigation.html css.html
 
 MAINDOCS = grid-howto.pdf
 
 if WML
+ DOCSOURCE = grid-howto.tex navigation.html css.html
  WMLDOCS = index.html
-endif
-
 if TEX4HT
 # HTDOCS =  navigation.html css.html grid-howto.html
 endif
+endif
+
 
 if BUILD_DOCS
 if CONVERT
@@ -36,8 +36,8 @@ EXTRA_DIST=$(EPS_FILES)
 EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
 CLEANFILES = *.aux *.bbl *.blg *.log *.out *.toc *.dvi *.pdf *.ps
-CLEANFILES += *.4ct *.4tc *.css *.idv *.idx *.lg *.tid *.tmp *.tms *.xref
-CLEANFILES += grid-howto*.html grid-howto*.png
+CLEANFILES += *.4ct *.4tc *.css *.idv *.idx *.ilg *.lg *.tid *.tmp *.tms *.xref
+CLEANFILES += grid-howto*.html grid-howto*.png navigation.html index.html
 CLEANFILES += $(DOCS)
 if CONVERT
 CLEANFILES += $(EPS_FILES)
@@ -47,12 +47,16 @@ CLEANFILES += $(EPS_FILES)
 grid-howto.tex: $(EPS_FILES)
 endif
 
+if WML
+if TEX4HT
 grid-howto.html:  $(DOCSOURCE) dune.cfg tex4ht.env
 	$(MAKE) grid-howto.dvi
 	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(MK4HT) htlatex grid-howto.tex "dune"; \
 	$(T4HT) grid-howto.tex
 	$(TEX) grid-howto.tex
+endif
+endif
 
 EXTRA_TEXINPUTS:=$(top_srcdir)
 
