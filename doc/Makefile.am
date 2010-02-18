@@ -24,14 +24,13 @@ if CONVERT
 endif
 endif
 
-EXTRA_DIST = $(DOCFILES) grid-howto.tex
+EXTRA_DIST = $(DOCFILES) grid-howto.tex $(EPS_FILES)
 
 # setting like in dune-web
 BASEDIR=../..
 CURDIR=doc/grid-howto
 
 docdir=$(datadir)/doc/dune-grid-howto
-EXTRA_DIST=$(EPS_FILES)
 
 EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
