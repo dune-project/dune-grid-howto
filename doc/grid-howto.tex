@@ -982,16 +982,18 @@ Again, no interface specification exists for file readers in \Dune.
 
 Arguably the most important file format currently supported by \Dune is
 the \lstinline!gmsh! format.  \lstinline!Gmsh!\footnote{\url{http://geuz.org/gmsh/}}
-is an open-source grid generator and modeller.  It allows to define
+is an open-source geometry modeler and grid generator.  It allows to define
 geometries using a boundary representation (interactively and via its
 own modelling language resulting in \lstinline!.geo!-files), 
 creates simplicial grids in 2d and 3d (using
 \lstinline!tetgen! or \lstinline!netgen!)
-and stores them in files ending in \lstinline!.msh!. \lstinline!Gmsh!
-can also be compiled with \lstinline!OpenCascade!, an open-source CAD
-kernel. Via \lstinline!gmsh!
-CAD geometries, e.~g.~from IGES or STEP files, can be meshed and subsequently be used in
-\Dune. Moreover, the reader supports second order
+and stores them in files ending in \lstinline!.msh!. Current precompiled
+releases $\geq$ 2.4.2 of \lstinline!Gmsh! have \lstinline!OpenCascade!, an open-source CAD
+kernel, as built-in geometry modeler. Thus these releases are able to import 
+CAD geometries, e.g.\ from IGES or STEP files, and to generate meshes for them to
+be subsequently used in \Dune. Be aware that most versions of Gmsh available in
+the package repositories of your operating system still lack this functionality.
+Further, Gmsh and the Gmsh reader of \Dune support second order
 boundary segments thus providing a rudimentary support for curved boundaries.
 To read such a file into a FooGrid, include \lstinline!dune/grid/io/file/gmshreader.hh!
 and write
