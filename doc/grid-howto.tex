@@ -1356,6 +1356,7 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_alugrid.hh}
 
 
 \chapter{Quadrature rules}
+\label{sec:quadrature}
 
 In this chapter we explore how an integral $$\int\limits_{\Omega} f(x)\ dx$$
 over some function $f:\Omega\to\mathbb{R}$ can be computed numerically
@@ -2037,6 +2038,7 @@ The integrals are transformed onto the reference element $\hat{\Delta}$ and comp
 $J_g$ is the Jacobian of the map $g$ and $\mu (\hat{x}):=\sqrt{det J_g^{T} J_g}$ the Jacobian determinant. Let now $\xi_k$ be the quadrature points  of the chosen rule and $\omega_k$ the associated weights. We assume that there are $p_1$ quadrature points to evaluate:
 
 \begin{equation}
+\label{equ:computea}
  \Rightarrow \ A_{ij} = \sum\limits_{\Delta\in\tau} \sum\limits_{k=1}^{p_1} 
 \omega_k(J_g^{-T}\hat{\nabla}\hat{\phi_i} )(\xi_k )
 \cdot (J_g^{-T}\hat{\nabla}\hat{\phi_j} )(\xi_k )\mu (\xi_k )
@@ -2045,6 +2047,7 @@ $J_g$ is the Jacobian of the map $g$ and $\mu (\hat{x}):=\sqrt{det J_g^{T} J_g}$
 Simultaneously, the right side b is treated in the same manner. As we might want to use another quadrature rule here that better suits our function $f$, we use $p_2$ quadrature points:
 
 \begin{equation}
+\label{equ:computeb}
  b_i = \sum\limits_{\Delta\in\tau}\sum\limits_{k=1}^{p_2}\omega_k f(g(\xi_k ))\phi_i (g(\xi_k ))\mu(\xi_k )
 \end{equation}
 
@@ -2052,6 +2055,7 @@ In our implementation we will of course not compute the matrix entries one after
 
 After assembling the matrix we implement the Dirichlet boundary conditions by overwriting the lines of the equation system associated with boundary nodes with trivial lines:
 
+\begin{figure}[h]
 \def\rb#1{\rotatebox{90}{$\xleftarrow{#1}$}}
 \begin{center}
 \begin{tabular}{ccl}
@@ -2077,6 +2081,9 @@ u_i \\
 \end{array}\right)$
 \end{tabular}
 \end{center}
+\caption{Lines of $A$ and $b$ are replaced by trivial lines.}
+\label{Fig:dirichlet}
+\end{figure}
 
 This is possible as - using the nodal basis - the coefficients match the value of the numerical solution at the correspondant node.
 
@@ -2092,11 +2099,37 @@ Lets first have a look at the implementation of the shape functions. This class 
 numberstyle=\tiny, numbersep=5pt]{../shapefunctions.hh}
 \end{lst}
 
+And now the actual FEM code:
+
 \begin{lst}[File dune-grid-howto/finiteelements.cc] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
 numberstyle=\tiny, numbersep=5pt]{../finiteelements.cc}
 \end{lst}
+
+The function \lstinline!determineAdjacencyPattern()! in lines \ref{fem:adjpat1} to \ref{fem:adjpat2} does traverse the grid and stores all adjacency information in a \lstinline!std::vector< std::set<int> >!. You might wonder why this is necessary before the actual computing of the matrix entries. The reason for this is that, as data structure for the matrix $A$, we use \lstinline!BCRSMatrix! - which is specialized to hold large sparse matrices. Using this type, information about which entries do not vanish has to be known when assembling. We do give this information to the matrix from line \ref{fem:setpattern} on. Only after finishing this in line \ref{fem:endindices} we can start to fill the matrix with values. \\
+
+From line \ref{fem:loop1} to \ref{fem:loop2} we have the main loop traversing the whole grid and updating the matrix entries. This does strictly follow the procedure described in previous chapters. The main calculation is done in line \ref{fem:calca} and \ref{fem:calcb} - which are one-to-one implementations of \ref{equ:computea} and \ref{equ:computeb}. \\
+
+As already said above, we do directly implement Dirichlet boundaries into our matrix. This is done in lines \ref{fem:boundary1} to \ref{fem:boundary2}. We have to traverse the whole grid once again and check for each intersection of elements whether it is on the boundary. In line \ref{fem:trivialline} we overwrite the line correspondant to a node on the boundary as shown in figure \ref{Fig:dirichlet}. \\
+
+When you visualize your results, you should get something like figure \ref{Fig:FEM1} or \ref{Fig:FEM2}!
+
+\begin{figure}[h]
+\label{Fig:FEM1}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{./EPS/fem2d} 
+\caption{Solution in 2D}
+\end{center}
+\end{figure}
+
+\begin{figure}[h]
+\label{Fig:FEM2}
+\begin{center}
+\includegraphics[width=0.8\textwidth]{./EPS/fem3d} 
+\caption{Solution in 3D}
+\end{center}
+\end{figure}
 
 \begin{exc}
  Try a 3-dimensional grid! Just change the dimension in line \ref{fem:dim} and the name of the gridfile in line \ref{fem:file} to \lstinline!3dgrid.al! . You can compile the new code without reconfiguring by running

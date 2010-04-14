@@ -57,7 +57,7 @@ public:
   void solve();
 };
 
-template<class GV, class F>
+template<class GV, class F> /*@\label{fem:adjpat1}@*/
 void P1Elements<GV, F>::determineAdjacencyPattern()
 {
   const int N = gv.size(dim);
@@ -89,7 +89,7 @@ void P1Elements<GV, F>::determineAdjacencyPattern()
       }
     }
   }
-}
+} /*@\label{fem:adjpat2}@*/
 
 template<class GV, class F>
 void P1Elements<GV, F>::assemble()
@@ -109,7 +109,7 @@ void P1Elements<GV, F>::assemble()
   A.endrowsizes();
 
   // set sparsity pattern of A with the information gained in determineAdjacencyPattern
-  for (int i = 0; i < N; i++)
+  for (int i = 0; i < N; i++)   /*@\label{fem:setpattern}@*/
   {
     std::template set<int>::iterator setend = adjacencyPattern[i].end();
     for (std::template set<int>::iterator setit = adjacencyPattern[i].begin();
@@ -117,7 +117,7 @@ void P1Elements<GV, F>::assemble()
       A.addindex(i,*setit);
   }
 
-  A.endindices();
+  A.endindices();   /*@\label{fem:endindices}@*/
 
   // initialize A and b
   A = 0.0;
@@ -126,7 +126,7 @@ void P1Elements<GV, F>::assemble()
   // get a set of P1 shape functions
   P1ShapeFunctionSet<ctype,ctype,dim> basis = P1ShapeFunctionSet<ctype,ctype,dim>::instance();
 
-  for (LeafIterator it = gv.template begin<0>(); it != itend; ++it)
+  for (LeafIterator it = gv.template begin<0>(); it != itend; ++it)   /*@\label{fem:loop1}@*/
   {
     // determine geometry type of the current element and get the matching reference element
     Dune::GeometryType gt = it->type();
@@ -159,7 +159,7 @@ void P1Elements<GV, F>::assemble()
           jacInvTra.mv(basis[j].evaluateGradient(r->position()),grad2);
 
           // gain global inidices of vertices i and j and update associated matrix entry
-          A[set.subIndex(*it,i,dim)][set.subIndex(*it,j,dim)]
+          A[set.subIndex(*it,i,dim)][set.subIndex(*it,j,dim)]           /*@\label{fem:calca}@*/
             += (grad1*grad2) * weight * detjac;
         }
       }
@@ -177,14 +177,14 @@ void P1Elements<GV, F>::assemble()
         // evaluate the integrand of the right side
         ctype fval = basis[i].evaluateFunction(it->geometry().global(r->position()))
                      * f(it->geometry().global(r->position())) ;
-        b[set.subIndex(*it,i,dim)] += fval * weight * detjac;
+        b[set.subIndex(*it,i,dim)] += fval * weight * detjac;         /*@\label{fem:calcb}@*/
       }
     }
-  }
+  }   /*@\label{fem:loop2}@*/
 
   // Dirichlet boundary conditions:
   // replace lines in A related to Dirichlet vertices by trivial lines
-  for ( LeafIterator it = gv.template begin<0>() ; it != itend ; ++it)
+  for ( LeafIterator it = gv.template begin<0>() ; it != itend ; ++it)   /*@\label{fem:boundary1}@*/
   {
     const IntersectionIterator isend = gv.iend(*it);
     for (IntersectionIterator is = gv.ibegin(*it) ; is != isend ; ++is)
@@ -203,13 +203,13 @@ void P1Elements<GV, F>::assemble()
           // and replace the associated line of A and b with a trivial one
           int indexi = set.subIndex(*it,ref.subEntity(is->indexInInside(),1,i,dim),dim);
 
-          A[indexi] = 0.0;
+          A[indexi] = 0.0;           /*@\label{fem:trivialline}@*/
           A[indexi][indexi] = 1.0;
           b[indexi] = 0.0;
         }
       }
     }
-  }
+  }   /*@\label{fem:boundary2}@*/
 }
 
 template<class GV, class E>
