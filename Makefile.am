@@ -71,7 +71,7 @@ AUTOMAKE_OPTIONS = foreign 1.5
 EXTRA_DIST=dune.module
 
 # pass most important options when "make distcheck" is used
-DISTCHECK_CONFIGURE_FLAGS = --with-dune-common=$(DUNE_COMMON_ROOT) --with-dune-grid="$(DUNE_GRID_ROOT)" --with-dune-istl="$(DUNE_ISTL_ROOT)" --with-dune-disc="$(DUNE_DISC_ROOT)" CXX="$(CXX)" CC="$(CC)" --enable-parallel=@ENABLE_PARALLEL@ MPICC="$(MPICC)" --disable-documentation
+DISTCHECK_CONFIGURE_FLAGS = --with-dune-common=$(DUNE_COMMON_ROOT) --with-dune-grid="$(DUNE_GRID_ROOT)" --with-dune-istl="$(DUNE_ISTL_ROOT)" --with-dune-disc="$(DUNE_DISC_ROOT)" CXX="$(CXX)" CXXFLAGS="$(CXXFLAGS)" CC="$(CC)" --enable-parallel=@ENABLE_PARALLEL@ MPICC="$(MPICC)" --disable-documentation
 
 include $(top_srcdir)/am/top-rules
 include $(top_srcdir)/am/global-rules
