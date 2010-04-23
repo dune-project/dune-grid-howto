@@ -1973,16 +1973,14 @@ written to a file in line \ref{fvc:file}.
 \label{Sec:FEMPoisson}
 
 In this section we will put together our knowledge about the \Dune{} grid interface acquired in previous chapters to solve the Poisson equation with Dirichlet boundary conditions on the domain $\Omega = (0,1)^d$:
-
-\begin{align}
+\begin{align} \label{eq:fempoisson}
  -\Delta u & = f \ \ in \ \Omega\\
 u & = 0 \ \ on \ \partial\Omega
 \end{align}
 
-The equation will be solved using P1-Finite-Elements on a simplical grid. The implementation aims to be easy to understand and yet show the power of the \Dune{} grid interface and its generic approach. \\
+The equation will be solved using P1-Finite-Elements on a simplicial grid. The implementation aims to be easy to understand and yet show the power of the \Dune{} grid interface and its generic approach. \\
 
-The starting point of the Finite Element Method is the variational formulation of which we obtain by partial integration:
-
+The starting point of the Finite Element Method is the variational formulation of \ref{eq:fempoisson}, which is obtained by partial integration:
 \begin{equation}
 \underbrace{\int\limits_{\Omega}\nabla\ u\cdot\nabla v dx}_{ =:a(u,v)}
 = \underbrace{\int\limits_{\Omega} fv dx}_{=:\ell (v)} \ \ v\in V_h
@@ -2000,15 +1998,13 @@ higher codimension of the elements $\Delta_i$, $\Delta_j$
 \end{center}
 
 As we want to use linear finite elements we choose our test function space to be
-
 \begin{equation}
- V_h = \{ u\in C(\bar{\Omega} ) \Big| \ u\big|_{\Delta}\in\mathcal{P}_1 (\Delta ) \ \forall\Delta\in\mathcal{T}\}
+ V_h = \{ u\in C(\bar{\Omega} )\ \Big| \ u\big|_{\Delta}\in\mathcal{P}_1 (\Delta ) \ \forall\Delta\in\mathcal{T}\}
 \end{equation}
 
-We will not implement our Dirichlet boundary conditions into this function space. Instead we will implement them in a more direct manner as we can see later on. \\
+We will not incorporate the Dirichlet boundary conditions into this function space. Instead, we will implement them in an easier way as described later on. \\
 
 As a basis $\phi_1 ,...,\phi_N$ of $V_h$ we choose the nodal basis - providing us small supports and thus a sparse stiffness matrix. After transformation onto the reference element we can use the shape functions
-
 \begin{align}
 N_0(x) & = 1 - \sum\limits_{i=1}^d x_i \\
 N_i(x) & = x_i \ \ i=1,...,d
@@ -2017,7 +2013,6 @@ N_i(x) & = x_i \ \ i=1,...,d
 to evaluate the basis functions and their gradients. \\
 
 The numerical solution $u_h$ is a linear combination of $\phi_1,...,\phi_N$ with coefficients $u_1,...,u_N$. We assemble the stiffness Matrix $A$ and the vector $b$:
-
 \begin{equation}
  A_{ij}=a(\phi_i ,\phi_j ) \ \ b_i=\ell (\phi_i )
 \end{equation}
@@ -2036,7 +2031,6 @@ The integrals are transformed onto the reference element $\hat{\Delta}$ and comp
 \end{align}
 
 $J_g$ is the Jacobian of the map $g$ and $\mu (\hat{x}):=\sqrt{det J_g^{T} J_g}$ the Jacobian determinant. Let now $\xi_k$ be the quadrature points  of the chosen rule and $\omega_k$ the associated weights. We assume that there are $p_1$ quadrature points to evaluate:
-
 \begin{equation}
 \label{equ:computea}
  \Rightarrow \ A_{ij} = \sum\limits_{\Delta\in\tau} \sum\limits_{k=1}^{p_1} 
@@ -2045,7 +2039,6 @@ $J_g$ is the Jacobian of the map $g$ and $\mu (\hat{x}):=\sqrt{det J_g^{T} J_g}$
 \end{equation}
 
 Simultaneously, the right side b is treated in the same manner. As we might want to use another quadrature rule here that better suits our function $f$, we use $p_2$ quadrature points:
-
 \begin{equation}
 \label{equ:computeb}
  b_i = \sum\limits_{\Delta\in\tau}\sum\limits_{k=1}^{p_2}\omega_k f(g(\xi_k ))\phi_i (g(\xi_k ))\mu(\xi_k )
