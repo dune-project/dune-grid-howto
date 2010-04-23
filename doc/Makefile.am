@@ -2,7 +2,7 @@
 
 EPS_FILES = EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3d.eps \
     EPS/alberta2d.eps EPS/alberta2d-view1.eps EPS/alberta2d-view2.eps EPS/alberta3d.eps \
-    EPS/alucube3d.eps EPS/alusimplex3d.eps EPS/conc.eps EPS/iso.eps EPS/ug2dquad-view1.eps \
+    EPS/alucube3d.eps EPS/alusimplex3d.eps EPS/conc.eps EPS/fem2d.eps EPS/fem3d.eps EPS/iso.eps EPS/ug2dquad-view1.eps \
     EPS/ug2dquad-view2.eps EPS/ug2dtri-view1.eps EPS/ug2dtri-view2.eps EPS/ugcube2d.eps \
     EPS/ugcube3d.eps EPS/ugsimplex2d.eps EPS/ugsimplex3d.eps EPS/yasp3d.eps
 
