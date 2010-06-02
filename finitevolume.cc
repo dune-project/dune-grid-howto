@@ -7,9 +7,6 @@
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
-// checks for defined gridtype and inlcudes appropriate dgfparser implementation
-#include <dgfgridtype.hh>
-
 #include "vtkout.hh"
 #include "unitcube.hh"
 #include "transportproblem2.hh"

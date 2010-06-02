@@ -5,9 +5,6 @@
 #include <fstream>                // for input/output to files
 #include <vector>                 // STL vector class
 
-// checks for defined gridtype and inlcudes appropriate dgfparser implementation
-#include <dgfgridtype.hh>
-
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
