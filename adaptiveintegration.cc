@@ -8,10 +8,6 @@
 #include <dune/grid/io/file/vtk/vtkwriter.hh> // VTK output routines
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
-// checks for defined gridtype and inlcudes appropriate dgfparser implementation
-#include <dgfgridtype.hh>
-
-
 #include "unitcube.hh"
 #include "functors.hh"
 #include "integrateentity.hh"
