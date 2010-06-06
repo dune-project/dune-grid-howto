@@ -10,12 +10,14 @@
 #endif
 
 //! Parameter for mapper class
-template<int dim>
+/** This class is only here to show what such a class looks like -- it does
+    exactly the same as Dune::MCMGElementLayout. */
+template<int dimgrid>
 struct P0Layout
 {
   bool contains (Dune::GeometryType gt)
   {
-    if (gt.dim()==dim) return true;
+    if (gt.dim()==dimgrid) return true;
     return false;
   }
 };

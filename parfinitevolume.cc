@@ -21,22 +21,11 @@
 // the time loop function working for all types of grids
 //===============================================================
 
-//! Parameter for mapper class
-template<int dim>
-struct P0Layout
-{
-  bool contains (Dune::GeometryType gt)
-  {
-    if (gt.dim()==dim) return true;
-    return false;
-  }
-};
-
 template<class G>
 void partimeloop (const G& grid, double tend)
 {
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P0Layout>
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,Dune::MCMGElementLayout>
   mapper(grid);
 
   // allocate a vector for the concentration

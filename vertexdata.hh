@@ -10,7 +10,9 @@
 #endif
 
 //! Parameter for mapper class
-template<int dim>
+/** This class is only here to show what such a class looks like -- it does
+    exactly the same as Dune::MCMGVertexLayout. */
+template<int dimgrid>
 struct P1Layout
 {
   bool contains (Dune::GeometryType gt)
