@@ -21,7 +21,7 @@ template<class G>
 void timeloop (const G& grid, double tend)
 {
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,Dune::MCMGElementMapper>
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,Dune::MCMGElementLayout>
   mapper(grid);
 
   // allocate a vector for the concentration
