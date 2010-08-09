@@ -1014,7 +1014,10 @@ reads the grid in \lstinline!filename! into the FooGrid.
 Further available formats are StarCD and the native Alberta format.
 See the class documentation of dune-grid for an up-to-date list.
 Demo grids for each format can be found in \lstinline!dune-grid/doc/grids!.
-
+They exist for documentation and also as example grids for the unit
+tests of the file readers.  The unit tests should not hardwire the path
+to the example grids.  Instead, the path should be provided in the preprocessor
+variable \lstinline!DUNE_GRID_EXAMPLE_GRIDS_PATH!.
 
 
 \section{The \texorpdfstring{\Dune}{Dune} Grid Format (DGF)}
