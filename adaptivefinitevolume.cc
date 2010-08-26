@@ -76,10 +76,7 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
               << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
 
     // for unstructured grids call adaptation algorithm
-    if( Dune :: Capabilities :: IsUnstructured<G> :: v )
-    {
-      finitevolumeadapt(grid,mapper,c,lmin,lmax,k);          /*@\label{afv:ad}@*/
-    }
+    finitevolumeadapt(grid,mapper,c,lmin,lmax,k);        /*@\label{afv:ad}@*/
   }
 
   // write last time step
