@@ -7,35 +7,36 @@
 
 #if HAVE_UG
 #include <dune/grid/uggrid.hh>
+#include <dune/grid/utility/structuredgridfactory.hh>
 
 template< int dim, int variant >
 class UnitCube< Dune::UGGrid< dim >, variant >
-  : public BasicUnitCube< dim >
 {
 public:
   typedef Dune::UGGrid< dim > GridType;
 
 private:
-  GridType* grid_;
+  Dune::shared_ptr<GridType> grid_;
 
 public:
   UnitCube ()
   {
-    Dune::GridFactory< GridType > factory;
-    BasicUnitCube< dim >::insertVertices( factory );
-    if( variant == 1 )
-      BasicUnitCube< dim >::insertCubes( factory );
-    else if( variant == 2 )
-      BasicUnitCube< dim >::insertSimplices( factory );
-    else
+    Dune::FieldVector<typename GridType::ctype,dim> lowerLeft(0);
+    Dune::FieldVector<typename GridType::ctype,dim> upperRight(1);
+    Dune::array<unsigned int,dim> elements;
+    std::fill(elements.begin(), elements.end(), 1);
+
+    switch (variant) {
+    case 1 :
+      grid_ = Dune::StructuredGridFactory<GridType>::createCubeGrid(lowerLeft, upperRight, elements);
+      break;
+    case 2 :
+      grid_ = Dune::StructuredGridFactory<GridType>::createSimplexGrid(lowerLeft, upperRight, elements);
+      break;
+    default :
       DUNE_THROW( Dune::NotImplemented, "Variant "
                   << variant << " of UG unit cube not implemented." );
-    grid_ = factory.createGrid();
-  }
-
-  ~UnitCube ()
-  {
-    delete grid_;
+    }
   }
 
   GridType &grid ()
