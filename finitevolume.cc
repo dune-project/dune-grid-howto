@@ -8,7 +8,6 @@
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
 #include "vtkout.hh"
-#include "unitcube.hh"
 #include "transportproblem2.hh"
 #include "initialize.hh"
 #include "evolve.hh"
