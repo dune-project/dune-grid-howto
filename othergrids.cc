@@ -6,6 +6,9 @@
 #include "unitcube.hh"
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
+#include <dune/grid/onedgrid.hh>
+#include <dune/grid/uggrid.hh>
+
 int main(int argc, char **argv)
 {
   // initialize MPI, finalize is done automatically on exit

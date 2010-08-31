@@ -51,10 +51,8 @@ private:
 #include "basicunitcube.hh"
 
 // include specializations
-#include "unitcube_onedgrid.hh"
 #include "unitcube_sgrid.hh"
 #include "unitcube_yaspgrid.hh"
-#include "unitcube_uggrid.hh"
 #include "unitcube_albertagrid.hh"
 #include "unitcube_alugrid.hh"
 
