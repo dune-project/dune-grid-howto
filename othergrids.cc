@@ -7,7 +7,9 @@
 #include <dune/common/mpihelper.hh> // include mpi helper class
 
 #include <dune/grid/onedgrid.hh>
+#if HAVE_UG
 #include <dune/grid/uggrid.hh>
+#endif
 
 int main(int argc, char **argv)
 {
