@@ -1241,18 +1241,18 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube.hh}
 Instantiation of that template results in a class that throws an
 exception when an object is created.
 
-\minisec{OneDGrid}
+% \minisec{OneDGrid}
 
-The following listing creates a \lstinline!OneDGrid! object. This
-class has a constructor without arguments that creates a unit
-interval discretized with a single element. \lstinline!OneDGrid!
-allows local mesh refinement in one space dimension.
+% The following listing creates a \lstinline!OneDGrid! object. This
+% class has a constructor without arguments that creates a unit
+% interval discretized with a single element. \lstinline!OneDGrid!
+% allows local mesh refinement in one space dimension.
 
-\begin{lst}[File dune-grid-howto/unitcube\_onedgrid.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../unitcube_onedgrid.hh}
-\end{lst}
+% \begin{lst}[File dune-grid-howto/unitcube\_onedgrid.hh] \mbox{}
+% \nopagebreak
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% numberstyle=\tiny, numbersep=5pt]{../unitcube_onedgrid.hh}
+% \end{lst}
 
 \minisec{SGrid}
 
@@ -1296,20 +1296,20 @@ grid. Specializations of the \lstinline!GridFactory!\ exist for
 numberstyle=\tiny, numbersep=5pt]{../basicunitcube.hh}
 \end{lst}
 
-\minisec{UGGrid}
+% \minisec{UGGrid}
 
-The following listing shows how to create \lstinline!UGGrid!\
-objects based on the \lstinline!BasicUnitCube!. Two and three-dimensional
-versions are available. The \lstinline!variant! parameter can take on two
-values: 1 for
-quadrilateral/hexahedral grids and 2 for triangular/tetrahedral
-grids. The initial grids are read in AmiraMesh format.
+% The following listing shows how to create \lstinline!UGGrid!\
+% objects based on the \lstinline!BasicUnitCube!. Two and three-dimensional
+% versions are available. The \lstinline!variant! parameter can take on two
+% values: 1 for
+% quadrilateral/hexahedral grids and 2 for triangular/tetrahedral
+% grids. The initial grids are read in AmiraMesh format.
 
-\begin{lst}[File dune-grid-howto/unitcube\_uggrid.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
-\end{lst}
+% \begin{lst}[File dune-grid-howto/unitcube\_uggrid.hh] \mbox{}
+% \nopagebreak
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
+% \end{lst}
 
 \minisec{AlbertaGrid}
 
