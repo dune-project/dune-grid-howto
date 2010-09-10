@@ -2052,13 +2052,12 @@ In our implementation we will of course not compute the matrix entries one after
 After assembling the matrix we implement the Dirichlet boundary conditions by overwriting the lines of the equation system associated with boundary nodes with trivial lines:
 
 \begin{figure}[h]
-\def\rb#1{\rotatebox{90}{$\xleftarrow{#1}$}}
 \begin{center}
 \begin{tabular}{ccl}
 & $\begin{array}{cccccccc}
-& & &\rb{i}& & &\\
+& & &i\downarrow& & &\\
 \end{array}$ & \\
-$\xrightarrow{i}$ &
+$\rightarrow{i}$ &
 $\left(\begin{array}{ccccccc}
 \star&\star&\star&\star&\star&\star&\star\\
 0&\cdots&0&1&0&\cdots&0\\
