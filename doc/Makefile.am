@@ -12,8 +12,9 @@ MAINDOCS = grid-howto.pdf
 if WML
  DOCSOURCE = grid-howto.tex navigation.html css.html
  WMLDOCS = index.html
+ HTDOCS = navigation.html css.html
 if TEX4HT
-# HTDOCS =  navigation.html css.html grid-howto.html
+# HTDOCS += grid-howto.html
 endif
 endif
 
