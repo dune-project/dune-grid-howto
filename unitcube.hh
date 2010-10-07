@@ -47,8 +47,6 @@ private:
   Dune::shared_ptr<T> grid_;
 };                                                     /*@\label{uc:uc1}@*/
 
-// include basic unitcube using GridFactory concept
-#include "basicunitcube.hh"
 
 // include specializations
 #include "unitcube_sgrid.hh"

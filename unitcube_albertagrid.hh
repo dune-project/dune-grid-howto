@@ -4,6 +4,7 @@
 #define UNITCUBE_ALBERTAGRID_HH
 
 #include "unitcube.hh"
+#include "basicunitcube.hh"
 
 #if HAVE_ALBERTA
 #include <dune/grid/albertagrid.hh>
