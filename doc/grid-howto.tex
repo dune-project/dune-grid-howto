@@ -1210,23 +1210,22 @@ geometry to the grid implementation.  Calling \lstinline!insertBoundarySegment!
 with a single argument allows you to do just this.
 
 
-\chapter{Grid implementations}
-
-\section{Using different grids}
+\chapter{Grid implementations: Using different grids}
 
 The power of \Dune{} is the possibility of writing one algorithm that
 works on a large variety of grids with different
-features. In that chapter we show how the different available grid
+features. In this chapter we show how the different available grid
 classes are instantiated. As an example we create grids for the unit
 cube $\Omega=(0,1)^d$ in various dimensions $d$.
 
-The different grid classes have no common interface for instantiation,
-they may even have different template parameters. In order make the
-examples below easier to write we want to have a class template
+Not all grid classes have the same interface for instantiation.
+Unstructured grids are created using the \lstinline!GridFactory! class,
+but for structured grids there is more variation.  In order make the
+examples in later chapters easier to write we want to have a class template
 \lstinline!UnitCube! that we parametrize with a type \lstinline!T! and
 an integer parameter \lstinline!variant!. \lstinline!T! should be
 one of the available grid types and \lstinline!variant! can be used to
-generate different grids (e.~g.~triangular or quadrilateral) for the
+generate different grids (e.g.~triangular or quadrilateral) for the
 same type \lstinline!T!. The advantage of the \lstinline!UnitCube!
 template is that the instantiation is hidden from the user.
 
@@ -1238,25 +1237,29 @@ The definition of the general template is as follows.
 numberstyle=\tiny, numbersep=5pt]{../unitcube.hh}
 \end{lst}
 
-Instantiation of that template results in a class that throws an
-exception when an object is created.
+This is a default implementation that uses the utility class
+\lstinline!StructuredGridFactory! (from \lstinline!dune-grid/dune/grid/utility/structuredgridfactory.hh!)
+to create grids for the unit cube.  The \lstinline!StructuredGridFactory!
+uses the \lstinline!GridFactory! class (Section~\ref{sec:grid_factory})
+internally to create structured simplicial and hexahedral grids.
+Depending on the template parameter \lstinline!variant!, a
+hexahedral (\lstinline!variant==1!) or simplical (\lstinline!variant==2!)
+grid is created.
 
-% \minisec{OneDGrid}
+The \lstinline!GridFactory! class is a required part of the grid interface
+for all unstructured grids.  Hence the default implementation of \lstinline!UnitCube!
+should work for all unstructured grids, namely \lstinline!UGGrid!,
+\lstinline!OneDGrid!, \lstinline!ALUGrid!, and \lstinline!AlbertaGrid!.
+The construction of structured grid objects is currently not standardized.
+Therefore \lstinline!UnitCube! is specialized for each structured grid
+type.  We now look at each specialization in turn.
 
-% The following listing creates a \lstinline!OneDGrid! object. This
-% class has a constructor without arguments that creates a unit
-% interval discretized with a single element. \lstinline!OneDGrid!
-% allows local mesh refinement in one space dimension.
-
-% \begin{lst}[File dune-grid-howto/unitcube\_onedgrid.hh] \mbox{}
-% \nopagebreak
-% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-% numberstyle=\tiny, numbersep=5pt]{../unitcube_onedgrid.hh}
-% \end{lst}
+For historic reasons, there are also specializations for 
+\lstinline!ALUGrid! and \lstinline!AlbertaGrid!.
 
 \minisec{SGrid}
 
-The following listing creates a \lstinline!SGrid! object. This class
+The following listing creates an \lstinline!SGrid! object. This class
 template also has a constructor without arguments that results in a
 cube with a single element. \lstinline!SGrid! supports all dimensions.
 
@@ -1280,37 +1283,6 @@ used.
 numberstyle=\tiny, numbersep=5pt]{../unitcube_yaspgrid.hh}
 \end{lst}
 
-\minisec{GridFactory}
-
-The file \lstinline!basicunitcube.hh!\ provides an interface class for the
-set-up of a unit cube in two or three dimensions with simplicial or cubic
-elements with help of the dune-grid class \lstinline!GridFactory!. This class
-hides grid specific methods for insertion of vertices and elements in the macro
-grid. Specializations of the \lstinline!GridFactory!\ exist for
-\lstinline!UGGrid!, \lstinline!AlbertaGrid!\ and the three dimensional
-\lstinline!ALUGrid!\ objects. 
-
-\begin{lst}[File dune-grid-howto/basicunitcube.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../basicunitcube.hh}
-\end{lst}
-
-% \minisec{UGGrid}
-
-% The following listing shows how to create \lstinline!UGGrid!\
-% objects based on the \lstinline!BasicUnitCube!. Two and three-dimensional
-% versions are available. The \lstinline!variant! parameter can take on two
-% values: 1 for
-% quadrilateral/hexahedral grids and 2 for triangular/tetrahedral
-% grids. The initial grids are read in AmiraMesh format.
-
-% \begin{lst}[File dune-grid-howto/unitcube\_uggrid.hh] \mbox{}
-% \nopagebreak
-% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-% numberstyle=\tiny, numbersep=5pt]{../unitcube_uggrid.hh}
-% \end{lst}
-
 \minisec{AlbertaGrid}
 
 The following listing contains specializations of the
@@ -1322,10 +1294,8 @@ used.
 The dimension from the configure run is available in the macro
 \lstinline!ALBERTA_DIM! and \lstinline!ALBERTA_WORLD_DIM! 
 in the file \lstinline!config.h! (see
-next section). The \lstinline!variant! parameter must be 1. Like in the
-\lstinline!UGGrid!\ implementation the grid factory concept is used as the
-\lstinline!UnitCube!\ specializations are based on the
-\lstinline!BasicUnitCube!.
+next section). The \lstinline!variant! parameter must be 1.
+The grid factory concept is used by the base class \lstinline!BasicUnitCube!.
 
 \begin{lst}[File dune-grid-howto/unitcube\_albertagrid.hh] \mbox{}
 \nopagebreak
@@ -1342,8 +1312,8 @@ tetrahedral or triangular grids, and hexahedral grids and the
 element type has to be chosen at compile-time. This is done by choosing 
 either \lstinline!ALUSimplexGrid! or \lstinline!ALUCubeGrid!. 
 The \lstinline!variant!\ parameter must be 1. 
-For three dimensional versions the grid objects are set up with help of the
-\lstinline!BasicUnitCube!\ class.
+As in the default implementation, grid objects are set up with help of the
+\lstinline!StructuredGridFactory!\ class.
 
 \begin{lst}[File dune-grid-howto/unitcube\_alugrid.hh] \mbox{}
 \nopagebreak
