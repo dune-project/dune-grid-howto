@@ -101,7 +101,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       LeafIntersectionIterator isend = leafView.iend(entity);
       for( LeafIntersectionIterator is = leafView.ibegin(entity); is != isend; ++is )
       {
-        const typename LeafIntersectionIterator::Intersection intersection = *is;
+        const typename LeafIntersectionIterator::Intersection &intersection = *is;
         if( !intersection.neighbor() )
           continue;
 
