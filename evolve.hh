@@ -9,7 +9,6 @@ template<class G, class M, class V>
 void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
 {
   // first we extract the dimensions of the grid
-  const int dim = G::dimension;
   const int dimworld = G::dimensionworld;
 
   // type used for coordinates in the grid
@@ -76,7 +75,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       Dune::FieldVector<ct,dimworld> faceglobal = gtf.center();
 
       // evaluate velocity at face center
-      Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
+      Dune::FieldVector<double,dimworld> velocity = u(faceglobal,t);
 
       // compute factor occuring in flux formula
       double factor = velocity*integrationOuterNormal/volume;
