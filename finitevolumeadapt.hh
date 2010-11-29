@@ -2,8 +2,9 @@
 // vi: set et ts=4 sw=2 sts=2:
 #ifndef __DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__
 #define __DUNE_GRID_HOWTO_FINITEVOLUMEADAPT_HH__
-#include <map>
+
 #include <cmath>
+#include <dune/grid/utility/persistentcontainer.hh>
 
 struct RestrictedValue
 {
@@ -40,11 +41,6 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 
   // intersection iterator type
   typedef typename LeafGridView::IntersectionIterator LeafIntersectionIterator;
-
-  // global id set types, local means that the numbering is unique in a single process only.
-  typedef typename G::LocalIdSet IdSet;
-  // type for the index set, note that this is _not_ an integer
-  typedef typename IdSet::IdType IdType;
 
   // get grid view on leaf grid
   LeafGridView leafView = grid.leafView();
@@ -120,9 +116,11 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   if( marked==0 )
     return false;
 
-  // restrict to coarse elements
-  std::map<IdType,RestrictedValue> restrictionmap; // restricted concentration /*@\label{fah:loop4}@*/
-  const IdSet& idset = grid.localIdSet();
+  grid.preAdapt();
+
+  typedef Dune::PersistentContainer<G,RestrictedValue> RestrictionMap;
+  RestrictionMap restrictionmap(grid,0); // restricted concentration /*@\label{fah:loop4}@*/
+
   for (int level=grid.maxLevel(); level>=0; level--)
   {
     // get grid view on level grid
@@ -131,9 +129,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
          it!=levelView.template end<0>(); ++it)
     {
       // get your map entry
-      IdType idi = idset.id(*it);
-      RestrictedValue& rv = restrictionmap[idi];
-
+      RestrictedValue& rv = restrictionmap[*it];
       // put your value in the map
       if (it->isLeaf())
       {
@@ -146,14 +142,12 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       if (it.level()>0)
       {
         EntityPointer ep = it->father();
-        IdType idf = idset.id(*ep);
-        RestrictedValue& rvf = restrictionmap[idf];
+        RestrictedValue& rvf = restrictionmap[*ep];
         rvf.value += rv.value/rv.count;
         rvf.count += 1;
       }
     }                                                  /*@\label{fah:loop5}@*/
   }
-  grid.preAdapt();
 
   // adapt mesh and mapper
   bool rv=grid.adapt();                                /*@\label{fah:adapt}@*/
@@ -168,40 +162,35 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
          it!=levelView.template end<0>(); ++it)
     {
       // get your id
-      IdType idi = idset.id(*it);
 
       // check map entry
-      typename std::map<IdType,RestrictedValue>::iterator rit
-        = restrictionmap.find(idi);
-      if (rit!=restrictionmap.end())
+      if (! it->isNew() )
       {
         // entry is in map, write in leaf
         if (it->isLeaf())
         {
+          RestrictedValue& rv = restrictionmap[*it];
           int indexi = mapper.map(*it);
-          c[indexi] = rit->second.value/rit->second.count;
+          c[indexi] = rv.value/rv.count;
         }
       }
       else
       {
         // value is not in map, interpolate from father element
-        if (it.level()>0)
+        assert (it.level()>0);
+        EntityPointer ep = it->father();
+        RestrictedValue& rvf = restrictionmap[*ep];
+        if (it->isLeaf())
         {
-          EntityPointer ep = it->father();
-          IdType idf = idset.id(*ep);
-          RestrictedValue& rvf = restrictionmap[idf];
-          if (it->isLeaf())
-          {
-            int indexi = mapper.map(*it);
-            c[indexi] = rvf.value/rvf.count;
-          }
-          else
-          {
-            // create new entry
-            RestrictedValue& rv = restrictionmap[idi];
-            rv.value = rvf.value/rvf.count;
-            rv.count = 1;
-          }
+          int indexi = mapper.map(*it);
+          c[indexi] = rvf.value/rvf.count;
+        }
+        else
+        {
+          // create new entry
+          RestrictedValue& rv = restrictionmap[*it];
+          rv.value = rvf.value/rvf.count;
+          rv.count = 1;
         }
       }
     }                                                  /*@\label{fah:loop7}@*/
