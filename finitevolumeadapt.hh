@@ -152,6 +152,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   // adapt mesh and mapper
   bool rv=grid.adapt();                                /*@\label{fah:adapt}@*/
   mapper.update();                                     /*@\label{fah:update}@*/
+  restrictionmap.reserve();
   c.resize(mapper.size());                             /*@\label{fah:resize}@*/
 
   // interpolate new cells, restrict coarsened cells
