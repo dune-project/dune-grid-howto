@@ -26,7 +26,7 @@ public:
     Dune::GridFactory< GridType > factory;
     BasicUnitCube< dim >::insertVertices( factory );
     BasicUnitCube< dim >::insertSimplices( factory );
-    grid_ = factory.createGrid( "UnitCube" );
+    grid_ = factory.createGrid();
   }
 
   ~UnitCube ()
