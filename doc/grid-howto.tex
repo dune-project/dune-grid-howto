@@ -1139,11 +1139,11 @@ This is an abstract base class which requires you to overload the method
          operator() (const FieldVector< double, dim-1 > &local)
 \end{lstlisting}
 
-This methods must compute the world coordinates from the local ones on the boundary segment. Give these classes to your grid by calling
+This methods must compute the world coordinates from the local ones on the boundary segment. Give these classes to your grid factory by calling
 
 \begin{lstlisting}[basicstyle=\small]
-    grid.insertBoundarySegment(const std::vector<int>& vertices, 
-                               const BoundarySegment<dim,dimworld> *
+    factory.insertBoundarySegment(const std::vector<int>& vertices, 
+                                  const BoundarySegment<dim,dimworld> *
                                      boundarySegment = NULL);
 \end{lstlisting}
 
