@@ -84,6 +84,9 @@ private:
     }
   }
 
+  P1ShapeFunctionSet(const P1ShapeFunctionSet& other)
+  {}
+
   ShapeFunction f0;
   ShapeFunction f1[dim];
 };

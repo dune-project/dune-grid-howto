@@ -124,7 +124,7 @@ void P1Elements<GV, F>::assemble()
   b = 0.0;
 
   // get a set of P1 shape functions
-  P1ShapeFunctionSet<ctype,ctype,dim> basis = P1ShapeFunctionSet<ctype,ctype,dim>::instance();
+  const P1ShapeFunctionSet<ctype,ctype,dim>& basis = P1ShapeFunctionSet<ctype,ctype,dim>::instance();
 
   for (LeafIterator it = gv.template begin<0>(); it != itend; ++it)   /*@\label{fem:loop1}@*/
   {
