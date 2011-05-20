@@ -280,7 +280,7 @@ GNU General Public License%
 \footnote{\href{http://www.gnu.org/licenses/gpl.html}%
   {\texttt{http://www.gnu.org/licenses/gpl.html}}}, with a special
 exception for linking and compiling against \Dune{}, the so-called
-``runtime exception.''  The license is intended to be similiar to the
+``runtime exception.''  The license is intended to be similar to the
 GNU Lesser General Public License, which by itself isn't suitable for
 a C++ template library.
 
@@ -381,7 +381,7 @@ object of the given dimensions. The \Dune{} grid interface supports
 unstructured, locally refined, logically nested grids. The coarsest
 grid is called level-0-grid or macro grid. Elements can be
 individually refined into a number of smaller elements. Each element
-of the macro grid and all its descendents obtained from refinement
+of the macro grid and all its descendants obtained from refinement
 form a tree structure. All elements at depth $n$ of a refinement tree
 form the level-$n$-grid. All elements which are leafs of a refinement
 tree together form the so-called leaf grid. The second line of the
@@ -429,7 +429,7 @@ in line \ref{tc:call}.  This function is given in lines
 \ref{tc:tra0}-\ref{tc:tra1}.
 
 The function \lstinline!traversal! is a function template that is
-parameterized by a class \lstinline!G! that is assumed to implement
+parametrized by a class \lstinline!G! that is assumed to implement
 the \Dune{} grid interface.  Thus, it will work on \textit{any} grid
 available in \Dune{} without any changes. We now go into the details
 of this function.
@@ -470,7 +470,7 @@ element. The \lstinline!begin! and \lstinline!end! on the
 \lstinline!LeafGridView!
 class deliver the first leaf element and one past the last leaf element. Note
 that the \lstinline!template! keyword must be used and template parameters are
-passed explicitely. Within the loop body in
+passed explicitly. Within the loop body in
 lines \ref{tc:forel0}-\ref{tc:forel1} the iterator \lstinline!it! acts
 like a pointer to an entity of dimension \lstinline!dim! and
 codimension 0. The exact type would be
@@ -586,7 +586,7 @@ covered by the \Dune{} grid interface.
 
 \minisec{Reference elements}
 
-A computational grid is a nonoverlapping subdivision of a domain
+A computational grid is a non-overlapping subdivision of a domain
 $\Omega\subset\R^w$ into elements of ``simple'' shape. Here ``simple''
 means that the element can be represented as the image of a reference
 element reference element under a transformation. A reference element is a convex
@@ -977,14 +977,14 @@ for uniform grids.
 Unstructured grids usually require much more information than what can
 reasonable be provided within the program code.  Instead, they are usually
 read from special files.  A large variety of different file formats for
-finite element grids exists, and \Dune provides support for some of them
+finite element grids exists, and \Dune provides support for some of them.
 Again, no interface specification exists for file readers in \Dune.
 
 Arguably the most important file format currently supported by \Dune is
 the \lstinline!gmsh! format.  \lstinline!Gmsh!\footnote{\url{http://geuz.org/gmsh/}}
 is an open-source geometry modeler and grid generator.  It allows to define
 geometries using a boundary representation (interactively and via its
-own modelling language resulting in \lstinline!.geo!-files), 
+own modeling language resulting in \lstinline!.geo!-files),
 creates simplicial grids in 2d and 3d (using
 \lstinline!tetgen! or \lstinline!netgen!)
 and stores them in files ending in \lstinline!.msh!. Current precompiled
@@ -1066,7 +1066,7 @@ the corresponding object file has to be removed.
 \section{The Grid Factory}
 \label{sec:grid_factory}
 
-While there is currently no convention on how a file reader should look like,
+While there is currently no convention on what a file reader should look like,
 there is a formally specified low-level interface for the construction of
 unstructured coarse grids.  This interface, which goes by the name of
 GridFactory, provides methods to, e.g., insert vertices and elements one by one.
@@ -1241,7 +1241,7 @@ to create grids for the unit cube.  The \lstinline!StructuredGridFactory!
 uses the \lstinline!GridFactory! class (Section~\ref{sec:grid_factory})
 internally to create structured simplicial and hexahedral grids.
 Depending on the template parameter \lstinline!variant!, a
-hexahedral (\lstinline!variant==1!) or simplical (\lstinline!variant==2!)
+hexahedral (\lstinline!variant==1!) or simplicial (\lstinline!variant==2!)
 grid is created.
 
 The \lstinline!GridFactory! class is a required part of the grid interface
@@ -1451,7 +1451,7 @@ numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 \end{lst}
 
 Running the executable \lstinline!integration! on a YaspGrid in two
-space dimensions with a qudature rule of order
+space dimensions with a quadrature rule of order
 two the following output is obtained:
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
@@ -1544,7 +1544,7 @@ d_e = a(m(e)) .
 \end{equation}
 
 \Dune{} provides different implementations of mappers that differ in
-functionality and cost (with respect to sorage and
+functionality and cost (with respect to storage and
 run-time). Basically there are two different kinds of mappers. 
 
 \minisec{Index based mappers}
@@ -1629,7 +1629,7 @@ The remaining lines of code produce graphical output. Lines
 Visualization Toolkit (VTK), \cite{VTK}, in its XML format. If the
 grid is distributed over several processes the
 \lstinline!Dune::VTKWriter! produces one file per process and the
-correponding XML metafile. Using Paraview, \cite{Paraview}, you can
+corresponding XML metafile. Using Paraview, \cite{Paraview}, you can
 visualize these files. Lines \ref{edh:grape0}-\ref{edh:grape1} enable
 online interactive visualization with the Grape, \cite{Grape},
 graphics package, if it is installed on your machine.
@@ -1894,7 +1894,7 @@ Therefore, in the code it is first checked that the outside element is
 actually a leaf element (line 89). Then the flux can be evaluated if
 the level of the outside element is smaller than that of the element
 where the intersection iterator was started (this corresponds the the
-situation of $\omega_j$ refering to $\omega_i$ in the right part of Figure
+situation of $\omega_j$ referring to $\omega_i$ in the right part of Figure
 \ref{Fig:IsIt}) or when the levels are equal and the index of
 the outside element is larger. The latter condition with the indices
 just ensures that the flux is only computed once.
@@ -2048,11 +2048,11 @@ u_i \\
 \label{Fig:dirichlet}
 \end{figure}
 
-This is possible as - using the nodal basis - the coefficients match the value of the numerical solution at the correspondant node.
+This is possible as - using the nodal basis - the coefficients match the value of the numerical solution at the corresponding node.
 
 \subsection{Implementation}
 
-In this implementation we will restrict ourselves to a 2-dimensional grid. However, the code works on simplical grids of any dimension. Try this later!
+In this implementation we will restrict ourselves to a 2-dimensional grid. However, the code works on simplicial grids of any dimension. Try this later!
 
 Lets first have a look at the implementation of the shape functions. This class only provides the methods to evaluate the shape functions and their gradients:
 
@@ -2074,7 +2074,7 @@ The function \lstinline!determineAdjacencyPattern()! in lines \ref{fem:adjpat1} 
 
 From line \ref{fem:loop1} to \ref{fem:loop2} we have the main loop traversing the whole grid and updating the matrix entries. This does strictly follow the procedure described in previous chapters. The main calculation is done in line \ref{fem:calca} and \ref{fem:calcb} - which are one-to-one implementations of \ref{equ:computea} and \ref{equ:computeb}. \\
 
-As already said above, we do directly implement Dirichlet boundaries into our matrix. This is done in lines \ref{fem:boundary1} to \ref{fem:boundary2}. We have to traverse the whole grid once again and check for each intersection of elements whether it is on the boundary. In line \ref{fem:trivialline} we overwrite the line correspondant to a node on the boundary as shown in figure \ref{Fig:dirichlet}. \\
+As already said above, we do directly implement Dirichlet boundaries into our matrix. This is done in lines \ref{fem:boundary1} to \ref{fem:boundary2}. We have to traverse the whole grid once again and check for each intersection of elements whether it is on the boundary. In line \ref{fem:trivialline} we overwrite the line corresponding to a node on the boundary as shown in figure \ref{Fig:dirichlet}. \\
 
 When you visualize your results, you should get something like figure \ref{Fig:FEM1} or \ref{Fig:FEM2}!
 
