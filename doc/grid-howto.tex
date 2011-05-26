@@ -589,7 +589,7 @@ covered by the \Dune{} grid interface.
 A computational grid is a non-overlapping subdivision of a domain
 $\Omega\subset\R^w$ into elements of ``simple'' shape. Here ``simple''
 means that the element can be represented as the image of a reference
-element reference element under a transformation. A reference element is a convex
+element under a transformation. A reference element is a convex
 polytope, which is a bounded intersection of a finite set of
 half-spaces. 
 
@@ -856,8 +856,8 @@ you to the documentation of the corresponding wrapper class template
     
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LeafIndexSet}}
 
-    LevelIndexSet and LeafIndexSet which are both models of
-    Dune::IndexSet are used to attach any kind of user-defined data to
+    LevelIndexSet and LeafIndexSet, which are both models of
+    Dune::IndexSet, are used to attach any kind of user-defined data to
     (subsets of) entities of the grid. This data is supposed to be
     stored in one-dimensional arrays for reasons of efficiency. An IndexSet is
     usually not used directly but through a Mapper (c.f.~chapter
@@ -942,7 +942,7 @@ each direction call
     n[0] = n[1] = 10;
 
     Dune::FieldVector<double,2> lower;
-    lower[0] = lower[1] = 1.0;
+    lower[0] = lower[1] = 0.0;
 
     Dune::FieldVector<double,2> upper;
     upper[0] = upper[1] = 1.0;
@@ -1051,7 +1051,7 @@ instance of the defined grid is generated. Given a DGF file, for example
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 GridPtr<GridType> gridPtr( "unitcube2.dgf" );
 \end{lstlisting}
-The grid is accessed be dereferencing the grid pointer.
+The grid is accessed by dereferencing the grid pointer.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 GridType& grid = *gridPtr; 
 \end{lstlisting}
@@ -1176,7 +1176,7 @@ coarse grid.  The data may be available in a separate data file or even
 included in the same file with the grid. 
 
  The connection with the grid in
-the grid file is usually make implicitly.  For example, vertex data is ordered
+the grid file is usually made implicitly.  For example, vertex data is ordered
 in the same order as the vertices itself.  Hence the grid-reading process must 
 guarantee that vertices and elements are not reordered during grid creation.
 More specifically, \Dune guarantees the following: {\em the level and leaf
