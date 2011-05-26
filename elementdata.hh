@@ -44,7 +44,7 @@ void elementdata (const G& grid, const F& f)
   // allocate a vector for the data
   std::vector<double> c(mapper.size());                /*@\label{edh:c}@*/
 
-  // iterate through all entities of codim 0 at the leafs
+  // iterate through all entities of codim 0 at the leaves
   for (ElementLeafIterator it = gridView.template begin<0>(); /*@\label{edh:loop0}@*/
        it!=gridView.template end<0>(); ++it)
   {

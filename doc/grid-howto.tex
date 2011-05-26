@@ -383,7 +383,7 @@ grid is called level-0-grid or macro grid. Elements can be
 individually refined into a number of smaller elements. Each element
 of the macro grid and all its descendants obtained from refinement
 form a tree structure. All elements at depth $n$ of a refinement tree
-form the level-$n$-grid. All elements which are leafs of a refinement
+form the level-$n$-grid. All elements that are leaves of a refinement
 tree together form the so-called leaf grid. The second line of the
 output tells us that this grid object consists only of a single level
 (level $0$) while the next line tells us that that level 0 coincides
@@ -1385,7 +1385,7 @@ The function $f$ is represented as a functor, i.~e.~a class having an
 \lstinline!operator()! with appropriate arguments. A point
 $x\in\Omega$ is represented by an object of type
 \lstinline!FieldVector<ct,dim>! where \lstinline!ct! is the type for
-each component of the vector and \lstinline!d! is its dimension.
+each component of the vector and \lstinline!dim! is its dimension.
 
 
 \begin{lst}[dune-grid-howto/functors.hh] Here are some examples for functors.
@@ -1841,7 +1841,7 @@ numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
 \psfrag{omegam}{$\omega_m$}
 \includegraphics[width=0.48\textwidth]{EPS/intersection}\hfill
 \includegraphics[width=0.48\textwidth]{EPS/islocalref}
-\caption{Left: inntersection with other elements and the boundary,
+\caption{Left: intersection with other elements and the boundary,
   right: intersections in the case of locally refined grids.}
 \label{Fig:IsIt}
 \end{figure}

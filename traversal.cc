@@ -37,7 +37,7 @@ void traversal (G& grid)
   // Note the use of the typename and template keywords
   typedef typename LeafGridView::template Codim<0>::Iterator ElementLeafIterator; /*@\label{tc:ittype}@*/
 
-  // iterate through all entities of codim 0 at the leafs
+  // iterate through all entities of codim 0 at the leaves
   int count = 0;
   for (ElementLeafIterator it = leafView.template begin<0>();      /*@\label{tc:forel}@*/
        it!=leafView.template end<0>(); ++it)

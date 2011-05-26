@@ -43,7 +43,7 @@ void vertexdata (const G& grid, const F& f)
   // allocate a vector for the data
   std::vector<double> c(mapper.size());
 
-  // iterate through all entities of codim 0 at the leafs
+  // iterate through all entities of codim 0 at the leaves
   for (VertexLeafIterator it = gridView.template begin<dim>();
        it!=gridView.template end<dim>(); ++it)
   {
