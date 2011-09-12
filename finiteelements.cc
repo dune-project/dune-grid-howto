@@ -225,7 +225,7 @@ void P1Elements<GV, E>::solve()
   Dune::BiCGSTABSolver<ScalarField> bcgs(op, ilu1, 1e-15, 5000, 0);
   Dune::InverseOperatorResult r;
 
-  // initialue u to some arbitrary value to avoid u being the exact
+  // initialize u to some arbitrary value to avoid u being the exact
   // solution
   u.resize(b.N(), false);
   u = 2.0;
