@@ -2,11 +2,12 @@
 // vi: set et ts=4 sw=2 sts=2:
 // $Id$
 
-#include "config.h"
+#include <config.h>
 #include <iostream>
 #include <iomanip>
 #include <stdio.h>
 #include <dune/common/mpihelper.hh> // include mpi helper class
+#include <dune/grid/io/file/dgfparser/dgfparser.hh>
 
 
 #include "elementdata.hh"
@@ -45,6 +46,14 @@ int main(int argc, char **argv)
   // start try/catch block to get error messages from dune
   try
   {
+    if( argc > 1 )
+    {
+      typedef Dune::GridSelector::GridType DGFGridType;
+      // create grid pointer
+      Dune :: GridPtr< DGFGridType > gridPtr( argv[ 1 ] );
+      dowork( *gridPtr, 3 );
+    }
+
     /*
        UnitCube<Dune::OneDGrid,1> uc0;
        UnitCube<Dune::YaspGrid<dimGrid>,1> uc1;
