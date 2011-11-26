@@ -43,8 +43,8 @@ void timeloop (G& grid, double tend, int lmin, int lmax)
   // variables for time, timestep etc.
   double dt, t=0;
   double saveStep = 0.1;
-  const double saveInterval = 0.1;
-  int counter = 0;
+  const double saveInterval = t + 0.1;
+  int counter = 1;
   int k = 0;
 
   std::cout << "s=" << grid.size(0) << " k=" << k << " t=" << t << std::endl;
