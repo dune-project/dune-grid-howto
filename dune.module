@@ -2,4 +2,4 @@
 Module: dune-grid-howto
 Maintainer: dune@dune-project.org
 Version: 2.2-svn
-Depends: dune-common (>= 2.2) dune-grid (>= 2.2) dune-istl (>= 2.2)
+Depends: dune-common (>= 2.2) dune-geometry (>= 2.2) dune-grid (>= 2.2) dune-istl (>= 2.2)
