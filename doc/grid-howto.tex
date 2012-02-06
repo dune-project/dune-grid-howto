@@ -1027,29 +1027,27 @@ A detailed description of the DGF and how to use it can be found on the
 homepage of \Dune% 
 \footnote{\url{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}}.
 
-Here we only give a short introduction. The configuration
-\lstinline!--with-grid-dim={1,2,3}! must be provided during configuration run
-in order to use the DGF parser. A default grid type can be chosen with the
-configuration option  \lstinline!--with-grid-type=ALBERTAGRID!.
-Further possible grid types are \lstinline!ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM!, 
-\lstinline!ONEDGRID,SGRID,UGGRID!, and \lstinline!YASPGRID!.
-Note that both values will also be changeable later. 
-If the \lstinline!--with-grid-dim! option was not provided during configuration the 
-DFG grid type definition will not work. Nevertheless, the grid parser will work 
-but the grid type has to be defined by the user and the appropriate DGF parser 
-specialization has to be included. 
-Assuming the \lstinline!--with-grid-dim!\ was provided the DGF grid type 
-definition works by first including \lstinline!gridtype.hh!.
-\begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-#include <dune/grid/io/file/dgfparser/dgfgridtype.hh>
-\end{lstlisting}
-Depending on the pre-configured values of \lstinline!GRIDDIM!\ and
-\lstinline!GRIDTYPE! a typedef for the grid to use will be provided by
-including \lstinline!dgfgridtype.hh!. The following example shows how an 
+Here we only give a short introduction. 
+Basically one can choose the grid manager during the make process of
+your program:
+\lstinline!make GRIDTYPE=MYGRID GRIDDIM=d GRIDWORLD=w!
+Including \lstinline!config.h! will then
+introduce the namespace \lstinline!GridSelector! into the
+\lstinline!Dune! namespace. This contains the typedef
+\lstinline!GridType! which is the type of the grid. Furthermore the 
+required header files for the grid manager are included.
+Through the module \Dune{}-grid the following grid managers can be used
+(for \lstinline!MYGROD! in the example above): 
+\\
+\lstinline!ALBERTAGRID,ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM,ONEDGRID,SGRID,UGGRID!,
+\\
+and \lstinline!YASPGRID!.
+\\
+The following example shows how an 
 instance of the defined grid is generated. Given a DGF file, for example 
-\lstinline!unitcube2.dgf!, a grid pointer is created as follows.
+\lstinline!unitcube2.dgf!, a grid pointer is created as follows
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-GridPtr<GridType> gridPtr( "unitcube2.dgf" );
+Dune::GridPtr<Dune::GridSelector::GridType> gridPtr( "unitcube2.dgf" );
 \end{lstlisting}
 The grid is accessed by dereferencing the grid pointer.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
@@ -1062,6 +1060,12 @@ make GRIDDIM=2 GRIDTYPE=ALBERTAGRID integration
 This will compile the application \texttt{integration} with grid type \lstinline!ALBERTAGRID! and grid dimension $2$.
 Note that before the re-compilation works, 
 the corresponding object file has to be removed.
+If \lstinline!WORLDDIM! is not
+provide then \lstinline!WORLDDIM=GRIDDIM! is assumed.
+To use some grid manager by default, i.e., without providing the grid type
+during the make process, \lstinline!GRIDTYPE! and
+\lstinline!GRIDDIM,WORLDDIM! can be set in \lstinline!Makefile.am!. It is
+then still possible to change the default during the make process. 
 
 \section{The Grid Factory}
 \label{sec:grid_factory}
