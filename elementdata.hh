@@ -48,11 +48,11 @@ void elementdata (const G& grid, const F& f)
   for (ElementLeafIterator it = gridView.template begin<0>(); /*@\label{edh:loop0}@*/
        it!=gridView.template end<0>(); ++it)
   {
-    // cell geometry type
-    const LeafGeometry & gt = it->geometry();
+    // cell geometry
+    const LeafGeometry geo = it->geometry();
 
     // get global coordinate of cell center
-    Dune::FieldVector<ct,dimworld> global = gt.center();
+    Dune::FieldVector<ct,dimworld> global = geo.center();
 
     // evaluate functor and store value
     c[mapper.map(*it)] = f(global);                    /*@\label{edh:feval}@*/

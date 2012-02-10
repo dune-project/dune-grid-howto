@@ -38,7 +38,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
     double value=0;                                      /*@\label{aic:int0}@*/
     for (ElementLeafIterator it = gridView.template begin<0>();
          it!=gridView.template end<0>(); ++it)
-      value += integrateentity(it,f,highorder);           /*@\label{aic:int1}@*/
+      value += integrateEntity(*it,f,highorder);           /*@\label{aic:int1}@*/
 
     // print result
     double estimated_error = std::abs(value-oldvalue);
@@ -71,16 +71,16 @@ void adaptiveintegration (Grid& grid, const Functor& f)
          it!=grid.template leafend<0>(); ++it)
     {
       // error on this entity
-      double lowresult=integrateentity(it,f,loworder);
-      double highresult=integrateentity(it,f,highorder);
+      double lowresult=integrateEntity(*it,f,loworder);
+      double highresult=integrateEntity(*it,f,highorder);
       double error = std::abs(lowresult-highresult);
 
       // max over whole grid
       maxerror = std::max(maxerror,error);
 
       // error on father entity
-      double fatherlowresult=integrateentity(it->father(),f,loworder);
-      double fatherhighresult=integrateentity(it->father(),f,highorder);
+      double fatherlowresult=integrateEntity(*(it->father()),f,loworder);
+      double fatherhighresult=integrateEntity(*(it->father()),f,highorder);
       double fathererror = std::abs(fatherlowresult-fatherhighresult);
 
       // local extrapolation
@@ -93,8 +93,8 @@ void adaptiveintegration (Grid& grid, const Functor& f)
     for (ElementLeafIterator it = gridView.template begin<0>();       /*@\label{aic:mark0}@*/
          it!=gridView.template end<0>(); ++it)
     {
-      double lowresult=integrateentity(it,f,loworder);
-      double highresult=integrateentity(it,f,highorder);
+      double lowresult=integrateEntity(*it,f,loworder);
+      double highresult=integrateEntity(*it,f,highorder);
       double error = std::abs(lowresult-highresult);
       if (error>kappa) grid.mark(1,*it);
     }                                                  /*@\label{aic:mark1}@*/

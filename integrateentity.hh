@@ -7,21 +7,24 @@
 #include <dune/geometry/quadraturerules.hh>
 
 //! compute integral of function over entity with given order
-template<class Iterator, class Functor>
-double integrateentity (const Iterator& it, const Functor& f, int p)
+template<class Entity, class Function>
+double integrateEntity (const Entity &entity, const Function &f, int p)
 {
   // dimension of the entity
-  const int dim = Iterator::Entity::dimension;
+  const int dim = Entity::dimension;
 
   // type used for coordinates in the grid
-  typedef typename Iterator::Entity::ctype ct;
+  typedef typename Entity::ctype ctype;
+
+  // get geometry
+  const typename Entity::Geometry geometry = entity.geometry();
 
   // get geometry type
-  Dune::GeometryType gt = it->type();
+  const Dune::GeometryType gt = geometry.type();
 
   // get quadrature rule of order p
-  const Dune::QuadratureRule<ct,dim>&
-  rule = Dune::QuadratureRules<ct,dim>::rule(gt,p);     /*@\label{ieh:qr}@*/
+  const Dune::QuadratureRule<ctype,dim>&
+  rule = Dune::QuadratureRules<ctype,dim>::rule(gt,p);     /*@\label{ieh:qr}@*/
 
   // ensure that rule has at least the requested order
   if (rule.order()<p)
@@ -29,16 +32,17 @@ double integrateentity (const Iterator& it, const Functor& f, int p)
 
   // compute approximate integral
   double result=0;
-  for (typename Dune::QuadratureRule<ct,dim>::const_iterator i=rule.begin(); /*@\label{ieh:for}@*/
+  for (typename Dune::QuadratureRule<ctype,dim>::const_iterator i=rule.begin(); /*@\label{ieh:for}@*/
        i!=rule.end(); ++i)
   {
-    double fval = f(it->geometry().global(i->position()));       /*@\label{ieh:fval}@*/
+    double fval = f(geometry.global(i->position()));       /*@\label{ieh:fval}@*/
     double weight = i->weight();                        /*@\label{ieh:weight}@*/
-    double detjac = it->geometry().integrationElement(i->position());       /*@\label{ieh:detjac}@*/
+    double detjac = geometry.integrationElement(i->position());       /*@\label{ieh:detjac}@*/
     result += fval * weight * detjac;                   /*@\label{ieh:result}@*/
   }
 
   // return result
   return result;
 }
+
 #endif

@@ -47,11 +47,11 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   for (LeafIterator it = gridView.template begin<0>(); it!=endit; ++it)
   {
     // cell geometry
-    const LeafGeometry &gt = it->geometry();
+    const LeafGeometry geo = it->geometry();
 
 
     // cell volume, assume linear map here
-    double volume = gt.volume();
+    double volume = geo.volume();
 
     // cell index
     int indexi = mapper.map(*it);
@@ -64,15 +64,15 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     for (IntersectionIterator is = gridView.ibegin(*it); is!=isend; ++is)
     {
       // get geometry type of face
-      const IntersectionGeometry &gtf = is->geometry();
+      const IntersectionGeometry igeo = is->geometry();
 
       // get normal vector scaled with volume
       Dune::FieldVector<ct,dimworld> integrationOuterNormal
         = is->centerUnitOuterNormal();
-      integrationOuterNormal *= gtf.volume();
+      integrationOuterNormal *= igeo.volume();
 
       // center of face in global coordinates
-      Dune::FieldVector<ct,dimworld> faceglobal = gtf.center();
+      Dune::FieldVector<ct,dimworld> faceglobal = igeo.center();
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dimworld> velocity = u(faceglobal,t);
@@ -96,8 +96,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
              (it->level()==outside->level() && indexi<indexj) )
         {
           // compute factor in neighbor
-          const LeafGeometry &nbgt = outside->geometry();
-          double nbvolume = nbgt.volume();
+          const LeafGeometry nbgeo = outside->geometry();
+          double nbvolume = nbgeo.volume();
           double nbfactor = velocity*integrationOuterNormal/nbvolume;
 
           if (factor<0)                         // inflow

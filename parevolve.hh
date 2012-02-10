@@ -59,10 +59,10 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   for (LeafIterator it = gridView.template begin<0,Dune::All_Partition>(); it!=endit; ++it) /*@\label{peh:begin}@*/
   {
     // cell geometry
-    const LeafGeometry & gt = it->geometry();
+    const LeafGeometry geo = it->geometry();
 
     // cell volume
-    double volume = gt.volume();
+    double volume = geo.volume();
 
     // cell index
     int indexi = mapper.map(*it);
@@ -77,15 +77,15 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       const Intersection &intersection = *is;
 
       // get geometry type of face
-      const IntersectionGeometry & gtf = intersection.geometry();
+      const IntersectionGeometry igeo = intersection.geometry();
 
       // get normal vector scaled with volume
       Dune::FieldVector< ct, dimworld > integrationOuterNormal
         = intersection.centerUnitOuterNormal();
-      integrationOuterNormal *= gtf.volume();
+      integrationOuterNormal *= igeo.volume();
 
       // center of face in global coordinates
-      Dune::FieldVector< ct, dimworld > faceglobal = gtf.center();
+      Dune::FieldVector< ct, dimworld > faceglobal = igeo.center();
 
       // evaluate velocity at face center
       Dune::FieldVector<double,dim> velocity = u(faceglobal,t);
@@ -111,8 +111,8 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
             || ((insideLevel == outsideLevel) && (indexi < indexj)) )
         {
           // compute factor in neighbor
-          const LeafGeometry & nbgt = outside->geometry();
-          double nbvolume = nbgt.volume();
+          const LeafGeometry nbgeo = outside->geometry();
+          double nbvolume = nbgeo.volume();
           double nbfactor = velocity*integrationOuterNormal/nbvolume;
 
           if( factor < 0 )       // inflow

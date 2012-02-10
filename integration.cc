@@ -34,7 +34,7 @@ void uniformintegration (Grid& grid)
     double value = 0.0;
     LeafIterator eendit = gridView.template end<0>();
     for (LeafIterator it = gridView.template begin<0>(); it!=eendit; ++it)
-      value += integrateentity(it,f,1);                /*@\label{ic:call}@*/
+      value += integrateEntity(*it,f,1);                /*@\label{ic:call}@*/
 
     // print result and error estimate
     std::cout << "elements="

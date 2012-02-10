@@ -33,10 +33,10 @@ void initialize (const G& grid, const M& mapper, V& c)
   for (LeafIterator it = gridView.template begin<0>(); it!=endit; ++it)
   {
     // get geometry
-    const Geometry &gt = it->geometry();
+    const Geometry geo = it->geometry();
 
     // get global coordinate of cell center
-    Dune::FieldVector<ct,dimworld> global = gt.center();
+    Dune::FieldVector<ct,dimworld> global = geo.center();
 
     // initialize cell concentration
     c[mapper.map(*it)] = c0(global);
