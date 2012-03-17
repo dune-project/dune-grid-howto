@@ -1,8 +1,6 @@
 \documentclass[11pt,a4paper,headinclude,footinclude,DIV16,normalheadings]{scrreprt}
 \usepackage[automark]{scrpage2}
 \usepackage[ansinew]{inputenc}
-%\usepackage{german}
-%\usepackage{bibgerm}
 \usepackage{amsmath}
 \usepackage{amsfonts}
 \usepackage{theorem}
@@ -188,8 +186,7 @@ download the latest stable version of the tarballs of
 These are available on the \Dune{} download page:
 %
 \begin{center}
-\href{http://www.dune-project.org/download.html}%
-{\texttt{http://www.dune-project.org/download.html}}
+\url{http://www.dune-project.org/download.html}
 \end{center}
 %
 
@@ -201,8 +198,7 @@ anonymous SVN.  For further information, please see the web page.
 The official installation instructions are available on the web page
 %
 \begin{center}
-\href{http://www.dune-project.org/doc/installation-notes.html}%
-{\texttt{http://www.dune-project.org/doc/installation-notes.html}}
+\url{http://www.dune-project.org/doc/installation-notes.html}
 \end{center}
 
 Obviously, we do not want to copy all this information because it might
@@ -232,9 +228,9 @@ parallel features of \Dune{}.  To use adaptive grids, you need to
 install one of the external grid packages which \Dune{} provides
 interfaces for, for instance Alberta, UG and ALUGrid.
 \begin{itemize}
-\item Alberta -- \href{http://www.alberta-fem.de/}{\texttt{http://www.alberta-fem.de/}}
-\item UG -- \href{http://sit.iwr.uni-heidelberg.de/~ug/}{\texttt{http://sit.iwr.uni-heidelberg.de/~ug/}}
-\item ALUGrid-- \href{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}{\texttt{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}}
+\item Alberta -- \url{http://www.alberta-fem.de/}
+\item UG -- \url{http://sit.iwr.uni-heidelberg.de/~ug/}
+\item ALUGrid -- \url{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}
 \end{itemize}
 To use the parallel code of \Dune{}, you need an implementation of the
 Message Passing Interface (MPI), for example MPICH or LAM.  For the
@@ -262,13 +258,12 @@ please see the \Dune{} web page.
 
 Documentation of the files and classes in \Dune{} is provided in code and
 can be extracted using the
-doxygen\footnote{\href{http://www.stack.nl/~dimitri/doxygen/}{\texttt{http://www.stack.nl/$\sim$dimitri/doxygen/}}}
+doxygen\footnote{\url{http://www.doxygen.org/}}
 software available elsewhere. The code documentation can either be built
-locally on your machine (in html and other formats, e.g.~\LaTeX) 
+locally on your machine (in html and other formats, e.\,g.~\LaTeX) 
 or its latest version is available at
 \begin{center}
-\href{http://www.dune-project.org/doc/}%
-{\texttt{http://www.dune-project.org/doc/}}
+\url{http://www.dune-project.org/doc/}
 \end{center}
 
 %\section{How to start a new DUNE project}
@@ -277,8 +272,7 @@ or its latest version is available at
 
 The \Dune{} library and headers are licensed under version 2 of the
 GNU General Public License%
-\footnote{\href{http://www.gnu.org/licenses/gpl.html}%
-  {\texttt{http://www.gnu.org/licenses/gpl.html}}}, with a special
+\footnote{\url{http://www.gnu.org/licenses/gpl-2.0.html}}, with a special
 exception for linking and compiling against \Dune{}, the so-called
 ``runtime exception.''  The license is intended to be similar to the
 GNU Lesser General Public License, which by itself isn't suitable for
@@ -704,7 +698,7 @@ definition it is clear that the concept does not necessarily exist as
 program text. 
 
 A class that implements a concept is called a
-\textit{model} of the concept. E.g.~in the standard template library (STL)
+\textit{model} of the concept. E.\,g.~in the standard template library (STL)
 the class \lstinline!std::vector<int>! is a model of the concept
 ``container''. If all instances of a class template are a model of
 a given concept we can also say that the class template is a model of
@@ -715,7 +709,7 @@ In standard OO language a concept would be formulated as
 an abstract base class and all the models would be implemented as
 derived classes. However, for reasons of efficiency we do not want to
 use dynamic polymorphism. Moreover, concepts are more powerful because
-the models of a concept can use different types, e.g.~as return types of
+the models of a concept can use different types, e.\,g.~as return types of
 methods. As an example consider the STL where the begin method on a
 vector of int returns \lstinline!std::vector<int>::iterator! and on a
 list of int it returns \lstinline!std::list<int>::iterator! which may
@@ -759,10 +753,8 @@ define the concepts. In order to avoid any inconsistencies we refer as
 much as possible to the doxygen-generated documentation. For an
 overview of the grid interface see the web page 
 \begin{center}
-\href{http://www.dune-project.org/doc/doxygen/html/group__Grid.html}%
-{\texttt{http://www.dune-project.org/doc/doxygen/html/group\_\_Grid.html}}.
+\url{http://www.dune-project.org/doc/doxygen/html/group__Grid.html}.
 \end{center}
-
 
 
 \subsection{Common types}
@@ -770,8 +762,8 @@ overview of the grid interface see the web page
 Some types in the grid interface do not depend on a specific model,
 i.~e.~they are shared by all implementations.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1ReferenceElement.html}{Dune::ReferenceElement}}
-
+\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1GenericReferenceElement.html}{Dune::GenericReferenceElement}}
+               
 describes the topology and geometry of standard entities. Any given
 entity of the grid can be completely specified by a reference element
 and a map from this reference element to world coordinate space. 
@@ -802,7 +794,7 @@ you to the documentation of the corresponding wrapper class template
     classes are typically aggregated in the grid class and accessed via
     iterators. 
 
-\minisec{\href{TODO}{GridView}}
+\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1GridView.html}{GridView}}
 
     The GridView gives a view on a level or the leaf part of a grid. It
     provides iterators for access to the elements of this view and a
@@ -813,7 +805,7 @@ you to the documentation of the corresponding wrapper class template
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Entity.html}{Entity}}
 
     The entity class encapsulates
-    the topological part of an entity, i.e. its hierarchical
+    the topological part of an entity, i.\,e. its hierarchical
     construction from subentities and the relation to other
     entities. Entities cannot be created, copied or modified by the
     user. They can only be read-accessed through immutable iterators. 
@@ -828,7 +820,7 @@ you to the documentation of the corresponding wrapper class template
 
     EntityPointer  is a
     dereferenceable type that delivers a reference to an
-    entity. Moreover it is immutable, i.e. the referenced entity can
+    entity. Moreover it is immutable, i.\,e. the referenced entity can
     not be modified. 
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Iterator.html}{Iterator}}
@@ -839,7 +831,7 @@ you to the documentation of the corresponding wrapper class template
     codimension of a GridView. An EntityPointer is assignable
     from an Iterator. 
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__GIIntersectionIterator.html}{IntersectionIterator}}
+\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}{IntersectionIterator}}
 
     IntersectionIterator provides access to all entities of
     codimension 0 that have an intersection of codimension 1 with a
@@ -890,7 +882,7 @@ may occur if you try to mix these types.
 
 In order to avoid these problems the related types of an
 implementation are provided as public types by most classes of an
-implementation. E.g., in order to extract the
+implementation. E.\,g., in order to extract the
 \lstinline!XLevelIterator! (for codimension 0) from the
 \lstinline!XGrid! class you would write
 \begin{lstlisting}
@@ -990,7 +982,7 @@ creates simplicial grids in 2d and 3d (using
 and stores them in files ending in \lstinline!.msh!. Current precompiled
 releases $\geq$ 2.4.2 of \lstinline!Gmsh! have \lstinline!OpenCascade!, an open-source CAD
 kernel, as built-in geometry modeler. Thus these releases are able to import 
-CAD geometries, e.g.\ from IGES or STEP files, and to generate meshes for them to
+CAD geometries, e.\,g.~from IGES or STEP files, and to generate meshes for them to
 be subsequently used in \Dune. Be aware that most versions of Gmsh available in
 the package repositories of your operating system still lack this functionality.
 Further, Gmsh and the Gmsh reader of \Dune support second order
@@ -1001,8 +993,7 @@ and write
     FooGrid* grid = GmshReader<GridType>::read(filename);
 \end{lstlisting}
 
-A second format is AmiraMesh, which is the native format of the Amira
-visualization toolbox.\footnote{\url{http://www.amiravis.de/}}
+A second format is AmiraMesh, which is the native format of the Amira.\footnote{\url{http://www.amira.com/}}
 To read AmiraMesh files you need to have the library libamiramesh%
 \footnote{\url{http://amira.com/downloads/patch-archive/patches412/81.html}}
 installed.  Then
@@ -1025,7 +1016,7 @@ variable \lstinline!DUNE_GRID_EXAMPLE_GRIDS_PATH!.
 Dune has its own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat. 
 A detailed description of the DGF and how to use it can be found on the
 homepage of \Dune% 
-\footnote{\url{http://www.dune-project.org/doc/doxygen/dune-grid-html/group__DuneGridFormatParser.html}}.
+\footnote{\url{http://www.dune-project.org/doc/doxygen/html/classDune_1_1DuneGridFormatParser.html}}.
 
 Here we only give a short introduction. 
 Basically one can choose the grid manager during the make process of
@@ -1073,7 +1064,7 @@ then still possible to change the default during the make process.
 While there is currently no convention on what a file reader should look like,
 there is a formally specified low-level interface for the construction of
 unstructured coarse grids.  This interface, which goes by the name of
-GridFactory, provides methods to, e.g., insert vertices and elements one by one.
+GridFactory, provides methods to, e.\,g.~insert vertices and elements one by one.
 It is the basis of the file readers described in the previous section.
 The main reason why you may want to program the GridFactory directly is
 when writing your own grid readers.  However, in some cases it may also be
@@ -1111,7 +1102,8 @@ for each vertex. The order of insertion determines the level- and leaf indices o
 For each element call
 
 \begin{lstlisting}[basicstyle=\small]
-    factory.insertElement(Dune::GeometryType type, const std::vector<int>& vertices);
+    factory.insertElement(Dune::GeometryType type, 
+        const std::vector<int>& vertices);
 \end{lstlisting}
 
 The parameters are
@@ -1214,7 +1206,7 @@ geometry to the grid implementation.  Calling \lstinline!insertBoundarySegment!
 with a single argument allows you to do just this.
 
 
-\section{Example: The \lstinline!UnitCube! class}
+\section{Example: The \texorpdfstring{\lstinline{UnitCube}}{UnitCube} class}
 
 In this chapter we give example code that shows how the different available grid
 classes are instantiated. We create grids for the unit
@@ -1227,7 +1219,7 @@ examples in later chapters easier to write we want to have a class template
 \lstinline!UnitCube! that we parametrize with a type \lstinline!T! and
 an integer parameter \lstinline!variant!. \lstinline!T! should be
 one of the available grid types and \lstinline!variant! can be used to
-generate different grids (e.g.~triangular or quadrilateral) for the
+generate different grids (e.\,g.~triangular or quadrilateral) for the
 same type \lstinline!T!. The advantage of the \lstinline!UnitCube!
 template is that the instantiation is hidden from the user.
 
@@ -1236,11 +1228,11 @@ The definition of the general template is as follows.
 \begin{lst}[File dune-grid-howto/unitcube.hh] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../unitcube.hh}
+numberstyle=\tiny, numbersep=5pt, breaklines=true]{../unitcube.hh}
 \end{lst}
 
 This is a default implementation that uses the utility class
-\lstinline!StructuredGridFactory! (from \lstinline!dune-grid/dune/grid/utility/structuredgridfactory.hh!)
+\lstinline!StructuredGridFactory! (from the header \lstinline!dune-grid/dune/grid/utility/structuredgridfactory.hh!)
 to create grids for the unit cube.  The \lstinline!StructuredGridFactory!
 uses the \lstinline!GridFactory! class (Section~\ref{sec:grid_factory})
 internally to create structured simplicial and hexahedral grids.
@@ -1320,7 +1312,7 @@ As in the default implementation, grid objects are set up with help of the
 \begin{lst}[File dune-grid-howto/unitcube\_alugrid.hh] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../unitcube_alugrid.hh}
+numberstyle=\tiny, numbersep=5pt, breaklines=true]{../unitcube_alugrid.hh}
 \end{lst}
 
 
@@ -1527,7 +1519,7 @@ index. The set of indices starts at zero and is consecutive.
 
 Let us assume that the set of all entities in the grid is $E$ and
 that $E^\prime\subseteq E$ is the subset of entities for which data is
-to be stored. E.g.~this could be all the vertices in the leaf grid in
+to be stored. E.\,g.~this could be all the vertices in the leaf grid in
 the case of $P_1$ finite elements. Then the access from grid entities
 to user data is a two stage process: A so-called \textit{mapper}
 provides a map
@@ -1861,8 +1853,7 @@ The computation of the fluxes is done in lines
 is used to access all intersections $\gamma_{ij}$ of a leaf element
 $\omega_i$. For a full documentation on the
 \lstinline!Intersection!\ class, we refer to the doxygen module page on 
-\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}{Intersections}\footnote{\href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}
-{{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_GIIntersectionIterator.html}}}}
+Intersections\footnote{\url{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}}
 An Intersection is with another element $\omega_j$ if the
 \lstinline!neighbor()! method of the iterator returns true (line
 \ref{evh:neighbor}) or with the external boundary if
@@ -1953,7 +1944,7 @@ In this section we will put together our knowledge about the \Dune{} grid interf
 u & = 0 \ \ on \ \partial\Omega
 \end{align}
 
-The equation will be solved using P1-Finite-Elements on a simplicial grid. The implementation aims to be easy to understand and yet show the power of the \Dune{} grid interface and its generic approach. \\
+The equation will be solved using P1-Finite-Elements on a simplicial grid. The implementation aims to be easy to understand and yet show the power of the \Dune{} grid interface and its generic approach.
 
 The starting point of the Finite Element Method is the variational formulation of \ref{eq:fempoisson}, which is obtained by partial integration:
 \begin{equation}
@@ -1962,7 +1953,6 @@ The starting point of the Finite Element Method is the variational formulation o
 \end{equation}
 
 Let now $\mathcal{T}$ be a conforming triangulation of the domain $\Omega$ with simplices:
-
 \renewcommand{\labelenumi}{(\roman{enumi})}
 \begin{center}
 \begin{enumerate}
@@ -1977,7 +1967,7 @@ As we want to use linear finite elements we choose our test function space to be
  V_h = \{ u\in C(\bar{\Omega} )\ \Big| \ u\big|_{\Delta}\in\mathcal{P}_1 (\Delta ) \ \forall\Delta\in\mathcal{T}\}
 \end{equation}
 
-We will not incorporate the Dirichlet boundary conditions into this function space. Instead, we will implement them in an easier way as described later on. \\
+We will not incorporate the Dirichlet boundary conditions into this function space. Instead, we will implement them in an easier way as described later on.
 
 As a basis $\phi_1 ,...,\phi_N$ of $V_h$ we choose the nodal basis - providing us small supports and thus a sparse stiffness matrix. After transformation onto the reference element we can use the shape functions
 \begin{align}
@@ -1985,14 +1975,14 @@ N_0(x) & = 1 - \sum\limits_{i=1}^d x_i \\
 N_i(x) & = x_i \ \ i=1,...,d
 \end{align}
 
-to evaluate the basis functions and their gradients. \\
+to evaluate the basis functions and their gradients.
 
 The numerical solution $u_h$ is a linear combination of $\phi_1,...,\phi_N$ with coefficients $u_1,...,u_N$. We assemble the stiffness Matrix $A$ and the vector $b$:
 \begin{equation}
  A_{ij}=a(\phi_i ,\phi_j ) \ \ b_i=\ell (\phi_i )
 \end{equation}
 
-The coefficients $u_1,...,u_N$ are then obtained by solving $Au=b$. \\
+The coefficients $u_1,...,u_N$ are then obtained by solving $Au=b$.
 
 The integrals are transformed onto the reference element $\hat{\Delta}$ and computed with an appropriate quadrature rule. Let the transformation map be given by $g: \hat{\Delta} \to \Delta$
 
@@ -2019,12 +2009,12 @@ Simultaneously, the right side b is treated in the same manner. As we might want
  b_i = \sum\limits_{\Delta\in\tau}\sum\limits_{k=1}^{p_2}\omega_k f(g(\xi_k ))\phi_i (g(\xi_k ))\mu(\xi_k )
 \end{equation}
 
-In our implementation we will of course not compute the matrix entries one after another but rather iterate over all elements of the grid and update all matrix entries with a non-vanishing contribution on that element. \\
+In our implementation we will of course not compute the matrix entries one after another but rather iterate over all elements of the grid and update all matrix entries with a non-vanishing contribution on that element.
 
 After assembling the matrix we implement the Dirichlet boundary conditions by overwriting the lines of the equation system associated with boundary nodes with trivial lines:
 
 \begin{figure}[h]
-\begin{center}
+\centering
 \begin{tabular}{ccl}
 & $\begin{array}{cccccccc}
 & & &i\downarrow& & &\\
@@ -2047,7 +2037,6 @@ u_i \\
 \star \\
 \end{array}\right)$
 \end{tabular}
-\end{center}
 \caption{Lines of $A$ and $b$ are replaced by trivial lines.}
 \label{Fig:dirichlet}
 \end{figure}
@@ -2071,31 +2060,29 @@ And now the actual FEM code:
 \begin{lst}[File dune-grid-howto/finiteelements.cc] \mbox{}
 \nopagebreak
 \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
-numberstyle=\tiny, numbersep=5pt]{../finiteelements.cc}
+numberstyle=\tiny, numbersep=5pt, breaklines=true]{../finiteelements.cc}
 \end{lst}
 
-The function \lstinline!determineAdjacencyPattern()! in lines \ref{fem:adjpat1} to \ref{fem:adjpat2} does traverse the grid and stores all adjacency information in a \lstinline!std::vector< std::set<int> >!. You might wonder why this is necessary before the actual computing of the matrix entries. The reason for this is that, as data structure for the matrix $A$, we use \lstinline!BCRSMatrix! - which is specialized to hold large sparse matrices. Using this type, information about which entries do not vanish has to be known when assembling. We do give this information to the matrix from line \ref{fem:setpattern} on. Only after finishing this in line \ref{fem:endindices} we can start to fill the matrix with values. \\
+The function \lstinline!determineAdjacencyPattern()! in lines \ref{fem:adjpat1} to \ref{fem:adjpat2} does traverse the grid and stores all adjacency information in a \lstinline!std::vector< std::set<int> >!. You might wonder why this is necessary before the actual computing of the matrix entries. The reason for this is that, as data structure for the matrix $A$, we use \lstinline!BCRSMatrix! - which is specialized to hold large sparse matrices. Using this type, information about which entries do not vanish has to be known when assembling. We do give this information to the matrix from line \ref{fem:setpattern} on. Only after finishing this in line \ref{fem:endindices} we can start to fill the matrix with values.
 
-From line \ref{fem:loop1} to \ref{fem:loop2} we have the main loop traversing the whole grid and updating the matrix entries. This does strictly follow the procedure described in previous chapters. The main calculation is done in line \ref{fem:calca} and \ref{fem:calcb} - which are one-to-one implementations of \ref{equ:computea} and \ref{equ:computeb}. \\
+From line \ref{fem:loop1} to \ref{fem:loop2} we have the main loop traversing the whole grid and updating the matrix entries. This does strictly follow the procedure described in previous chapters. The main calculation is done in line \ref{fem:calca} and \ref{fem:calcb} - which are one-to-one implementations of \ref{equ:computea} and \ref{equ:computeb}.
 
-As already said above, we do directly implement Dirichlet boundaries into our matrix. This is done in lines \ref{fem:boundary1} to \ref{fem:boundary2}. We have to traverse the whole grid once again and check for each intersection of elements whether it is on the boundary. In line \ref{fem:trivialline} we overwrite the line corresponding to a node on the boundary as shown in figure \ref{Fig:dirichlet}. \\
+As already said above, we do directly implement Dirichlet boundaries into our matrix. This is done in lines \ref{fem:boundary1} to \ref{fem:boundary2}. We have to traverse the whole grid once again and check for each intersection of elements whether it is on the boundary. In line \ref{fem:trivialline} we overwrite the line corresponding to a node on the boundary as shown in figure \ref{Fig:dirichlet}.
 
 When you visualize your results, you should get something like figure \ref{Fig:FEM1} or \ref{Fig:FEM2}!
 
-\begin{figure}[h]
-\label{Fig:FEM1}
-\begin{center}
+\begin{figure}
+\centering
 \includegraphics[width=0.8\textwidth]{./EPS/fem2d} 
 \caption{Solution in 2D}
-\end{center}
+\label{Fig:FEM1}
 \end{figure}
 
-\begin{figure}[h]
-\label{Fig:FEM2}
-\begin{center}
+\begin{figure}
+\centering
 \includegraphics[width=0.8\textwidth]{./EPS/fem3d} 
 \caption{Solution in 3D}
-\end{center}
+\label{Fig:FEM2}
 \end{figure}
 
 \begin{exc}
@@ -2219,10 +2206,10 @@ comments.
 \begin{figure}
 \includegraphics[width=0.48\textwidth]{EPS/adaptiveintegration_alberta2d}\hfill
 \includegraphics[width=0.48\textwidth]{EPS/adaptiveintegration_ug3d}
-\label{Fig:AdaptiveIntegration}
 \caption{Two and three-dimensional grids generated by the adaptive
   integration algorithm applied to the needle pulse. Left grid is
   generated using Alberta, right grid is generated using UG.}
+\label{Fig:AdaptiveIntegration}
 \end{figure}
 
 Figure \ref{Fig:AdaptiveIntegration} shows two grids generated by the
@@ -2330,7 +2317,7 @@ after each time steps is deactivated during the compiler phase for unstructured
 grids with help of the \lstinline!Capabilities!\ class. This is because
 structured grids do not allow a conforming refinement and are therefore
 unusable for adaptive schemes. In fact, the \lstinline!adapt! method on a grid
-of \lstinline!YaspGrid! e.g.~ results in a {\em global} grid refinement.
+of \lstinline!YaspGrid! e.\,g.~ results in a {\em global} grid refinement.
 
 \begin{exc}
   Compile the program with the gridtype set to \lstinline!ALUGRID_SIMPLEX!
@@ -2408,9 +2395,8 @@ Rest & \textit{ghost}\\
 \psfrag{codim1}{$c=1$}
 \psfrag{codim2}{$c=2$}
 
-\begin{center}
+\centering
 \includegraphics[width=\textwidth]{./EPS/partitionsingle}
-\end{center}
 
 \caption{Color coded illustration of different data decompositions:
   interior (red), border (blue), overlap (green), front (magenta) and
@@ -2501,7 +2487,7 @@ the receiving end. Here the data is read from the message buffer and
 stored in the user's data structures. The message buffer is realized
 as an input stream delivering items of type \lstinline!DataType!. In
 the \lstinline!scatter! method it is up to the user how the data is to
-be processed, e.g.~one can simply overwrite (as is done here), add or
+be processed, e.\,g.~one can simply overwrite (as is done here), add or
 compute a maximum.
 
 \section{Parallel finite volume scheme}
@@ -2572,9 +2558,9 @@ initial coarseness through the second template argument of the
 after each global refinement step the overlap region grows and therefore the
 communicaton overhead increases.
 
-If you want to use a grid with support for dynamical load balancing, define the
-macro \lstinline!LOAD\_BALANCING!\ and uncomment on of the possible definitions
-for such a grid in the code. In this case in line \ref{pfv:lb} the method
+If you want to use a grid with support for dynamical load balancing, uncomment 
+one of the possible definitions for such a grid in the code and define the
+macro \lstinline!LOAD_BALANCING!. In this case in line \ref{pfv:lb} the method
 \lstinline!loadBalance!\ is called on the grid.
 This method re-partitions the grid in a way such that on every partition there
 is an equal amount of grid elements.
@@ -2627,7 +2613,7 @@ is an equal amount of grid elements.
 
 
 \begin{figure}
-\begin{center}
+\centering
 \includegraphics[width=0.32\textwidth]{./EPS/alberta2d}\ 
 \includegraphics[width=0.32\textwidth]{./EPS/ugsimplex2d}\ 
 \includegraphics[width=0.32\textwidth]{./EPS/ugcube2d}
@@ -2640,7 +2626,6 @@ is an equal amount of grid elements.
 \includegraphics[width=0.32\textwidth]{./EPS/ugsimplex3d}\
 \includegraphics[width=0.32\textwidth]{./EPS/ugcube3d}\ 
 \includegraphics[width=0.32\textwidth]{./EPS/iso}
-\end{center}
 
 \caption{Adaptive solution of an elliptic model problem with $P_1$
 conforming finite elements and residual based error
