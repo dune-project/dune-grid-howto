@@ -15,9 +15,13 @@ examples_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
 	unitcube.hh parevolve.hh basicunitcube.hh \
 	shapefunctions.hh
 
+if HAVE_DUNE_ISTL
+ISTLPROGRAMS = finiteelements
+endif
+
 examples_PROGRAMS = gettingstarted traversal integration othergrids\
 	adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume\
-	visualization finiteelements
+	visualization $(ISTLPROGRAMS)
 
 examples_DATA = gettingstarted.cc traversal.cc integration.cc othergrids.cc \
 	adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc \
