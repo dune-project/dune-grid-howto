@@ -8,6 +8,9 @@
 #include <dune/common/fmatrix.hh>
 #include <dune/geometry/quadraturerules.hh>
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
+#include <dune/grid/albertagrid.hh>
+
+#if HAVE_DUNE_ISTL
 #include <dune/istl/bvector.hh>
 #include <dune/istl/bcrsmatrix.hh>
 #include <dune/istl/ilu.hh>
@@ -15,7 +18,11 @@
 #include <dune/istl/solvers.hh>
 #include <dune/istl/preconditioners.hh>
 #include <dune/istl/io.hh>
-#include <dune/grid/albertagrid.hh>
+#else
+#include <dune/common/dynvector.hh>
+#include <dune/common/dynmatrix.hh>
+#endif // HAVE_DUNE_ISTL
+
 #include "shapefunctions.hh"
 
 // P1Elements:
@@ -28,8 +35,13 @@ public:
   static const int dim = GV::dimension;
 
   typedef typename GV::ctype ctype;
+#if HAVE_DUNE_ISTL
   typedef Dune::BCRSMatrix<Dune::FieldMatrix<ctype,1,1> > Matrix;
   typedef Dune::BlockVector<Dune::FieldVector<ctype,1> > ScalarField;
+#else
+  typedef Dune::DynamicMatrix<ctype> Matrix;
+  typedef Dune::DynamicVector<ctype> ScalarField;
+#endif // HAVE_DUNE_ISTL
 
 private:
   typedef typename GV::template Codim<0>::Iterator LeafIterator;
@@ -100,6 +112,7 @@ void P1Elements<GV, F>::assemble()
   const LeafIterator itend = gv.template end<0>();
 
   // set sizes of A and b
+#if HAVE_DUNE_ISTL
   A.setSize(N, N, N + 2*gv.size(dim-1));
   A.setBuildMode(Matrix::random);
   b.resize(N, false);
@@ -118,6 +131,10 @@ void P1Elements<GV, F>::assemble()
   }
 
   A.endindices();   /*@\label{fem:endindices}@*/
+#else
+  A.resize(N, N);
+  b.resize(N);
+#endif // HAVE_DUNE_ISTL
 
   // initialize A and b
   A = 0.0;
@@ -212,6 +229,7 @@ void P1Elements<GV, F>::assemble()
   }   /*@\label{fem:boundary2}@*/
 }
 
+#if HAVE_DUNE_ISTL
 template<class GV, class E>
 void P1Elements<GV, E>::solve()
 {
@@ -233,7 +251,7 @@ void P1Elements<GV, E>::solve()
   // finally solve the system
   bcgs.apply(u, b, r);
 }
-
+#endif // HAVE_DUNE_ISTL
 
 // an example right hand side function
 template<class ctype, int dim>
@@ -250,8 +268,7 @@ public:
 
 int main(int argc, char** argv)
 {
-#if HAVE_ALBERTA
-#if ALBERTA_DIM==2
+#if HAVE_ALBERTA && ALBERTA_DIM==2
   static const int dim = 2;             /*@\label{fem:dim}@*/
   const char* gridfile = "grids/2dgrid.al";             /*@\label{fem:file}@*/
 
@@ -267,7 +284,11 @@ int main(int argc, char** argv)
   Func f;
   P1Elements<GV,Func> p1(gv, f);
 
+#if HAVE_DUNE_ISTL
   grid.globalRefine(16);
+#else
+  grid.globalRefine(10);
+#endif // HAVE_DUNE_ISTL
 
   std::cout << "-----------------------------------" << "\n";
   std::cout << "number of unknowns: " << grid.size(dim) << "\n";
@@ -278,6 +299,7 @@ int main(int argc, char** argv)
   std::cout << "assembling..." << "\n";
   p1.assemble();
 
+#if HAVE_DUNE_ISTL
   std::cout << "solving..." << "\n";
   p1.solve();
 
@@ -285,7 +307,8 @@ int main(int argc, char** argv)
   Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafView());
   vtkwriter.addVertexData(p1.u, "u");
   vtkwriter.write("fem2d", Dune::VTKOptions::binaryappended);
-
-#endif
-#endif
+#else
+  std::cout << "for solving and visualizing dune-istl is necessary." << "\n";
+#endif // HAVE_DUNE_ISTL
+#endif // HAVE_ALBERTA && ALBERTA_DIM==2
 }
