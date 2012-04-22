@@ -192,7 +192,7 @@ void P1Elements<GV, F>::assemble()
       for (int i = 0 ; i<vertexsize; i++)
       {
         // evaluate the integrand of the right side
-        ctype fval = basis[i].evaluateFunction(it->geometry().global(r->position()))
+        ctype fval = basis[i].evaluateFunction(r->position())
                      * f(it->geometry().global(r->position())) ;
         b[set.subIndex(*it,i,dim)] += fval * weight * detjac;         /*@\label{fem:calcb}@*/
       }
