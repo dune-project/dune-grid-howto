@@ -11,7 +11,6 @@ MAINDOCS = grid-howto.pdf
 
 if WML
  DOCSOURCE = grid-howto.tex navigation.html css.html
- WMLDOCS = index.html
  HTDOCS = navigation.html css.html
 if TEX4HT
 # HTDOCS += grid-howto.html
@@ -37,7 +36,7 @@ EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
 CLEANFILES = *.aux *.bbl *.blg *.log *.out *.toc *.dvi *.pdf *.ps
 CLEANFILES += *.4ct *.4tc *.css *.idv *.idx *.ilg *.lg *.tid *.tmp *.tms *.xref
-CLEANFILES += grid-howto*.html grid-howto*.png navigation.html index.html
+CLEANFILES += grid-howto*.html grid-howto*.png navigation.html config.tex
 CLEANFILES += $(DOCS)
 if CONVERT
 CLEANFILES += $(EPS_FILES)
