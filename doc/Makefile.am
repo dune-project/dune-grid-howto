@@ -57,7 +57,7 @@ grid-howto.html:  $(DOCSOURCE) dune.cfg tex4ht.env
 endif
 endif
 
-# if dune-web is not used, we don't have any naviagtion to include
+# if dune-web is not used, we don't have any navigation to include
 # create dummy file.
 # depend on Makefile to make sure the file is recreated
 # after enabling to dune-web
