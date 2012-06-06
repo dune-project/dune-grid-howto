@@ -38,7 +38,10 @@ int main(int argc, char **argv)
 #endif
 #endif
 #if HAVE_ALUGRID
-    UnitCube<Dune::ALUCubeGrid<3,3>,1> uc8;
+    UnitCube<Dune::ALUGrid<2,2,Dune::ALUGridElementType::cube,
+            Dune::ALUGridRefinementType::nonconforming>,1> uc8;
+    UnitCube<Dune::ALUGrid<3,3,Dune::ALUGridElementType::cube,
+            Dune::ALUGridRefinementType::nonconforming>,1> uc10;
 #endif
   }
   catch (std::exception & e) {

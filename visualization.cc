@@ -76,11 +76,13 @@ int main(int argc, char **argv)
     dowork( uc4.grid(), 3 );
 
 #if HAVE_ALUGRID
-    UnitCube< Dune::ALUSimplexGrid< dimGrid, dimGrid > , 1 > uc5;
+    UnitCube< Dune::ALUGrid< dimGrid, dimGrid, Dune::ALUGridElementType::simplex,
+            Dune::ALUGridRefinementType::nonconforming > , 1 > uc5;
     dowork( uc5.grid(), 3 );
 
 #if GRIDDIM == 3
-    UnitCube< Dune::ALUCubeGrid< dimGrid, dimGrid > , 1 > uc6;
+    UnitCube< Dune::ALUGrid< dimGrid, dimGrid, Dune::ALUGridElementType::cube,
+            Dune::ALUGridRefinementType::nonconforming > , 1 > uc6;
     dowork( uc6.grid(), 3 );
 #endif // #if GRIDDIM == 3
 #endif // #if HAVE_ALUGRID
