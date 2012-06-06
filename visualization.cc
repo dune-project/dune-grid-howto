@@ -80,11 +80,11 @@ int main(int argc, char **argv)
             Dune::ALUGridRefinementType::nonconforming > , 1 > uc5;
     dowork( uc5.grid(), 3 );
 
-#if GRIDDIM == 3
+#if GRIDDIM == 2 || GRIDDIM == 3
     UnitCube< Dune::ALUGrid< dimGrid, dimGrid, Dune::ALUGridElementType::cube,
             Dune::ALUGridRefinementType::nonconforming > , 1 > uc6;
     dowork( uc6.grid(), 3 );
-#endif // #if GRIDDIM == 3
+#endif // #if GRIDDIM == 2 || GRIDDIM == 3
 #endif // #if HAVE_ALUGRID
   }
   catch (std::exception & e) {
