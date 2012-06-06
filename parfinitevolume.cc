@@ -99,10 +99,8 @@ int main (int argc , char ** argv)
 
     //  ALUGRID supports parallelization in 3 dimensions only
 #if HAVE_ALUGRID
-    //    typedef Dune::ALUGrid< 3, 3, Dune::ALUGridElementType::cube,
-    //        Dune::ALUGridRefinementType::nonconforming > GridType;
-    //    typedef Dune::ALUGrid< 3, 3, Dune::ALUGridElementType::simplex,
-    //        Dune::ALUGridRefinementType::nonconforming > GridType;
+    //    typedef Dune::ALUGrid< 3, 3, Dune::cube, Dune::nonconforming > GridType;
+    //    typedef Dune::ALUGrid< 3, 3, Dune::simplex, Dune::nonconforming > GridType;
     //    UnitCube< GridType , 1 > uc2;
 #endif
 

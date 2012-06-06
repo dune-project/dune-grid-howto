@@ -12,12 +12,10 @@
 // ALU3dGrid and ALU2dGrid simplex specialization.
 // Note: element type determined by type
 template<int dim>
-class UnitCube<Dune::ALUGrid<dim,dim,Dune::ALUGridElementType::simplex,
-        Dune::ALUGridRefinementType::nonconforming>,1>
+class UnitCube<Dune::ALUGrid<dim,dim,Dune::simplex,Dune::nonconforming>,1>
 {
 public:
-  typedef Dune::ALUGrid<dim,dim,Dune::ALUGridElementType::simplex,
-      Dune::ALUGridRefinementType::nonconforming> GridType;
+  typedef Dune::ALUGrid<dim,dim,Dune::simplex,Dune::nonconforming> GridType;
 
 private:
   Dune::shared_ptr<GridType> grid_;
@@ -41,12 +39,10 @@ public:
 
 // ALU3dGrid hexahedra specialization. Note: element type determined by type
 template<>
-class UnitCube<Dune::ALUGrid<3,3,Dune::ALUGridElementType::cube,
-        Dune::ALUGridRefinementType::nonconforming>,1>
+class UnitCube<Dune::ALUGrid<3,3,Dune::cube,Dune::nonconforming>,1>
 {
 public:
-  typedef Dune::ALUGrid<3,3,Dune::ALUGridElementType::cube,
-      Dune::ALUGridRefinementType::nonconforming> GridType;
+  typedef Dune::ALUGrid<3,3,Dune::cube,Dune::nonconforming> GridType;
 
 private:
   Dune::shared_ptr<GridType> grid_;
