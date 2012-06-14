@@ -306,7 +306,7 @@ int main(int argc, char** argv)
   std::cout << "visualizing..." << "\n";
   Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafView());
   vtkwriter.addVertexData(p1.u, "u");
-  vtkwriter.write("fem2d", Dune::VTKOptions::binaryappended);
+  vtkwriter.write("fem2d", Dune::VTK::appendedraw);
 #else
   std::cout << "for solving and visualizing dune-istl is necessary." << "\n";
 #endif // HAVE_DUNE_ISTL

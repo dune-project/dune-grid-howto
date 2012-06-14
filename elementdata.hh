@@ -62,7 +62,7 @@ void elementdata (const G& grid, const F& f)
   // Dune::LeafP0Function<G,double> cc(grid,c);
   Dune::VTKWriter<typename G::LeafGridView> vtkwriter(gridView); /*@\label{edh:vtk0}@*/
   vtkwriter.addCellData(c,"data");
-  vtkwriter.write("elementdata",Dune::VTKOptions::binaryappended); /*@\label{edh:vtk1}@*/
+  vtkwriter.write( "elementdata", Dune::VTK::appendedraw ); /*@\label{edh:vtk1}@*/
 
   // online visualization with Grape
 #if HAVE_GRAPE                                         /*@\label{edh:grape0}@*/

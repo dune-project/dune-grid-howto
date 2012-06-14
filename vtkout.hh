@@ -15,7 +15,7 @@ void vtkout (const G& grid, const V& c, const char* name, int k, double time=0.0
   sprintf(fname,"%s-%05d",name,k);
   sprintf(sername,"%s.series",name);
   vtkwriter.addCellData(c,"celldata");
-  vtkwriter.write(fname,Dune::VTKOptions::ascii);
+  vtkwriter.write( fname, Dune::VTK::ascii );
 
   if ( rank == 0)
   {
