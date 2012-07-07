@@ -64,8 +64,8 @@ finiteelements_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
 finiteelements_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)
 
 # don't follow the full GNU-standard
-# we need automake 1.5
-AUTOMAKE_OPTIONS = foreign 1.5
+# we need automake 1.9 or newer
+AUTOMAKE_OPTIONS = foreign 1.9
 
 # we need the module file to be able to build via dunecontrol
 EXTRA_DIST=dune.module
