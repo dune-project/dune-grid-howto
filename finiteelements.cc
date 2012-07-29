@@ -81,8 +81,8 @@ void P1Elements<GV, F>::determineAdjacencyPattern()
   for (LeafIterator it = gv.template begin<0>(); it != itend; ++it)
   {
     Dune::GeometryType gt = it->type();
-    const Dune::template GenericReferenceElement<ctype,dim> &ref =
-      Dune::GenericReferenceElements<ctype,dim>::general(gt);
+    const Dune::template ReferenceElement<ctype,dim> &ref =
+      Dune::ReferenceElements<ctype,dim>::general(gt);
 
     // traverse all codim-1-entities of the current element and store all
     // pairs of vertices in adjacencyPattern
@@ -147,8 +147,8 @@ void P1Elements<GV, F>::assemble()
   {
     // determine geometry type of the current element and get the matching reference element
     Dune::GeometryType gt = it->type();
-    const Dune::template GenericReferenceElement<ctype,dim> &ref =
-      Dune::GenericReferenceElements<ctype,dim>::general(gt);
+    const Dune::template ReferenceElement<ctype,dim> &ref =
+      Dune::ReferenceElements<ctype,dim>::general(gt);
     int vertexsize = ref.size(dim);
 
     // get a quadrature rule of order one for the given geometry type
@@ -208,8 +208,8 @@ void P1Elements<GV, F>::assemble()
     {
       // determine geometry type of the current element and get the matching reference element
       Dune::GeometryType gt = it->type();
-      const Dune::template GenericReferenceElement<ctype,dim> &ref =
-        Dune::GenericReferenceElements<ctype,dim>::general(gt);
+      const Dune::template ReferenceElement<ctype,dim> &ref =
+        Dune::ReferenceElements<ctype,dim>::general(gt);
 
       // check whether current intersection is on the boundary
       if ( is->boundary() )
