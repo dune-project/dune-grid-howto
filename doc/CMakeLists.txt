@@ -34,11 +34,6 @@ set(docdir ${CMAKE_INSTALL_DOCDIR}/dune-grid-howto)
 
 set(EXTRAINSTALL  grid-howto.pdf grid-howto*.html *.png *.css)
 
-set(CLEANFILES  *.aux *.bbl *.blg *.log *.out *.toc *.dvi *.pdf *.ps)
-list(APPEND CLEANFILES *.4ct *.4tc *.css *.idv *.idx *.ilg *.lg *.tid *.tmp *.tms *.xref)
-list(APPEND CLEANFILES grid-howto*.html grid-howto*.png navigation.html config.tex)
-list(APPEND CLEANFILES ${DOCS})
-
 # Install documentation
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
 # TODO: care about the following line
@@ -88,10 +83,10 @@ set(IMAGES
   EPS/conc.jpg
   EPS/fem2d.jpg
   EPS/fem3d.jpg
-  EPS/intersection.jpg
-  EPS/islocalref.jpg
+  EPS/intersection.eps
+  EPS/islocalref.eps
   EPS/iso.jpg
-  EPS/partitionsingle.jpg
+  EPS/partitionsingle.eps
   EPS/ug2dquad-view1.jpg
   EPS/ug2dquad-view2.jpg
   EPS/ug2dtri-view1.jpg
@@ -110,11 +105,10 @@ configure_file(config.tex.in config.tex)
 # Install documentation
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
 if(LATEX_USABLE)
-
   add_latex_document(grid-howto.tex
     FATHER_TARGET doc
     DEFAULT_PDF
     INPUTS grid-howto.tex config.tex ${SOURCES}
     IMAGES ${IMAGES})
- create_doc_install(${DOCFILES} ${docdir} pdelab-howto-arcticle_safepdf)
+  #create_doc_install(${DOCFILES} ${docdir} pdelab-howto-arcticle_safepdf)
 endif(LATEX_USABLE)
