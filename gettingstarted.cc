@@ -6,7 +6,7 @@
 #include "config.h"           // file constructed by ./configure script /*@\label{gs:inc0}@*/
 #include <dune/grid/sgrid.hh> // load sgrid definition
 #include <dune/grid/common/gridinfo.hh> // definition of gridinfo /*@\label{gs:inc1}@*/
-#include <dune/common/mpihelper.hh> // include mpi helper class
+#include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 
 
 int main(int argc, char **argv)
