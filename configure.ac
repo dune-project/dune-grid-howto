@@ -50,7 +50,7 @@ AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
 # write output
 AC_CONFIG_FILES([Makefile
         doc/Makefile
-        doc/config.tex
+        doc/config.inc
         grids/Makefile
         dune-grid-howto.pc])
 AC_OUTPUT
