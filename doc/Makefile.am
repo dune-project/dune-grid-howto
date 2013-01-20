@@ -32,6 +32,7 @@ CURDIR=doc/grid-howto
 
 docdir=$(datadir)/doc/dune-grid-howto
 
+
 EXTRAINSTALL = grid-howto.pdf grid-howto*.html *.png *.css
 
 CLEANFILES = *.aux *.bbl *.blg *.log *.out *.toc *.dvi *.pdf *.ps
@@ -42,7 +43,10 @@ if CONVERT
 CLEANFILES += $(EPS_FILES)
 
 %.eps: $(srcdir)/%.jpg
-	convert $< $@
+	$(CONVERT) $< $@
+EPS/%.eps: $(srcdir)/EPS/%.jpg
+	$(MKDIR_P) $(builddir)/EPS
+	$(CONVERT) $< $@
 grid-howto.tex: $(EPS_FILES)
 endif
 
