@@ -24,7 +24,7 @@ if CONVERT
 endif
 endif
 
-EXTRA_DIST = $(DOCFILES) grid-howto.tex $(EPS_FILES)
+EXTRA_DIST = CMakeLists.txt $(DOCFILES) grid-howto.tex $(EPS_FILES)
 
 # setting like in dune-web
 BASEDIR=../..
