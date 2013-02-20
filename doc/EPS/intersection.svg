@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Creator: fig2dev Version 3.2 Patchlevel 5d -->
+
+<!-- CreationDate: Sun Dec  2 19:06:01 2012 -->
+
+<!-- Magnification: 1.050 -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="3.3in"
+   height="3.0in"
+   viewBox="1361 1029 3902 3609"
+   id="svg3004"
+   version="1.1"
+   inkscape:version="0.48.3.1 r9886"
+   sodipodi:docname="intersection.svg">
+  <metadata
+     id="metadata3042">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <defs
+     id="defs3040" />
+  <sodipodi:namedview
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1"
+     objecttolerance="10"
+     gridtolerance="10"
+     guidetolerance="10"
+     inkscape:pageopacity="0"
+     inkscape:pageshadow="2"
+     inkscape:window-width="1453"
+     inkscape:window-height="990"
+     id="namedview3038"
+     showgrid="false"
+     inkscape:zoom="2.4722548"
+     inkscape:cx="107.89729"
+     inkscape:cy="147.25374"
+     inkscape:window-x="44"
+     inkscape:window-y="0"
+     inkscape:window-maximized="0"
+     inkscape:current-layer="svg3004" />
+  <polyline
+     id="polyline3008"
+     style="fill:none;stroke:#0000ff;stroke-width:63;stroke-linecap:butt;stroke-linejoin:miter"
+     points="4677,1086 4913,1700 4488,3732 3874,4582 " />
+  <polyline
+     id="polyline3010"
+     style="fill:none;stroke:#ff0000;stroke-width:63;stroke-linecap:butt;stroke-linejoin:miter"
+     points="2830,2330 2830,3511 " />
+  <path
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     d="m 2881,1511 c 0,25.9574 -21.0426,47 -47,47 -25.9574,0 -47,-21.0426 -47,-47 0,-25.9574 21.0426,-47 47,-47 25.9574,0 47,21.0426 47,47 z"
+     id="circle3016" />
+  <circle
+     sodipodi:ry="47"
+     sodipodi:rx="47"
+     sodipodi:cy="2409"
+     sodipodi:cx="1417"
+     id="circle3018"
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     r="47"
+     cy="2409"
+     cx="1417" />
+  <circle
+     sodipodi:ry="47"
+     sodipodi:rx="47"
+     sodipodi:cy="4251"
+     sodipodi:cx="2834"
+     id="circle3020"
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     r="47"
+     cy="4251"
+     cx="2834" />
+  <circle
+     sodipodi:ry="47"
+     sodipodi:rx="47"
+     sodipodi:cy="3732"
+     sodipodi:cx="4488"
+     id="circle3022"
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     r="47"
+     cy="3732"
+     cx="4488" />
+  <circle
+     sodipodi:ry="47"
+     sodipodi:rx="47"
+     sodipodi:cy="1700"
+     sodipodi:cx="4913"
+     id="circle3024"
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     r="47"
+     cy="1700"
+     cx="4913" />
+  <polygon
+     id="polygon3026"
+     style="fill:none;stroke:#000000;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter"
+     points="2834,3543 1417,2409 1417,2409 2834,1511 "
+     transform="translate(2.3333334e-6,0)" />
+  <polygon
+     id="polygon3028"
+     style="fill:none;stroke:#000000;stroke-width:8;stroke-linecap:butt;stroke-linejoin:miter"
+     points="4913,1700 2834,2314 2834,2314 2834,4251 4488,3732 " />
+  <circle
+     transform="translate(-2.5628156,798.73622)"
+     sodipodi:ry="47"
+     sodipodi:rx="47"
+     sodipodi:cy="1511"
+     sodipodi:cx="2834"
+     id="circle3016-2"
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     r="47"
+     cy="1511"
+     cx="2834" />
+  <circle
+     transform="translate(-6.3859085,2024.0376)"
+     sodipodi:ry="47"
+     sodipodi:rx="47"
+     sodipodi:cy="1511"
+     sodipodi:cx="2834"
+     id="circle3016-5"
+     style="fill:#000000;stroke:#000000;stroke-width:8"
+     r="47"
+     cy="1511"
+     cx="2834" />
+</svg>

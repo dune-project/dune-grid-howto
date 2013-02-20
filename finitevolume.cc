@@ -5,7 +5,7 @@
 #include <fstream>                // for input/output to files
 #include <vector>                 // STL vector class
 #include <dune/grid/common/mcmgmapper.hh> // mapper class
-#include <dune/common/mpihelper.hh> // include mpi helper class
+#include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 
 #include "vtkout.hh"
 #include "transportproblem2.hh"
