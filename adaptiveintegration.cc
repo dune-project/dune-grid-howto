@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <dune/grid/io/file/vtk/vtkwriter.hh> // VTK output routines
-#include <dune/common/parallel/mpihelper.hh> // include mpi helper class
+#include <dune/common/mpihelper.hh> // include mpi helper class
 
 #include "unitcube.hh"
 #include "functors.hh"

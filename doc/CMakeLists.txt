@@ -100,7 +100,7 @@ set(IMAGES
 
 # create file config.tex containing the version of this module
 set(PACKAGE_VERSION ${DUNE_MOD_VERSION})
-configure_file(config.inc.in config.inc)
+configure_file(config.tex.in config.tex)
 
 # Install documentation
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
@@ -108,7 +108,7 @@ if(LATEX_USABLE)
   add_latex_document(grid-howto.tex
     FATHER_TARGET doc
     DEFAULT_PDF
-    INPUTS grid-howto.tex config.inc ${SOURCES}
+    INPUTS grid-howto.tex config.tex ${SOURCES}
     IMAGES ${IMAGES})
   #create_doc_install(${DOCFILES} ${docdir} pdelab-howto-arcticle_safepdf)
 endif(LATEX_USABLE)

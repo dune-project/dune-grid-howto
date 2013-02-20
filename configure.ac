@@ -4,7 +4,7 @@
 DUNE_AC_INIT # gets module version from dune.module file
 AM_INIT_AUTOMAKE
 AC_CONFIG_SRCDIR([./gettingstarted.cc])
-AC_CONFIG_HEADERS([config.h])
+AM_CONFIG_HEADER([config.h])
 
 AC_CHECK_PROGS([TEX], [latex], [true])
 AC_CHECK_PROGS([BIBTEX], [bibtex], [true])
@@ -53,7 +53,7 @@ AC_CONFIG_FILES([Makefile
 	cmake/modules/Makefile
 	cmake/pkg/Makefile
         doc/Makefile
-        doc/config.inc
+        doc/config.tex
         grids/Makefile
         dune-grid-howto.pc])
 AC_OUTPUT
