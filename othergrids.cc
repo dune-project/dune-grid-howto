@@ -4,7 +4,7 @@
 
 #include "config.h"
 #include "unitcube.hh"
-#include <dune/common/mpihelper.hh> // include mpi helper class
+#include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 
 #include <dune/grid/onedgrid.hh>
 #if HAVE_UG

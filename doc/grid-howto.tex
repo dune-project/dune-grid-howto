@@ -6,12 +6,12 @@
 \usepackage{theorem}
 \usepackage{xspace}
 \usepackage{color}
+\usepackage{overpic}
 \usepackage{listings}
 \lstset{language=C++, basicstyle=\ttfamily, 
   keywordstyle=\color{black}\bfseries, tabsize=4, stringstyle=\ttfamily,
   commentstyle=\it, extendedchars=true, escapeinside={/*@}{@*/}}
 \usepackage{hyperref}
-\usepackage{psfrag}
 \usepackage{makeidx}
 
 \usepackage{graphicx}
@@ -38,7 +38,7 @@
 \title{The Distributed and Unified Numerics Environment (\Dune{}) Grid
   Interface HOWTO}
 
-\input{config.tex}
+\input{config.inc}
 
 \author{Peter Bastian$^\ast$ \and 
 Markus Blatt$^\ast$ \and
@@ -211,7 +211,8 @@ it.
 
 In order to build the \Dune{} framework, you need a standards
 compliant C++ compiler.  We tested compiling with GNU \texttt{g++} in
-version $\geq 3.4.1$ and Intel \texttt{icc}, version 7.0 or 8.0.
+version $\geq 4.1$. Recent versions of Intel \texttt{icc} and clang
+($\geq 3.0$) should work, too.
 
 Now extract the tarballs of \texttt{dune-common}, \texttt{dune-grid}
 and \texttt{dune-grid-howto} into a common directory, say
@@ -1829,14 +1830,19 @@ numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
 \end{lst}
 
 \begin{figure}
-\psfrag{omegai}{$\omega_i$}
-\psfrag{omegaj}{$\omega_j$}
-\psfrag{gammaij}{$\gamma_{ij}$}
-\psfrag{gammaik}{$\gamma_{ik}$}
-\psfrag{omegak}{$\omega_k$}
-\psfrag{omegam}{$\omega_m$}
-\includegraphics[width=0.48\textwidth]{EPS/intersection}\hfill
-\includegraphics[width=0.48\textwidth]{EPS/islocalref}
+\begin{overpic}[width=0.48\textwidth]{EPS/intersection}
+\put(60,38){$\omega_i$} 
+\put(22,55){$\omega_j$} 
+\put(43,46){$\gamma_{ij}$} 
+\put(82,52){$\gamma_{ik}$} 
+\end{overpic}
+\hfill
+\begin{overpic}[width=0.48\textwidth]{EPS/islocalref}
+\put(18,3){$\omega_i$} 
+\put(52,19){$\omega_j$} 
+\put(60,3){$\omega_k$} 
+\put(74,19){$\omega_m$} 
+\end{overpic}
 \caption{Left: intersection with other elements and the boundary,
   right: intersections in the case of locally refined grids.}
 \label{Fig:IsIt}
@@ -2391,16 +2397,24 @@ Rest & \textit{ghost}\\
 \end{center}
 
 \begin{figure}
-\psfrag{codim0}{$c=0$}
-\psfrag{codim1}{$c=1$}
-\psfrag{codim2}{$c=2$}
-
 \centering
-\includegraphics[width=\textwidth]{./EPS/partitionsingle}
+\begin{overpic}[width=\textwidth]{./EPS/partitionsingle}
+ \put(12,62){$c=0$}
+ \put(45,62){$c=1$}
+ \put(80,62){$c=2$}
+
+ \put(12,31){$c=0$}
+ \put(45,31){$c=1$}
+ \put(80,31){$c=2$}
+
+ \put(12,1){$c=0$}
+ \put(45,1){$c=1$}
+ \put(80,1){$c=2$}
+\end{overpic}
 
 \caption{Color coded illustration of different data decompositions:
   interior (red), border (blue), overlap (green), front (magenta) and
-  ghost (yellow), gray encodes entites not stored by the
+  ghost (yellow), gray encodes entities not stored by the
   process. First row shows case with interior, overlap and ghost
   entities, second row shows a case with interior and overlap without
   ghost and the last row shows a case with interior and ghost only.}

@@ -6,7 +6,7 @@
 #include <iostream>
 #include <iomanip>
 #include <stdio.h>
-#include <dune/common/mpihelper.hh> // include mpi helper class
+#include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 #include <dune/grid/io/file/dgfparser/dgfparser.hh>
 
 

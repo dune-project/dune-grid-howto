@@ -10,7 +10,7 @@ cmake_minimum_required(VERSION 2.8.6)
 #find dune-common and set the module path
 find_package(dune-common)
 list(APPEND CMAKE_MODULE_PATH ${dune-common_MODULE_PATH}
-  "${CMAKE_SOURCE_DIR}/cmake/modules")
+  "${PROJECT_SOURCE_DIR}/cmake/modules")
 
 #include the dune macros
 include(DuneMacros)
@@ -77,7 +77,7 @@ add_dune_mpi_flags(traversal)
 
 add_executable(visualization visualization.cc)
 target_link_libraries(visualization dunecommon dunegeometry dunegrid)
-add_dune_mpi_flags(visualization)
+#add_dune_mpi_flags(visualization)
 
 set_property(TARGET adaptivefinitevolume adaptiveintegration finitevolume visualization APPEND
   PROPERTY COMPILE_DEFINITIONS "GRIDDIM=${GRIDDIM}" "WORLDDIM=${GRIDDIM}" "${GRIDTYPE}")
