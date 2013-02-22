@@ -105,7 +105,7 @@ configure_file(config.inc.in config.inc)
 # Install documentation
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
 if(LATEX_USABLE)
-  add_latex_document(grid-howto.tex
+  dune_add_latex_document(grid-howto.tex
     FATHER_TARGET doc
     DEFAULT_PDF
     INPUTS grid-howto.tex config.inc ${SOURCES}
