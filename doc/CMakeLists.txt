@@ -104,11 +104,9 @@ configure_file(config.inc.in config.inc)
 
 # Install documentation
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
-if(LATEX_USABLE)
-  dune_add_latex_document(grid-howto.tex
-    FATHER_TARGET doc
-    DEFAULT_PDF
-    INPUTS grid-howto.tex config.inc ${SOURCES}
-    IMAGES ${IMAGES})
-  #create_doc_install(${DOCFILES} ${docdir} pdelab-howto-arcticle_safepdf)
-endif(LATEX_USABLE)
+dune_add_latex_document(grid-howto.tex
+  FATHER_TARGET doc
+  DEFAULT_PDF
+  INPUTS grid-howto.tex config.inc ${SOURCES}
+  IMAGES ${IMAGES})
+
