@@ -27,7 +27,7 @@ public:
 
   rtype evaluateFunction(const Dune::FieldVector<ctype,dim>& local) const
   {
-    ctype result = coeff0;
+    rtype result = coeff0;
     for (int i = 0; i < dim; ++i)
       result += coeff1[i] * local[i];
     return result;
