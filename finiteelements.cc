@@ -45,6 +45,7 @@ public:
 
 private:
   typedef typename GV::template Codim<0>::Iterator LeafIterator;
+  typedef typename GV::template Codim<0>::Geometry::JacobianInverseTransposed JacobianInverseTransposed;
   typedef typename GV::IntersectionIterator IntersectionIterator;
   typedef typename GV::IndexSet LeafIndexSet;
 
@@ -157,7 +158,7 @@ void P1Elements<GV, F>::assemble()
          r != rule.end() ; ++r)
     {
       // compute the jacobian inverse transposed to transform the gradients
-      Dune::FieldMatrix<ctype,dim,dim> jacInvTra =
+      JacobianInverseTransposed jacInvTra =
         it->geometry().jacobianInverseTransposed(r->position());
 
       // get the weight at the current quadrature point
