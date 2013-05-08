@@ -18,30 +18,31 @@ include(DuneMacros)
 # start a dune project with information from dune.module
 dune_project()
 
-add_subdirectory("doc")
 add_subdirectory("cmake/modules")
+add_subdirectory("doc")
+add_subdirectory("grids")
 
 set(GRIDTYPE YASPGRID)
 set(GRIDDIM 2)
 
 # TODO:
-# set(examplesdir ${CMAKE_INSTALL_DOCDIR}/dune-grid-howto/examples)
-#
-# set(examples_HEADERS  elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh
-#         evolve.hh transportproblem2.hh
-#         finitevolumeadapt.hh transportproblem.hh unitcube_yaspgrid.hh
-#         functors.hh unitcube_albertagrid.hh vertexdata.hh
-#         initialize.hh unitcube_alugrid.hh vtkout.hh integrateentity.hh
-#         unitcube.hh parevolve.hh basicunitcube.hh
-#         shapefunctions.hh)
-#
-# set(examples_PROGRAMS  gettingstarted traversal integration othergrids
-#         adaptiveintegration finitevolume adaptivefinitevolume parfinitevolume
-#         visualization finiteelements)
+#set(examplesdir ${CMAKE_INSTALL_DOCDIR}/dune-grid-howto/examples)
 #
 # set(examples_DATA  gettingstarted.cc traversal.cc integration.cc othergrids.cc
 #         adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc
 #         parfinitevolume.cc visualization.cc finiteelements.cc)
+
+set(TESTS
+  adaptivefinitevolume
+  adaptiveintegration
+  finiteelements
+  finitevolume
+  gettingstarted
+  integration
+  othergrids
+  parfinitevolume
+  traversal
+  visualization)
 
 add_executable(adaptivefinitevolume adaptivefinitevolume.cc)
 target_link_libraries(adaptivefinitevolume dunecommon dunegeometry dunegrid)
@@ -58,6 +59,10 @@ add_dune_mpi_flags(finiteelements)
 add_executable(finitevolume finitevolume.cc)
 target_link_libraries(finitevolume dunecommon dunegeometry dunegrid)
 add_dune_mpi_flags(finitevolume)
+
+add_executable(integration integration.cc)
+target_link_libraries(integration dunecommon dunegeometry dunegrid)
+add_dune_mpi_flags(integration)
 
 add_executable(gettingstarted gettingstarted.cc)
 target_link_libraries(gettingstarted dunecommon dunegeometry dunegrid)
@@ -79,13 +84,51 @@ add_executable(visualization visualization.cc)
 target_link_libraries(visualization dunecommon dunegeometry dunegrid)
 add_dune_mpi_flags(visualization)
 
-set_property(TARGET adaptivefinitevolume adaptiveintegration finitevolume visualization APPEND
+set_property(TARGET
+  adaptivefinitevolume
+  adaptiveintegration
+  finitevolume
+  integration
+  visualization APPEND
   PROPERTY COMPILE_DEFINITIONS "GRIDDIM=${GRIDDIM}" "WORLDDIM=${GRIDDIM}" "${GRIDTYPE}")
 
 ## TODO: take care for the following lines
 ##install(FILES "${examples_DATA}" DESTINATION ${examplesdir})
 ##install(TARGETS "${examples_PROGRAMS}" DESTINATION ${examplesdir})
 ##install(FILES "${examples_HEADERS}" DESTINATION ${examplesdir})
+
+# We do not want want to build the tests during make all,
+# but just build them on demand
+SET(_test_target dune_grid_howto_tests)
+add_custom_target(${_test_target})
+dune_common_script_dir(SCRIPT_DIR)
+configure_file(${SCRIPT_DIR}/BuildTests.cmake.in BuildTests.cmake @ONLY)
+add_dependencies(${_test_target} ${TESTS})
+
+foreach(_test ${TESTS})
+  add_test(${_test} ${_test})
+endforeach(_test ${TESTS})
+
+# install the header as done for the auto-tools
+install(FILES
+  basicunitcube.hh
+  elementdata.hh
+  evolve.hh
+  finitevolumeadapt.hh transportproblem.hh
+  functors.hh unitcube_albertagrid.hh
+  initialize.hh
+  integrateentity.hh
+  parfvdatahandle.hh
+  parevolve.hh
+  shapefunctions.hh
+  transportproblem2.hh
+  unitcube.hh
+  unitcube_alugrid.hh
+  unitcube_sgrid.hh
+  unitcube_yaspgrid.hh
+  vertexdata.hh
+  vtkout.hh
+  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
 
 # finalize the dune project, e.g. generating config.h etc.
 finalize_dune_project(GENERATE_CONFIG_H_CMAKE)
