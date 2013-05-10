@@ -23,6 +23,13 @@ examples_DATA = gettingstarted.cc traversal.cc integration.cc othergrids.cc \
 	adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc \
 	parfinitevolume.cc visualization.cc finiteelements.cc
 
+# The directory where the example grid files used for the examples are located
+AM_CPPFLAGS+=-DDUNE_GRID_HOWTO_EXAMPLE_GRIDS_PATH=\"$(top_srcdir)/grids/\"
+
+#
+## define the programs
+#
+
 gettingstarted_SOURCES = gettingstarted.cc
 gettingstarted_CXXFLAGS = $(DUNEMPICPPFLAGS) $(ALL_PKG_CPPFLAGS)
 gettingstarted_LDADD = $(DUNE_LDFLAGS) $(DUNE_LIBS) $(ALL_PKG_LDFLAGS) $(ALL_PKG_LIBS) $(DUNEMPILDFLAGS) $(DUNEMPILIBS)

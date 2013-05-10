@@ -87,7 +87,8 @@ int main (int argc , char ** argv)
 
     // use unitcube from dgf grids
     std::stringstream dgfFileName;
-    dgfFileName << "grids/unitcube" << Grid :: dimension << ".dgf";
+    dgfFileName << DUNE_GRID_HOWTO_EXAMPLE_GRIDS_PATH
+      << "unitcube" << Grid::dimension << ".dgf";
 
     // create grid pointer
     GridPtr<Grid> gridPtr( dgfFileName.str() );

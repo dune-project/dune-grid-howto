@@ -25,6 +25,10 @@ add_subdirectory("grids")
 set(GRIDTYPE YASPGRID)
 set(GRIDDIM 2)
 
+# The directory where the example grid files used for the examples are located
+set_property(DIRECTORY APPEND PROPERTY
+  COMPILE_DEFINITIONS "DUNE_GRID_HOWTO_EXAMPLE_GRIDS_PATH=\"${PROJECT_SOURCE_DIR}/grids/\"")
+
 # TODO:
 #set(examplesdir ${CMAKE_INSTALL_DOCDIR}/dune-grid-howto/examples)
 #
