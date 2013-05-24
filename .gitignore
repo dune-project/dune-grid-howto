@@ -26,8 +26,14 @@ parfinitevolume
 traversal
 visualization
 *.swp
-*.vtu
+*.tmp
+*.o
+*.lo
+*.la
+.deps/
+.libs/
 dependencies.m4
 dune-grid-howto.pc
 dune-grid-howto-*.*.tar.gz
 dune-grid-howto-?.?
+build-cmake/
