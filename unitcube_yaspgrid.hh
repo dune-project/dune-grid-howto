@@ -14,24 +14,27 @@ class UnitCube<Dune::YaspGrid<dim>,size>
 public:
   typedef Dune::YaspGrid<dim> GridType;
 
-  UnitCube () : Len(1.0), s(size), p(false),
+  UnitCube ()
+  {
+    Dune::FieldVector<double,dim> length(1.0);
+    Dune::array<int,dim> elements;
+    std::fill(elements.begin(), elements.end(), size);
+    std::bitset<dim> periodicity(0);
+
+    grid_ = std::auto_ptr<Dune::YaspGrid<dim> >(new Dune::YaspGrid<dim>(
 #if HAVE_MPI
-                grid_(MPI_COMM_WORLD,Len,s,p,1)
-#else
-                grid_(Len,s,p,1)
+                                                                        MPI_COMM_WORLD,
 #endif
-  {  }
+                                                                        length,elements,periodicity,1));
+  }
 
   Dune::YaspGrid<dim>& grid ()
   {
-    return grid_;
+    return *grid_;
   }
 
 private:
-  Dune::FieldVector<double,dim> Len;
-  Dune::FieldVector<int,dim> s;
-  Dune::FieldVector<bool,dim> p;
-  Dune::YaspGrid<dim> grid_;
+  std::auto_ptr<Dune::YaspGrid<dim> > grid_;
 };
 
 #endif
