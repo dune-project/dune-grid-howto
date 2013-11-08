@@ -52,7 +52,7 @@ public:
   {
     Dune::FieldVector<GridType::ctype,3> lowerLeft(0);
     Dune::FieldVector<GridType::ctype,3> upperRight(1);
-    Dune::array<unsigned int,3> elements = {1,1,1};
+    Dune::array<unsigned int,3> elements = { {1,1,1} };
 
     grid_ = Dune::StructuredGridFactory<GridType>::createCubeGrid(lowerLeft, upperRight, elements);
   }
