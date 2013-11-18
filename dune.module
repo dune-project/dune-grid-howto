@@ -1,7 +1,7 @@
 # parameters for dune control
 Module: dune-grid-howto
 Maintainer: dune-devel@dune-project.org
-Version: 2.3-svn
+Version: 2.3
 Depends: dune-grid (>= 2.3)
 # Needed for finiteelements.cc
 Suggests: dune-istl (>= 2.3)
