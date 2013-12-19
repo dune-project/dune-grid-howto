@@ -6,38 +6,7 @@ set(EPS_FILES  EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3
     EPS/ug2dquad-view2.eps EPS/ug2dtri-view1.eps EPS/ug2dtri-view2.eps EPS/ugcube2d.eps
     EPS/ugcube3d.eps EPS/ugsimplex2d.eps EPS/ugsimplex3d.eps EPS/yasp3d.eps)
 
-
-set(MAINDOCS  grid-howto.pdf)
-
-if(WML_FOUND)
- set(DOCSOURCE  grid-howto.tex navigation.html css.html)
- set(HTDOCS  navigation.html css.html)
-if(TEX4HT_FOUND)
-# HTDOCS += grid-howto.html
-endif(TEX4HT_FOUND )
-endif(WML_FOUND )
-
-
-if( BUILD_DOCS)
-if(CONVERT_FOUND)
- set(DOCFILES  ${HTDOCS} ${MAINDOCS} ${WMLDOCS})
-endif(CONVERT_FOUND )
-endif( BUILD_DOCS )
-
-set(EXTRA_DIST  ${DOCFILES} grid-howto.tex ${EPS_FILES})
-
-# setting like in dune-web
-set(BASEDIR ../..)
-set(CURDIR doc/grid-howto)
-
-set(docdir ${CMAKE_INSTALL_DOCDIR}/dune-grid-howto)
-
-set(EXTRAINSTALL  grid-howto.pdf grid-howto*.html *.png *.css)
-
 # Install documentation
-# We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
-# TODO: care about the following line
-### install(TARGETS "${DOCFILES}" ${DOCFILES_EXTRA} DESTINATION ${docdir})
 
 set(SOURCES
   ../adaptivefinitevolume.cc
