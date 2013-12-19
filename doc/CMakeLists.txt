@@ -75,9 +75,8 @@ configure_file(config.inc.in config.inc)
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
 dune_add_latex_document(grid-howto.tex
   FATHER_TARGET doc
-  DEFAULT_PDF
-  INPUTS grid-howto.tex config.inc ${SOURCES}
-  IMAGES ${IMAGES})
-
+  DEFAULT_SAFE_PDF
+  INPUTS config.inc ${SOURCES}
+  IMAGES ${EPS_FILES})
 create_doc_install(${CMAKE_CURRENT_BINARY_DIR}/grid-howto.pdf  ${CMAKE_INSTALL_DOCDIR})
 install(FILES navigation.html css.html DESTINATION ${CMAKE_INSTALL_DOCDIR})
