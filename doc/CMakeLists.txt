@@ -110,3 +110,5 @@ dune_add_latex_document(grid-howto.tex
   INPUTS grid-howto.tex config.inc ${SOURCES}
   IMAGES ${IMAGES})
 
+create_doc_install(${CMAKE_CURRENT_BINARY_DIR}/grid-howto.pdf  ${CMAKE_INSTALL_DOCDIR})
+install(FILES navigation.html css.html DESTINATION ${CMAKE_INSTALL_DOCDIR})

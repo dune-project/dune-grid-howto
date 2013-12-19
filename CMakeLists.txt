@@ -36,12 +36,9 @@ set(GRIDDIM 2)
 set_property(DIRECTORY APPEND PROPERTY
   COMPILE_DEFINITIONS "DUNE_GRID_HOWTO_EXAMPLE_GRIDS_PATH=\"${PROJECT_SOURCE_DIR}/grids/\"")
 
-# TODO:
-#set(examplesdir ${CMAKE_INSTALL_DOCDIR}/dune-grid-howto/examples)
-#
-# set(examples_DATA  gettingstarted.cc traversal.cc integration.cc othergrids.cc
-#         adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc
-#         parfinitevolume.cc visualization.cc finiteelements.cc)
+set(examples_DATA  gettingstarted.cc traversal.cc integration.cc othergrids.cc
+         adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc
+         parfinitevolume.cc visualization.cc finiteelements.cc)
 
 set(TESTS
   adaptivefinitevolume
@@ -139,7 +136,10 @@ install(FILES
   unitcube_yaspgrid.hh
   vertexdata.hh
   vtkout.hh
-  DESTINATION ${CMAKE_INSTALL_INCLUDEDIR})
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
+
+install(FILES ${examples_DATA} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
+install(TARGETS ${TESTS} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
 
 # finalize the dune project, e.g. generating config.h etc.
 finalize_dune_project(GENERATE_CONFIG_H_CMAKE)
