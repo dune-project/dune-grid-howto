@@ -100,11 +100,6 @@ set_property(TARGET
   visualization APPEND
   PROPERTY COMPILE_DEFINITIONS "GRIDDIM=${GRIDDIM}" "WORLDDIM=${GRIDDIM}" "${GRIDTYPE}")
 
-## TODO: take care for the following lines
-##install(FILES "${examples_DATA}" DESTINATION ${examplesdir})
-##install(TARGETS "${examples_PROGRAMS}" DESTINATION ${examplesdir})
-##install(FILES "${examples_HEADERS}" DESTINATION ${examplesdir})
-
 # We do not want want to build the tests during make all,
 # but just build them on demand
 SET(_test_target dune_grid_howto_tests)
