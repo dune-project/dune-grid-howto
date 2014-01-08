@@ -280,7 +280,7 @@ int main(int argc, char** argv)
   typedef Bump<ctype,dim> Func;
 
   GridType grid(gridfile);
-  const GV& gv=grid.leafView();
+  const GV& gv = grid.leafGridView();
 
   Func f;
   P1Elements<GV,Func> p1(gv, f);
@@ -305,7 +305,7 @@ int main(int argc, char** argv)
   p1.solve();
 
   std::cout << "visualizing..." << "\n";
-  Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafView());
+  Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafGridView));
   vtkwriter.addVertexData(p1.u, "u");
   vtkwriter.write("fem2d", Dune::VTK::appendedraw);
 #else

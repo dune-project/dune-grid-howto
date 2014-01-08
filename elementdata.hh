@@ -35,7 +35,7 @@ void elementdata (const G& grid, const F& f)
   typedef typename ElementLeafIterator::Entity::Geometry LeafGeometry;
 
   // get grid view on leaf part
-  GridView gridView = grid.leafView();
+  GridView gridView = grid.leafGridView();
 
   // make a mapper for codim 0 entities in the leaf grid
   Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P0Layout>

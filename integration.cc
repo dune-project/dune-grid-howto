@@ -21,7 +21,7 @@ void uniformintegration (Grid& grid)
   typedef typename Grid :: LeafGridView GridView;
 
   // get GridView instance
-  GridView gridView = grid.leafView();
+  GridView gridView = grid.leafGridView();
 
   // get iterator type
   typedef typename GridView :: template Codim<0> :: Iterator LeafIterator;

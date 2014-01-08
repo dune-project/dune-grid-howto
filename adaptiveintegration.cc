@@ -23,7 +23,7 @@ void adaptiveintegration (Grid& grid, const Functor& f)
   typedef typename GridView::template Codim<0>::Iterator ElementLeafIterator;
 
   // get grid view on leaf part
-  GridView gridView = grid.leafView();
+  GridView gridView = grid.leafGridView();
 
   // algorithm parameters
   const double tol=1E-8;
