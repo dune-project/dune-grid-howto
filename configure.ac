@@ -51,7 +51,6 @@ AC_SUBST(AM_CPPFLAGS, '$(DUNE_CPPFLAGS) -I$(top_srcdir)')
 AC_CONFIG_FILES([Makefile
         cmake/Makefile
         cmake/modules/Makefile
-        cmake/pkg/Makefile
         doc/Makefile
         doc/config.inc
         grids/Makefile
