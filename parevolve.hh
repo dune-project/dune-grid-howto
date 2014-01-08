@@ -51,7 +51,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   dt = 1E100;
 
   // get grid view instance on leaf grid
-  GridView gridView = grid.leafView();
+  GridView gridView = grid.leafGridView();
 
   // compute update vector and optimum dt in one grid traversal
   // iterate over all entities, but update is only used on interior entities

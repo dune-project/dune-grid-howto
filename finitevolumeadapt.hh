@@ -43,7 +43,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   typedef typename LeafGridView::IntersectionIterator LeafIntersectionIterator;
 
   // get grid view on leaf grid
-  LeafGridView leafView = grid.leafView();
+  LeafGridView leafView = grid.leafGridView();
 
   // compute cell indicators
   V indicator(c.size(),-1E100);
@@ -124,7 +124,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   for (int level=grid.maxLevel(); level>=0; level--)
   {
     // get grid view on level grid
-    LevelGridView levelView = grid.levelView(level);
+    LevelGridView levelView = grid.levelGridView(level);
     for (LevelIterator it = levelView.template begin<0>();
          it!=levelView.template end<0>(); ++it)
     {
@@ -158,7 +158,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   // interpolate new cells, restrict coarsened cells
   for (int level=0; level<=grid.maxLevel(); level++)   /*@\label{fah:loop6}@*/
   {
-    LevelGridView levelView = grid.levelView(level);
+    LevelGridView levelView = grid.levelGridView(level);
     for (LevelIterator it = levelView.template begin<0>();
          it!=levelView.template end<0>(); ++it)
     {

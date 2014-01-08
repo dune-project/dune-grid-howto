@@ -34,7 +34,7 @@ void vertexdata (const G& grid, const F& f)
   typedef typename GridView::template Codim<dim>::Iterator VertexLeafIterator;
 
   // get grid view on the leaf part
-  GridView gridView = grid.leafView();
+  GridView gridView = grid.leafGridView();
 
   // make a mapper for codim 0 entities in the leaf grid
   Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P1Layout>
@@ -53,7 +53,7 @@ void vertexdata (const G& grid, const F& f)
 
   // generate a VTK file
   //   Dune::LeafP1Function<G,double> cc(grid,c);
-  Dune::VTKWriter<typename G::LeafGridView> vtkwriter(grid.leafView());
+  Dune::VTKWriter<typename G::LeafGridView> vtkwriter(grid.leafGridView());
   vtkwriter.addVertexData(c,"data");
   vtkwriter.write( "vertexdata", Dune::VTK::appendedraw );
 

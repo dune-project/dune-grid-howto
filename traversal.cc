@@ -31,7 +31,7 @@ void traversal (G& grid)
   typedef typename G :: LeafGridView LeafGridView;     /*@\label{tc:lfgv}@*/
 
   // get the instance of the LeafGridView
-  LeafGridView leafView = grid.leafView();             /*@\label{tc:lfv}@*/
+  LeafGridView leafView = grid.leafGridView();         /*@\label{tc:lfv}@*/
 
   // Get the iterator type
   // Note the use of the typename and template keywords
@@ -91,7 +91,7 @@ void traversal (G& grid)
   for (int level=0; level<=grid.maxLevel(); level++)
   {
     // get the instance of the LeafGridView
-    LevelGridView levelView = grid.levelView(level);
+    LevelGridView levelView = grid.levelGridView(level);
 
     count = 0;
     for (ElementLevelIterator it = levelView.template begin<0>();
