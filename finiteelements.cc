@@ -305,7 +305,7 @@ int main(int argc, char** argv)
   p1.solve();
 
   std::cout << "visualizing..." << "\n";
-  Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafGridView));
+  Dune::VTKWriter<GridType::LeafGridView> vtkwriter(grid.leafGridView());
   vtkwriter.addVertexData(p1.u, "u");
   vtkwriter.write("fem2d", Dune::VTK::appendedraw);
 #else
