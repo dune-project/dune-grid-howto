@@ -21,7 +21,7 @@ public:
     std::fill(elements.begin(), elements.end(), size);
     std::bitset<dim> periodicity(0);
 
-    grid_ = std::auto_ptr<Dune::YaspGrid<dim> >(new Dune::YaspGrid<dim>(
+    grid_ = std::unique_ptr<Dune::YaspGrid<dim> >(new Dune::YaspGrid<dim>(
 #if HAVE_MPI
                                                                         MPI_COMM_WORLD,
 #endif
@@ -34,7 +34,7 @@ public:
   }
 
 private:
-  std::auto_ptr<Dune::YaspGrid<dim> > grid_;
+  std::unique_ptr<Dune::YaspGrid<dim> > grid_;
 };
 
 #endif
