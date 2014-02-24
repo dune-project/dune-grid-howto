@@ -14,7 +14,7 @@ double integrateEntity (const Entity &entity, const Function &f, int p)
   const int dim = Entity::dimension;
 
   // type used for coordinates in the grid
-  typedef typename Entity::ctype ctype;
+  typedef typename Entity::Geometry::ctype ctype;
 
   // get geometry
   const typename Entity::Geometry geometry = entity.geometry();
