@@ -1409,7 +1409,11 @@ Line \ref{ieh:qr} extracts a reference to a
 \lstinline!Dune::QuadratureRule!  from the
 \lstinline!Dune::QuadratureRules! singleton which is a container
 containing quadrature rules for all the different reference element
-types and different orders of approximation.  Both classes are
+types and different orders of approximation. A rule of order $p$ is
+guaranteed to integrate polynomials of order $p$ exactly, up to
+floating point errors.
+
+Both classes are
 parametrized by dimension and the basic type used for the coordinate
 positions. \lstinline!Dune::QuadratureRule! in turn is a container of
 \lstinline!Dune::QuadraturePoint! supplying positions $\xi_i$ and
@@ -1437,8 +1441,8 @@ E \approx |I_f-I_c|
 is an estimate for the error. If
 the refinement is such that every element is bisected in every
 coordinate direction, the function to be integrated is sufficiently
-smooth and the order of the quadrature rule is $p+1$,
-then the error should be reduced by a factor of $(1/2)^p$ after
+smooth and the order of the quadrature rule is $p$,
+then the error should be reduced by a factor of $(1/2)^{p+1}$ after
 each mesh refinement.
 
 \begin{lst}[dune-grid-howto/integration.cc] \mbox{}
@@ -1449,7 +1453,7 @@ numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 
 Running the executable \lstinline!integration! on a YaspGrid in two
 space dimensions with a quadrature rule of order
-two the following output is obtained:
+one the following output is obtained:
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 elements=       1 integral=1.000000000000e+00 error=1.000000000000e+100
@@ -1467,7 +1471,8 @@ elements= 4194304 integral=6.162683822257e-01 error=1.348366243104e-07
 \end{lstlisting}
 
 The ratio of the errors on two subsequent grids nicely approaches the
-value $1/4$ as the grid is refined.
+value $1/4$ as the grid is refined, which corresponds to an error
+decay of order $p+1$.
 
 
 \begin{exc} Try different quadrature orders. For that just change the
