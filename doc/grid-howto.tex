@@ -8,7 +8,7 @@
 \usepackage{color}
 \usepackage{overpic}
 \usepackage{listings}
-\lstset{language=C++, basicstyle=\ttfamily, 
+\lstset{language=C++, basicstyle=\ttfamily,
   keywordstyle=\color{black}\bfseries, tabsize=4, stringstyle=\ttfamily,
   commentstyle=\it, extendedchars=true, escapeinside={/*@}{@*/}}
 \usepackage{hyperref}
@@ -40,13 +40,13 @@
 
 \input{config.inc}
 
-\author{Peter Bastian$^\ast$ \and 
+\author{Peter Bastian$^\ast$ \and
 Markus Blatt$^\ast$ \and
-Andreas Dedner$^\dagger$ \and 
-Christian Engwer$^\ast$ \and  
-Robert Kl\"ofkorn$^\dagger$ \and 
+Andreas Dedner$^\dagger$ \and
+Christian Engwer$^\ast$ \and
+Robert Kl\"ofkorn$^\dagger$ \and
 Martin Nolte$^\dagger$ \and
-Mario Ohlberger$^\mathparagraph$ \and  
+Mario Ohlberger$^\mathparagraph$ \and
 Oliver Sander$^\ddagger$}
 
 \date{Version \version, \today}
@@ -261,7 +261,7 @@ Documentation of the files and classes in \Dune{} is provided in code and
 can be extracted using the
 doxygen\footnote{\url{http://www.doxygen.org/}}
 software available elsewhere. The code documentation can either be built
-locally on your machine (in html and other formats, e.\,g.~\LaTeX) 
+locally on your machine (in html and other formats, e.\,g.~\LaTeX)
 or its latest version is available at
 \begin{center}
 \url{http://www.dune-project.org/doc/}
@@ -281,7 +281,7 @@ a C++ template library.
 
 The exact wording of the exception reads as follows:
 
-\begin{quote}  
+\begin{quote}
    As a special exception, you may use the \Dune{} source files as part
    of a software library or application without restriction.
    Specifically, if other files instantiate templates or use macros or
@@ -315,7 +315,7 @@ Let us start with a replacement of the famous ``hello world''
 program given below.
 
 \begin{lst}[File dune-grid-howto/gettingstarted.cc] \mbox{}
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../gettingstarted.cc}
 \end{lst}
 
@@ -395,12 +395,12 @@ this case all entities are of type ``cube''.
   modest. Also try dimensions 4 and 5!
 \end{exc}
 
-\begin{exc} 
+\begin{exc}
   The static methods \lstinline!Dune::gridlevellist! and
   \lstinline!Dune::gridleaflist! produce a very detailed output of the grid's
   elements on a specified grid level. Change the code and print out this
   information for the leaf grid or a grid on lower level. Try to understand the
-  output. 
+  output.
 \end{exc}
 
 \section{Traversing a grid --- A first look at the grid interface}
@@ -410,7 +410,7 @@ to a more complicated one. Here it is:
 
 \begin{lst}[File dune-grid-howto/traversal.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../traversal.cc}
 \end{lst}
 
@@ -438,7 +438,7 @@ A grid is considered to be a container of ``entities'' which are
 abstractions for geometric objects like vertices, edges,
 quadrilaterals, tetrahedra, and so on. This is very similar to the
 standard template library (STL), see e.~g.~\cite{Stroustrup},
-which is part of any C++ system. 
+which is part of any C++ system.
 A key difference is, however, that there is not just one type of entity but
 several. As in the STL the elements of any container can be accessed
 with iterators which are generalized pointers. Again, a \Dune{} grid
@@ -451,7 +451,7 @@ define a view on that part of the grid we are interested in. This can be a
 level or the leaf part of the grid. In line \ref{tc:lfgv} a type for a
 \lstinline!GridView! on the leaf grid is defined.
 
-Line \ref{tc:ittype} extracts the type of an iterator from this view 
+Line \ref{tc:ittype} extracts the type of an iterator from this view
 class. \lstinline!Codim! is a \lstinline!struct! within the grid class
 that takes an integer template parameter specifying the codimension
 over which to iterate. Within the \lstinline!Codim! structure the type
@@ -550,7 +550,7 @@ there are/is 4 element(s) on level 1
 \end{lstlisting}
 \end{lst}
 
-\begin{rem} Define the end iterator for efficiency. 
+\begin{rem} Define the end iterator for efficiency.
 \end{rem}
 
 \begin{exc} Play with different dimensions, codimension
@@ -586,13 +586,13 @@ $\Omega\subset\R^w$ into elements of ``simple'' shape. Here ``simple''
 means that the element can be represented as the image of a reference
 element under a transformation. A reference element is a convex
 polytope, which is a bounded intersection of a finite set of
-half-spaces. 
+half-spaces.
 
 \minisec{Dimension and world dimension}
 
 A grid has a dimension $d$ which is the dimensionality of
 its reference elements. Clearly we have $d\leq w$. In the case $d<w$ the grid
-discretizes a $d$-dimensional manifold. 
+discretizes a $d$-dimensional manifold.
 
 \minisec{Faces, entities and codimension}
 
@@ -611,9 +611,9 @@ edges have codimension $d-1$ and vertices have codimension $d$.
 
 Computational grids come in a variety of flavours: A
 {conforming} grid is one where the intersection of two
-elements is either empty or a face of each of the two elements. 
+elements is either empty or a face of each of the two elements.
 Grids where the intersection of two elements may have an
-arbitrary shape are called {nonconforming}. 
+arbitrary shape are called {nonconforming}.
 
 \minisec{Element types}
 
@@ -651,7 +651,7 @@ $\Omega_{J-2}\setminus\Omega_{J-1}$ and so on plus the elements of the level-$0$
 $\Omega_{0}\setminus\Omega_{1}$. The grid resulting from this
 procedure is called the leaf grid
 because it is formed by the leaf elements of the trees emanating at
-the macro elements. 
+the macro elements.
 
 \minisec{Refinement rules}
 
@@ -659,7 +659,7 @@ There is a variety of ways how to hierarchically refine a grid. The
 refinement is called conforming if the leaf grid is always a
 conforming grid, otherwise the refinement is called
 non-conforming. Note that the grid on each level $l$ might be
-conforming while the leaf grid is not. 
+conforming while the leaf grid is not.
 There are also many ways how to subdivide an individual element into
 smaller elements. Bisection always subdivides elements into two
 smaller elements, thus the resulting data structure is a binary tree
@@ -690,13 +690,13 @@ following properties:
 \section{Concepts}
 
 Generic algorithms are based on concepts. A concept is a kind of
-``generalized'' class with a well defined set of members. 
+``generalized'' class with a well defined set of members.
 Imagine a function template that takes a type \lstinline!T!
 as template argument. All the members of \lstinline!T!, i.e.
 methods, enumerations, data (rarely) and nested
 classes  used by the function template form the concept. From that
 definition it is clear that the concept does not necessarily exist as
-program text. 
+program text.
 
 A class that implements a concept is called a
 \textit{model} of the concept. E.\,g.~in the standard template library (STL)
@@ -704,7 +704,7 @@ the class \lstinline!std::vector<int>! is a model of the concept
 ``container''. If all instances of a class template are a model of
 a given concept we can also say that the class template is a model of
 the concept. In that sense \lstinline!std::vector! is also a model of
-container.  
+container.
 
 In standard OO language a concept would be formulated as
 an abstract base class and all the models would be implemented as
@@ -714,7 +714,7 @@ the models of a concept can use different types, e.\,g.~as return types of
 methods. As an example consider the STL where the begin method on a
 vector of int returns \lstinline!std::vector<int>::iterator! and on a
 list of int it returns \lstinline!std::list<int>::iterator! which may
-be completely different types. 
+be completely different types.
 
 Concepts are difficult to describe when they do not exist as concrete
 entities (classes or class templates) in a program. The STL way of
@@ -729,7 +729,7 @@ There are two ways to improve the situation:
 \item \textit{Engines:} A class template is defined that wraps the
   model (which is the template parameter) and forwards all member
   function calls to it. In addition all the nested types and
-  enumerations of the model are copied into the wrapper class. 
+  enumerations of the model are copied into the wrapper class.
   The model can be seen as an engine that powers the wrapper class,
   hence the name. Generic
   algorithms are written in terms of the wrapper class. Thus the
@@ -740,7 +740,7 @@ There are two ways to improve the situation:
 \item \textit{Barton-Nackman trick:} This is a refinement of the
   engine approach where the models are derived from the wrapper class
   template in addition. Thus static polymorphism is combined
-  with a traditional class hierarchy, see \cite{Veldhui99,BN}. 
+  with a traditional class hierarchy, see \cite{Veldhui99,BN}.
   However, the
   Barton-Nackman trick gets rather involved when the derived classes
   depend on additional template parameters and several types are related
@@ -752,7 +752,7 @@ The \Dune{} grid interface now consists of a \textit{set of related concepts}.
 Either the engine or the Barton-Nackman approach are used to clearly
 define the concepts. In order to avoid any inconsistencies we refer as
 much as possible to the doxygen-generated documentation. For an
-overview of the grid interface see the web page 
+overview of the grid interface see the web page
 \begin{center}
 \url{http://www.dune-project.org/doc/doxygen/html/group__Grid.html}.
 \end{center}
@@ -764,10 +764,10 @@ Some types in the grid interface do not depend on a specific model,
 i.~e.~they are shared by all implementations.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1ReferenceElement.html}{Dune::ReferenceElement}}
-               
+
 describes the topology and geometry of standard entities. Any given
 entity of the grid can be completely specified by a reference element
-and a map from this reference element to world coordinate space. 
+and a map from this reference element to world coordinate space.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1GeometryType.html}{Dune::GeometryType}}
 
@@ -776,24 +776,24 @@ defines names for the reference elements.
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1CollectiveCommunication.html}{Dune::CollectiveCommunication}}
 
 defines an interface to global communication operations in a portable
-and transparent way. In particular also for sequential grids. 
+and transparent way. In particular also for sequential grids.
 
 
 \subsection{Concepts of the \texorpdfstring{\Dune{}}{DUNE} grid interface}
 
 In the following a short description of each concept in the \Dune{}
 grid interface is given. For the details click on the link that leads
-you to the documentation of the corresponding wrapper class template 
+you to the documentation of the corresponding wrapper class template
 (in the engine sense).
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Grid.html}{Grid}}
 
-    The grid 
+    The grid
     is a container of entities that allows to access these entities
     and that knows the number of its entities. You create instances of
     a grid class in your applications, while objects of the other
     classes are typically aggregated in the grid class and accessed via
-    iterators. 
+    iterators.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1GridView.html}{GridView}}
 
@@ -809,20 +809,20 @@ you to the documentation of the corresponding wrapper class template
     the topological part of an entity, i.\,e. its hierarchical
     construction from subentities and the relation to other
     entities. Entities cannot be created, copied or modified by the
-    user. They can only be read-accessed through immutable iterators. 
+    user. They can only be read-accessed through immutable iterators.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Geometry.html}{Geometry}}
 
     Geometry
     encapsulates the geometric part of an entity by mapping local
-    coordinates in a reference element to world coordinates. 
+    coordinates in a reference element to world coordinates.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1EntityPointer.html}{EntityPointer}}
 
     EntityPointer  is a
     dereferenceable type that delivers a reference to an
     entity. Moreover it is immutable, i.\,e. the referenced entity can
-    not be modified. 
+    not be modified.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Iterator.html}{Iterator}}
 
@@ -830,7 +830,7 @@ you to the documentation of the corresponding wrapper class template
     immutable iterator that provides access to an entity. It can by
     incremented to visit all entities of a given
     codimension of a GridView. An EntityPointer is assignable
-    from an Iterator. 
+    from an Iterator.
 
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}{IntersectionIterator}}
 
@@ -843,10 +843,10 @@ you to the documentation of the corresponding wrapper class template
     the intersection.  Furthermore this Intersection class also provides
     information about intersections of an entity
     with
-    the internal or external boundaries. 
+    the internal or external boundaries.
     The IntersectionIterator provides intersections between
     codimension 0 entities among the same GridView.
-    
+
 \minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LeafIndexSet}}
 
     LevelIndexSet and LeafIndexSet, which are both models of
@@ -894,7 +894,7 @@ dimension, codimension or partition type simple typedefs (as in the
 STL) are not sufficient here. The types are rather placed in a
 struct template, named \lstinline!Codim! here, where the template
 parameters of the struct are those of the type. This concept may even
-be applied recursively. 
+be applied recursively.
 
 \chapter{Constructing grid objects}
 
@@ -951,14 +951,14 @@ If you want to do the same for a sequential \lstinline!YaspGrid! the code is
     upper[0] = upper[1] = 1.0;
 
     Dune::FieldVector<bool,dim> periodic(false);
-    
+
     YaspGrid<2> grid(upper, n, periodic, 0);
 \end{lstlisting}
 Note that you do not have to specify the lower left corner as \lstinline!YaspGrid!
 hardwires it to zero.  The unstructured one-dimensional \lstinline!OneDGrid!
 also has a constructor
 \begin{lstlisting}
-    OneDGrid grid(10,    // number of elements 
+    OneDGrid grid(10,    // number of elements
                   0.0,   // left domain boundary
                   1.0    // right domain boundary
                   );
@@ -982,7 +982,7 @@ creates simplicial grids in 2d and 3d (using
 \lstinline!tetgen! or \lstinline!netgen!)
 and stores them in files ending in \lstinline!.msh!. Current precompiled
 releases $\geq$ 2.4.2 of \lstinline!Gmsh! have \lstinline!OpenCascade!, an open-source CAD
-kernel, as built-in geometry modeler. Thus these releases are able to import 
+kernel, as built-in geometry modeler. Thus these releases are able to import
 CAD geometries, e.\,g.~from IGES or STEP files, and to generate meshes for them to
 be subsequently used in \Dune. Be aware that most versions of Gmsh available in
 the package repositories of your operating system still lack this functionality.
@@ -1014,50 +1014,50 @@ variable \lstinline!DUNE_GRID_EXAMPLE_GRIDS_PATH!.
 
 \section{The \texorpdfstring{\Dune}{Dune} Grid Format (DGF)}
 
-Dune has its own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat. 
+Dune has its own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat.
 A detailed description of the DGF and how to use it can be found on the
-homepage of \Dune% 
+homepage of \Dune%
 \footnote{\url{http://www.dune-project.org/doc/doxygen/html/classDune_1_1DuneGridFormatParser.html}}.
 
-Here we only give a short introduction. 
+Here we only give a short introduction.
 Basically one can choose the grid manager during the make process of
 your program:
 \lstinline!make GRIDTYPE=MYGRID GRIDDIM=d GRIDWORLD=w!
 Including \lstinline!config.h! will then
 introduce the namespace \lstinline!GridSelector! into the
 \lstinline!Dune! namespace. This contains the typedef
-\lstinline!GridType! which is the type of the grid. Furthermore the 
+\lstinline!GridType! which is the type of the grid. Furthermore the
 required header files for the grid manager are included.
 Through the module \Dune{}-grid the following grid managers can be used
-(for \lstinline!MYGROD! in the example above): 
+(for \lstinline!MYGROD! in the example above):
 \\
 \lstinline!ALBERTAGRID,ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM,ONEDGRID,SGRID,UGGRID!,
 \\
 and \lstinline!YASPGRID!.
 \\
-The following example shows how an 
-instance of the defined grid is generated. Given a DGF file, for example 
+The following example shows how an
+instance of the defined grid is generated. Given a DGF file, for example
 \lstinline!unitcube2.dgf!, a grid pointer is created as follows
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
 Dune::GridPtr<Dune::GridSelector::GridType> gridPtr( "unitcube2.dgf" );
 \end{lstlisting}
 The grid is accessed by dereferencing the grid pointer.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-GridType& grid = *gridPtr; 
+GridType& grid = *gridPtr;
 \end{lstlisting}
 To change the grid one simply has to re-compile the code using the following make command.
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-make GRIDDIM=2 GRIDTYPE=ALBERTAGRID integration 
+make GRIDDIM=2 GRIDTYPE=ALBERTAGRID integration
 \end{lstlisting}
 This will compile the application \texttt{integration} with grid type \lstinline!ALBERTAGRID! and grid dimension $2$.
-Note that before the re-compilation works, 
+Note that before the re-compilation works,
 the corresponding object file has to be removed.
 If \lstinline!WORLDDIM! is not
 provide then \lstinline!WORLDDIM=GRIDDIM! is assumed.
 To use some grid manager by default, i.e., without providing the grid type
 during the make process, \lstinline!GRIDTYPE! and
 \lstinline!GRIDDIM,WORLDDIM! can be set in \lstinline!Makefile.am!. It is
-then still possible to change the default during the make process. 
+then still possible to change the default during the make process.
 
 \section{The Grid Factory}
 \label{sec:grid_factory}
@@ -1103,7 +1103,7 @@ for each vertex. The order of insertion determines the level- and leaf indices o
 For each element call
 
 \begin{lstlisting}[basicstyle=\small]
-    factory.insertElement(Dune::GeometryType type, 
+    factory.insertElement(Dune::GeometryType type,
         const std::vector<int>& vertices);
 \end{lstlisting}
 
@@ -1122,7 +1122,7 @@ conventions. Refer to the page on reference elements for the details.
 
 \lstinline!FooGrid! may support parametrized domains. That means that you can provide a smooth description of your grid boundary. The actual grid may always be piecewise linear; however, as you refine, the grid will approach your prescribed boundary. You don't have to do this. If you do not specify the boundary geometry it is left to the grid implementation.
 
-In order to create curved boundary segments, for each segment you have to write a class which implements the correct geometry. These classes are then handed over to the 
+In order to create curved boundary segments, for each segment you have to write a class which implements the correct geometry. These classes are then handed over to the
 factory. Boundary segment implementations must be derived from
 
 \begin{lstlisting}[basicstyle=\small]
@@ -1132,14 +1132,14 @@ factory. Boundary segment implementations must be derived from
 This is an abstract base class which requires you to overload the method
 
 \begin{lstlisting}[basicstyle=\small]
-    virtual FieldVector< double, dimworld > 
+    virtual FieldVector< double, dimworld >
          operator() (const FieldVector< double, dim-1 > &local)
 \end{lstlisting}
 
 This methods must compute the world coordinates from the local ones on the boundary segment. Give these classes to your grid factory by calling
 
 \begin{lstlisting}[basicstyle=\small]
-    factory.insertBoundarySegment(const std::vector<int>& vertices, 
+    factory.insertBoundarySegment(const std::vector<int>& vertices,
                                   const BoundarySegment<dim,dimworld> *
                                      boundarySegment = NULL);
 \end{lstlisting}
@@ -1149,7 +1149,7 @@ Control over the allocated objects is taken from you, and the grid object will t
 Note that you can call \lstinline!insertBoundarySegment! with only the first argument.
 In that case, the boundary geometry is left to the grid implementation.  However,
 the boundary segments get ordered in the way you inserted them.  This may be
-helpful if you have data attached to your coarse grid boundary 
+helpful if you have data attached to your coarse grid boundary
 (see Sec.~\ref{sec:import_data_for_new_grids}).
 
 \item Finish construction
@@ -1170,11 +1170,11 @@ In many cases there is data attached to new grids.  This data may be initial
 values, spatially distributed material parameters, boundary conditions, etc.
 It is associated to elements or vertices, or the boundary segments of the
 coarse grid.  The data may be available in a separate data file or even
-included in the same file with the grid. 
+included in the same file with the grid.
 
  The connection with the grid in
 the grid file is usually made implicitly.  For example, vertex data is ordered
-in the same order as the vertices itself.  Hence the grid-reading process must 
+in the same order as the vertices itself.  Hence the grid-reading process must
 guarantee that vertices and elements are not reordered during grid creation.
 More specifically, \Dune guarantees the following: {\em the level and leaf
 indices of zero-level vertices and elements are defined by the order in which they
@@ -1228,7 +1228,7 @@ The definition of the general template is as follows.
 
 \begin{lst}[File dune-grid-howto/unitcube.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt, breaklines=true]{../unitcube.hh}
 \end{lst}
 
@@ -1249,7 +1249,7 @@ The construction of structured grid objects is currently not standardized.
 Therefore \lstinline!UnitCube! is specialized for each structured grid
 type.  We now look at each specialization in turn.
 
-For historic reasons, there are also specializations for 
+For historic reasons, there are also specializations for
 \lstinline!ALUGrid! and \lstinline!AlbertaGrid!.
 
 \minisec{SGrid}
@@ -1260,7 +1260,7 @@ cube with a single element. \lstinline!SGrid! supports all dimensions.
 
 \begin{lst}[File dune-grid-howto/unitcube\_sgrid.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../unitcube_sgrid.hh}
 \end{lst}
 
@@ -1270,11 +1270,11 @@ The following listing instantiates a \lstinline!YaspGrid! object. The
 \lstinline!variant! parameter specifies the number of elements in each
 direction of the cube. In the parallel case all available processes
 are used and the overlap is set to one element. Periodicity is not
-used.  
+used.
 
 \begin{lst}[File dune-grid-howto/unitcube\_yaspgrid.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../unitcube_yaspgrid.hh}
 \end{lst}
 
@@ -1285,34 +1285,34 @@ The following listing contains specializations of the
 dimensions. When using Alberta versions less than $2.0$ the \Dune{} framework
 has to be configured with a dimension (\lstinline!--with-alberta-dim=2!,
 \lstinline!--with-alberta-world-dim=2!) and only this dimension can then be
-used. 
+used.
 The dimension from the configure run is available in the macro
-\lstinline!ALBERTA_DIM! and \lstinline!ALBERTA_WORLD_DIM! 
+\lstinline!ALBERTA_DIM! and \lstinline!ALBERTA_WORLD_DIM!
 in the file \lstinline!config.h! (see
 next section). The \lstinline!variant! parameter must be 1.
 The grid factory concept is used by the base class \lstinline!BasicUnitCube!.
 
 \begin{lst}[File dune-grid-howto/unitcube\_albertagrid.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../unitcube_albertagrid.hh}
 \end{lst}
 
 \minisec{ALUGrid}
 
-The next listing shows the instantiation of \lstinline!ALUSimplexGrid!\ or 
-\lstinline!ALUCubeGrid!\ objects. 
-The ALUGrid implementation supports either simplicial grids, i.e.\ 
+The next listing shows the instantiation of \lstinline!ALUSimplexGrid!\ or
+\lstinline!ALUCubeGrid!\ objects.
+The ALUGrid implementation supports either simplicial grids, i.e.\
 tetrahedral or triangular grids, and hexahedral grids and the
-element type has to be chosen at compile-time. This is done by choosing 
-either \lstinline!ALUSimplexGrid! or \lstinline!ALUCubeGrid!. 
-The \lstinline!variant!\ parameter must be 1. 
+element type has to be chosen at compile-time. This is done by choosing
+either \lstinline!ALUSimplexGrid! or \lstinline!ALUCubeGrid!.
+The \lstinline!variant!\ parameter must be 1.
 As in the default implementation, grid objects are set up with help of the
 \lstinline!StructuredGridFactory!\ class.
 
 \begin{lst}[File dune-grid-howto/unitcube\_alugrid.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt, breaklines=true]{../unitcube_alugrid.hh}
 \end{lst}
 
@@ -1332,7 +1332,7 @@ using a \Dune{} grid object.
 
 \section{Numerical integration}
 
-Assume first the simpler task that $\Delta$ is a reference element 
+Assume first the simpler task that $\Delta$ is a reference element
 and that we want to
 compute the integral over some function $\hat{f}:\Delta\to\mathbb{R}$
 over the reference element:$$\int\limits_{\Delta} \hat{f}(\hat{x})\ d\hat{x}.$$
@@ -1352,7 +1352,7 @@ reference element, i.~e.~$\omega=\{x\in\Omega\ |\
 x=g(\hat{x}), \hat{x}\in\Delta\}$, by some function $g:\Delta\to\Omega$:
 \begin{equation}
 \int\limits_{\Omega} f(x) = \int\limits_{\Delta} f(g(\hat{x}))\mu(\hat{x})\
-d\hat{x} = \sum_{i=1}^n f(g(\xi_i))\mu(\xi_i)w_i + \text{error}. 
+d\hat{x} = \sum_{i=1}^n f(g(\xi_i))\mu(\xi_i)w_i + \text{error}.
 \label{Eq:IntegrateEntity}
 \end{equation}
 Here $\mu(\hat{x}) = \sqrt{|\det J^T(\hat{x})J(\hat{x})|}$ is the
@@ -1370,7 +1370,7 @@ Note that each element $\omega_k$ may in principle have its own
 reference element which means that quadrature points and weights as
 well as the transformation and integration element may depend on
 $k$. The total error is a sum of the errors on the individual
-elements. 
+elements.
 
 In the following we show how the formula (\ref{Eq:IntegrateDomain})
 can be realised within \Dune.
@@ -1387,7 +1387,7 @@ each component of the vector and \lstinline!dim! is its dimension.
 
 \begin{lst}[dune-grid-howto/functors.hh] Here are some examples for functors.
 
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../functors.hh}
 \end{lst}
 
@@ -1396,12 +1396,12 @@ numberstyle=\tiny, numbersep=5pt]{../functors.hh}
 
 The function \lstinline!integrateentity! in the following listing
 computes the integral over a single element of the mesh with a
-quadrature rule of given order. 
+quadrature rule of given order.
 This relates directly to formula (\ref{Eq:IntegrateEntity}) above.
 
 \begin{lst}[dune-grid-howto/integrateentity.hh] \mbox{}
 
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../integrateentity.hh}
 \end{lst}
 
@@ -1429,7 +1429,7 @@ computes the integral over the whole domain via formula
 error. This is done as follows. Let $I_c$ be the value of the numerically
 computed integral on some grid and let $I_f$ be the value of the
 numerically computed integral on a grid where each element has been
-refined. Then 
+refined. Then
 \begin{equation}
 \label{Eq:GlobalError}
 E \approx |I_f-I_c|
@@ -1439,11 +1439,11 @@ the refinement is such that every element is bisected in every
 coordinate direction, the function to be integrated is sufficiently
 smooth and the order of the quadrature rule is $p+1$,
 then the error should be reduced by a factor of $(1/2)^p$ after
-each mesh refinement. 
+each mesh refinement.
 
 \begin{lst}[dune-grid-howto/integration.cc] \mbox{}
 
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../integration.cc}
 \end{lst}
 
@@ -1480,7 +1480,7 @@ value $1/4$ as the grid is refined.
 \end{exc}
 
 \begin{exc} Try different integrands $f$ and look at the development
-  of the (estimated) error in the integral. 
+  of the (estimated) error in the integral.
 \end{exc}
 
 \chapter{Attaching user data to a grid}
@@ -1516,7 +1516,7 @@ implications:
 Since efficiency is important in scientific computing the second
 important design decision was that user data is stored in arrays (or
 random access containers) and that the data is accessed via an
-index. The set of indices starts at zero and is consecutive. 
+index. The set of indices starts at zero and is consecutive.
 
 Let us assume that the set of all entities in the grid is $E$ and
 that $E^\prime\subseteq E$ is the subset of entities for which data is
@@ -1542,7 +1542,7 @@ d_e = a(m(e)) .
 
 \Dune{} provides different implementations of mappers that differ in
 functionality and cost (with respect to storage and
-run-time). Basically there are two different kinds of mappers. 
+run-time). Basically there are two different kinds of mappers.
 
 \minisec{Index based mappers}
 
@@ -1550,10 +1550,10 @@ An index-based mapper is allocated for a grid and can be used as long
 as the grid is not changed (i.e. refined, coarsened or load
 balanced). The implementation of these mappers is based on a
 \lstinline!Dune::IndexSet! and evaluation of the map $m$ is typically
-of $O(1)$ complexity with a very small constant. 
+of $O(1)$ complexity with a very small constant.
 Index-based mappers are only available for restricted (but
 usually sufficient) entity sets. They will be used in the examples
-shown below. 
+shown below.
 
 \minisec{Id based mappers}
 
@@ -1565,7 +1565,7 @@ relatively slow because the data type used for ids is usually not an
 \lstinline!int! and the non-consecutive ids require more complicated search data
 structures (typically a map). Evaluation of the map $m$ therefore
 typically costs $O(\log |E^\prime|)$ . On the other hand, id-based
-mappers are not restricted to specific entity sets $E^\prime$. 
+mappers are not restricted to specific entity sets $E^\prime$.
 
 In adaptive applications one would use an index-based mapper to do in
 the calculations on a certain grid and only in the adaption phase an
@@ -1584,7 +1584,7 @@ elements of the leaf grid and stores this value. Here is the listing:
 
 \begin{lst}[File dune-grid-howto/elementdata.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../elementdata.hh}
 \end{lst}
 
@@ -1609,7 +1609,7 @@ of the STL vector one can use any other type with an
 \lstinline!operator[]!, even built-in arrays (however, built-in arrays
 will not work in this example because the VTK output
 below requires a container with a
-\lstinline!size()! method. 
+\lstinline!size()! method.
 
 Now the loop in lines \ref{edh:loop0}-\ref{edh:loop1} iterates through
 all leaf elements. The next three statements within the loop body
@@ -1633,11 +1633,11 @@ graphics package, if it is installed on your machine.
 
 The next list shows a function \lstinline!vertexdata! that does the
 same job except that the data is associated with the vertices of the
-grid. 
+grid.
 
 \begin{lst}[File dune-grid-howto/vertexdata.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../vertexdata.hh}
 \end{lst}
 
@@ -1652,7 +1652,7 @@ following:
   available via \lstinline!it->geometry()[0]!.
 \item Use \lstinline!addVertexData! instead of \lstinline!addCellData!
   on the \lstinline!Dune::VTKWriter!.
-\item Pass \lstinline!polynomialOrder=1! instead of 0 as 
+\item Pass \lstinline!polynomialOrder=1! instead of 0 as
 the second last argument of \lstinline!grape.displayVector!. This argument is the polynomial
   degree of the approximation.
 \end{itemize}
@@ -1662,7 +1662,7 @@ two functions just discussed:
 
 \begin{lst}[File dune-grid-howto/visualization.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../visualization.cc}
 \end{lst}
 
@@ -1691,7 +1691,7 @@ c(x,0) = c_0(x) \ \ x\in\Omega
 and the boundary condition
 \begin{equation}
 c(x,t) = b(x,t) \ \ t>0, x\in\Gamma_{\text{in}}(t)=\{y\in\partial\Omega\
-|\ u(y,t)\cdot\nu(y)<0\}. 
+|\ u(y,t)\cdot\nu(y)<0\}.
 \end{equation}
 Here $\nu(x)$ is the unit outer normal at a point $y\in\partial\Omega$
 and $\Gamma_{\text{in}}(t)$ is the inflow boundary at time $t$.
@@ -1721,12 +1721,12 @@ c(x,t_{n})\ dx + \int\limits_{t_n}^{t_{n+1}}
 \int\limits_{\partial\omega_i} c u\cdot\nu\ ds\,dt = 0 \ \ \forall i.
 \end{equation}
 Now we approximate $c$ by a cell-wise constant function $C$, where
-$C_i^n$ denotes the value in cell $\omega_i$ at time $t_n$. 
-Moreover we subdivide the boundary $\partial\omega_i$ into 
+$C_i^n$ denotes the value in cell $\omega_i$ at time $t_n$.
+Moreover we subdivide the boundary $\partial\omega_i$ into
 facets $\gamma_{ij}$ which are either intersections with
 other cells $\partial\omega_i\cap\partial\omega_j$,
 or intersections with the boundary
-$\partial\omega_i\cap\partial\Omega$. 
+$\partial\omega_i\cap\partial\Omega$.
 Evaluation of the fluxes
 at time level $t_n$ leads to the following equation for the unknown
 cell values at $t_{n+1}$:
@@ -1740,11 +1740,11 @@ where $\Delta t^n=t_{n+1}-t_n$, $u_{ij}^n$ is the velocity on the facet $\gamma_
 $t_n$, $\nu_{ij}$ is the unit outer normal of the facet $\gamma_{ij}$ and $\phi$ is the flux function defined as
 \begin{equation}
 \phi(C_i^n, C_j^n, u_{ij}^n\cdot\nu_{ij}; \gamma_{ij}, t_n ) =
-\left\{\begin{array}{ll} 
+\left\{\begin{array}{ll}
 b(\gamma_{ij})\, u_{ij}^n\cdot\nu_{ij} & \gamma_{ij} \subset \Gamma_{\text{in}}(t) \\
 C_j^n\, u_{ij}^n\cdot\nu_{ij}&
 \gamma_{ij}=\partial\omega_i\cap\partial\omega_j\,\wedge\,u_{ij}^n\cdot\nu_{ij} < 0\\
-C_i^n\, u_{ij}^n\cdot\nu_{ij}& u_{ij}^n\cdot\nu_{ij} \geq 0 
+C_i^n\, u_{ij}^n\cdot\nu_{ij}& u_{ij}^n\cdot\nu_{ij} \geq 0
 \end{array}\right..
 \end{equation}
 Here $b(\gamma_{ij})$ denotes evaluation of the boundary condition on
@@ -1776,11 +1776,11 @@ One can show that the scheme is stable provided the following condition holds:
   \max(0,u_{ij}^n\cdot\nu_{ij})\right)^{-1}.
 \label{Eq:TimeStepControl}
 \end{equation}
-When we rewrite \ref{Eq:IterativeForm1} in the form 
+When we rewrite \ref{Eq:IterativeForm1} in the form
 \begin{equation}
 C_i^{n+1} = C_i^n - \Delta t^n
   \underbrace{\sum\limits_{\gamma_{ij}} \frac{|\gamma_{ij}|}{|\omega_i|}
-  \left( C_i^n \max(0,u_{ij}^n\cdot\nu_{ij}) + 
+  \left( C_i^n \max(0,u_{ij}^n\cdot\nu_{ij}) +
          C_j^n \max(0,-u_{ij}^n\cdot\nu_{ij})\right)}_{\delta_i} \ \ \forall i
 \label{Eq:IterativeForm2}
 \end{equation}
@@ -1799,7 +1799,7 @@ following functions.
 
 \begin{lst}[File dune-grid-howto/transportproblem.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../transportproblem.hh}
 \end{lst}
 
@@ -1809,11 +1809,11 @@ condition should also be straightforward now. The function
 that can be stored in any container type with a vector interface
 (\lstinline!operator[]!, \lstinline!size()! and copy constructor are
 needed). Moreover the grid and a mapper for element-wise data have to be passed
-as well. 
+as well.
 
 \begin{lst}[File dune-grid-howto/initialize.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../initialize.hh}
 \end{lst}
 
@@ -1825,23 +1825,23 @@ time step $\Delta t^n$ selected by the algorithm is returned.
 % Please don't enter an empty line.. otherwise tex4ht dies :-(
 \begin{lst}[File dune-grid-howto/evolve.hh] \mbox{} \label{List:evolve}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
 \end{lst}
 
 \begin{figure}
 \begin{overpic}[width=0.48\textwidth]{EPS/intersection}
-\put(60,38){$\omega_i$} 
-\put(22,55){$\omega_j$} 
-\put(43,46){$\gamma_{ij}$} 
-\put(82,52){$\gamma_{ik}$} 
+\put(60,38){$\omega_i$}
+\put(22,55){$\omega_j$}
+\put(43,46){$\gamma_{ij}$}
+\put(82,52){$\gamma_{ik}$}
 \end{overpic}
 \hfill
 \begin{overpic}[width=0.48\textwidth]{EPS/islocalref}
-\put(18,3){$\omega_i$} 
-\put(52,19){$\omega_j$} 
-\put(60,3){$\omega_k$} 
-\put(74,19){$\omega_m$} 
+\put(18,3){$\omega_i$}
+\put(52,19){$\omega_j$}
+\put(60,3){$\omega_k$}
+\put(74,19){$\omega_m$}
 \end{overpic}
 \caption{Left: intersection with other elements and the boundary,
   right: intersections in the case of locally refined grids.}
@@ -1858,7 +1858,7 @@ The computation of the fluxes is done in lines
 \ref{evh:flux0}-\ref{evh:flux1}. An \lstinline!IntersectionIterator!
 is used to access all intersections $\gamma_{ij}$ of a leaf element
 $\omega_i$. For a full documentation on the
-\lstinline!Intersection!\ class, we refer to the doxygen module page on 
+\lstinline!Intersection!\ class, we refer to the doxygen module page on
 Intersections\footnote{\url{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}}
 An Intersection is with another element $\omega_j$ if the
 \lstinline!neighbor()! method of the iterator returns true (line
@@ -1889,7 +1889,7 @@ evaluated from the intersection $\gamma_{ji}$ visited by the
 intersection iterator started on $\omega_j$, because only there the
 two concentration values $C_j$ and $C_i$ are both accessibly. Note
 also that the outside element delivered by an intersection
-iterator need not be a leaf element (such as $\omega_k$). 
+iterator need not be a leaf element (such as $\omega_k$).
 
 Therefore, in the code it is first checked that the outside element is
 actually a leaf element (line 89). Then the flux can be evaluated if
@@ -1914,7 +1914,7 @@ XML file format.
 
 \begin{lst}[File dune-grid-howto/vtkout.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../vtkout.hh}
 \end{lst}
 
@@ -1930,7 +1930,7 @@ Finally, the main program:
 
 \begin{lst}[File dune-grid-howto/finitevolume.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../finitevolume.cc}
 \end{lst}
 
@@ -1963,7 +1963,7 @@ Let now $\mathcal{T}$ be a conforming triangulation of the domain $\Omega$ with 
 \begin{center}
 \begin{enumerate}
  \item $\bigcup\limits_{\Delta\in\mathcal{T}} \overline{\Delta} = \overline{\Omega}$
- \item $\Delta_i\cap\Delta_j \ i\neq j$ is an entity of 
+ \item $\Delta_i\cap\Delta_j \ i\neq j$ is an entity of
 higher codimension of the elements $\Delta_i$, $\Delta_j$
 \end{enumerate}
 \end{center}
@@ -2004,7 +2004,7 @@ The integrals are transformed onto the reference element $\hat{\Delta}$ and comp
 $J_g$ is the Jacobian of the map $g$ and $\mu (\hat{x}):=\sqrt{det J_g^{T} J_g}$ the Jacobian determinant. Let now $\xi_k$ be the quadrature points  of the chosen rule and $\omega_k$ the associated weights. We assume that there are $p_1$ quadrature points to evaluate:
 \begin{equation}
 \label{equ:computea}
- \Rightarrow \ A_{ij} = \sum\limits_{\Delta\in\tau} \sum\limits_{k=1}^{p_1} 
+ \Rightarrow \ A_{ij} = \sum\limits_{\Delta\in\tau} \sum\limits_{k=1}^{p_1}
 \omega_k(J_g^{-T}\hat{\nabla}\hat{\phi_i} )(\xi_k )
 \cdot (J_g^{-T}\hat{\nabla}\hat{\phi_j} )(\xi_k )\mu (\xi_k )
 \end{equation}
@@ -2057,7 +2057,7 @@ Lets first have a look at the implementation of the shape functions. This class 
 
 \begin{lst}[File dune-grid-howto/shapefunctions.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../shapefunctions.hh}
 \end{lst}
 
@@ -2065,7 +2065,7 @@ And now the actual FEM code:
 
 \begin{lst}[File dune-grid-howto/finiteelements.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt, breaklines=true]{../finiteelements.cc}
 \end{lst}
 
@@ -2079,14 +2079,14 @@ When you visualize your results, you should get something like figure \ref{Fig:F
 
 \begin{figure}
 \centering
-\includegraphics[width=0.8\textwidth]{EPS/fem2d} 
+\includegraphics[width=0.8\textwidth]{EPS/fem2d}
 \caption{Solution in 2D}
 \label{Fig:FEM1}
 \end{figure}
 
 \begin{figure}
 \centering
-\includegraphics[width=0.8\textwidth]{EPS/fem3d} 
+\includegraphics[width=0.8\textwidth]{EPS/fem3d}
 \caption{Solution in 3D}
 \label{Fig:FEM2}
 \end{figure}
@@ -2117,14 +2117,14 @@ algorithm presented in \cite{Deuflhard93}.
 
 The global error can be estimated by taking the difference of the numerically
 computed value for the integral on a fine and a coarse grid as given in
-(\ref{Eq:GlobalError}). 
+(\ref{Eq:GlobalError}).
 
 \minisec{Local error estimation}
 
 Let $I_f^p(\omega)$ and $I_f^q(\omega)$ be two integration formulas of
 different orders $p>q$ for the evaluation of the integral over some
 function $f$ on the element $\omega\subseteq\Omega$. If we assume that
-the higher order rule is locally more accurate then 
+the higher order rule is locally more accurate then
 \begin{equation}
 \bar{\epsilon}(\omega) = |I_f^p(\omega)-I_f^q(\omega)|
 \end{equation}
@@ -2146,15 +2146,15 @@ refinement can be effectively computed without actually doing the
 refinement. Consider an element $\omega$ and its father element
 $\omega^-$, i.~e.~the refinement of  $\omega^-$ resulted in
 $\omega$. Moreover, assume that $\omega^+$ is a (virtual) element that
-would result from a refinement of $\omega$. Then it can be shown that 
+would result from a refinement of $\omega$. Then it can be shown that
 under certain assumptions the quantity
 \begin{equation}
 \epsilon^+(\omega) = \frac{\bar{\epsilon}(\omega)^2}{\bar{\epsilon}(\omega^-)}
 \end{equation}
 is an estimate for the local error on $\omega^+$,
-i.~e.~$\bar{\epsilon}(\omega^+)$. 
+i.~e.~$\bar{\epsilon}(\omega^+)$.
 
-Another idea to determine the refinement threshold is to look simply 
+Another idea to determine the refinement threshold is to look simply
 at the maximum of the local errors on the current mesh and
 to refine only those elements where the local error is above a certain
 fraction of the maximum local error.
@@ -2187,7 +2187,7 @@ The algorithm above is realized in the following code.
 
 \begin{lst}[File dune-grid-howto/adaptiveintegration.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../adaptiveintegration.cc}
 \end{lst}
 
@@ -2219,7 +2219,7 @@ comments.
 \end{figure}
 
 Figure \ref{Fig:AdaptiveIntegration} shows two grids generated by the
-adaptive integration algorithm. 
+adaptive integration algorithm.
 
 \begin{warn} The quadrature rules for prisms and pyramids are
   currently only implemented for order two. Therefore adaptive
@@ -2280,7 +2280,7 @@ The complete mesh adaptation is done by the function
 
 \begin{lst}[File dune-grid-howto/finitevolumeadapt.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../finitevolumeadapt.hh}
 \end{lst}
 
@@ -2309,7 +2309,7 @@ Here is the new main program with an adapted \lstinline!timeloop!:
 
 \begin{lst}[File dune-grid-howto/adativefinitevolume.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../adaptivefinitevolume.cc}
 \end{lst}
 
@@ -2327,7 +2327,7 @@ of \lstinline!YaspGrid! e.\,g.~ results in a {\em global} grid refinement.
 
 \begin{exc}
   Compile the program with the gridtype set to \lstinline!ALUGRID_SIMPLEX!
-  and \lstinline!ALUGRID_CONFORM! and compare the results visually.  
+  and \lstinline!ALUGRID_CONFORM! and compare the results visually.
 \end{exc}
 
 \chapter{Parallelism}
@@ -2362,7 +2362,7 @@ values:
 
 Entities of codimension 0 are restricted to the three partition types
 \textit{interior}, \textit{overlap} and \textit{ghost}. Entities of
-codimension greater than 0 may take all partition type values. 
+codimension greater than 0 may take all partition type values.
 The codimension 0 entities with partition type \textit{interior} form a
 non-overlapping decomposition of the entity set, i.e.~for each
 entity of codimension 0 there is exactly one process where this entity
@@ -2374,7 +2374,7 @@ $\Omega$. The leaf entities of codimension 0 in a process $i$ with
 partition types \textit{interior} or \textit{overlap} together form a
 subdomain $\hat{\Omega}_i\subseteq\Omega$.
 
-Now the partition types of the entities in process $i$ 
+Now the partition types of the entities in process $i$
 with codimension greater 0 can
 be determined according to the following table:
 \begin{center}
@@ -2438,7 +2438,7 @@ picture. A grid implementation can choose to omit the partition type
 \textit{ghost} elements are present. This is the model used in
 YaspGrid. The last row shows an example where the \textit{interior} partition
 is extended by one row of  \textit{ghost} cells. This is the model
-used in UGGrid and ALUGrid. 
+used in UGGrid and ALUGrid.
 
 
 \section{Communication Interfaces}
@@ -2476,7 +2476,7 @@ data handle:
 
 \begin{lst}[File dune-grid-howto/parfvdatahandle.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../parfvdatahandle.hh}
 \end{lst}
 
@@ -2488,7 +2488,7 @@ should return true for all codimensions that participate in the data
 exchange. Method \lstinline!fixedsize! should return true when, for
 the given codimension, the same number of data items per entity is
 sent. If \lstinline!fixedsize! returns false the method
-\lstinline!size! is called for each entity in order to ask 
+\lstinline!size! is called for each entity in order to ask
 for the number of items of type \lstinline!DataType! that are to be
 sent for the given entity. Note that this information has only to be
 given at the sender side. Then the method \lstinline!gather! is called
@@ -2513,7 +2513,7 @@ method. Compare this with listing \ref{List:evolve} on page \pageref{List:evolve
 
 \begin{lst}[File dune-grid-howto/parevolve.hh] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../parevolve.hh}
 \end{lst}
 
@@ -2551,17 +2551,17 @@ The \lstinline!communicate! method on the grid uses the data handle to
 assemble the message buffers, exchanges the data and writes the data
 into the user's data structures.
 
-Finally, we need a new main program, which is in the following listing: 
+Finally, we need a new main program, which is in the following listing:
 
 \begin{lst}[File dune-grid-howto/parfinitevolume.cc] \mbox{}
 \nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 numberstyle=\tiny, numbersep=5pt]{../parfinitevolume.cc}
 \end{lst}
 
 A difference to the sequential program can be found in line
 \ref{pfc:rank0} where the printing of the data of the current time
-step is restricted to the process with rank 0. 
+step is restricted to the process with rank 0.
 \lstinline!YaspGrid! does not support dynamical load balancing and therefore
 needs to start with a sufficiently fine grid that allows a reasonable partition
 where each processes gets a non-empty part of grid. This is why we do not use
@@ -2572,7 +2572,7 @@ initial coarseness through the second template argument of the
 after each global refinement step the overlap region grows and therefore the
 communicaton overhead increases.
 
-If you want to use a grid with support for dynamical load balancing, uncomment 
+If you want to use a grid with support for dynamical load balancing, uncomment
 one of the possible definitions for such a grid in the code and define the
 macro \lstinline!LOAD_BALANCING!. In this case in line \ref{pfv:lb} the method
 \lstinline!loadBalance!\ is called on the grid.
@@ -2589,15 +2589,15 @@ is an equal amount of grid elements.
 
 % \section{Dune portable grid format}
 
-% Dune provides a unified macro grid format called the 
-% \textbf{D}une \textbf{G}rid \textbf{F}ormat, short the \textbf{DGF}. 
+% Dune provides a unified macro grid format called the
+% \textbf{D}une \textbf{G}rid \textbf{F}ormat, short the \textbf{DGF}.
 % This enables the user to use all types of grids with one and the same
-% macro grid file. For the documentation of the DGF and the usage of the parser we refer to 
+% macro grid file. For the documentation of the DGF and the usage of the parser we refer to
 
 % \href{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}%
 % {{\small\texttt{http://www.dune-project.org/doc/doxygen/dune-grid-html/group\_\_DuneGridFormatParser.html}}}
- 
-% in the dune-grid documentation. 
+
+% in the dune-grid documentation.
 
 % \section{Amiramesh output}
 
@@ -2606,19 +2606,19 @@ is an equal amount of grid elements.
 
 % \begin{lst}[File dune-grid-howto/groundwater.cc] \mbox{}
 % \nopagebreak
-% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 % numberstyle=\tiny, numbersep=5pt]{../groundwater.cc}
 % \end{lst}
 
 % \begin{lst}[File dune-grid-howto/groundwaterproblem.hh] \mbox{}
 % \nopagebreak
-% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 % numberstyle=\tiny, numbersep=5pt]{../groundwaterproblem.hh}
 % \end{lst}
 
 % \begin{lst}[File dune-grid-howto/groundwateradapt.hh] \mbox{}
 % \nopagebreak
-% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left, 
+% \lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
 % numberstyle=\tiny, numbersep=5pt]{../groundwateradapt.hh}
 % \end{lst}
 
@@ -2628,17 +2628,17 @@ is an equal amount of grid elements.
 
 \begin{figure}
 \centering
-\includegraphics[width=0.32\textwidth]{EPS/alberta2d}\ 
-\includegraphics[width=0.32\textwidth]{EPS/ugsimplex2d}\ 
+\includegraphics[width=0.32\textwidth]{EPS/alberta2d}\
+\includegraphics[width=0.32\textwidth]{EPS/ugsimplex2d}\
 \includegraphics[width=0.32\textwidth]{EPS/ugcube2d}
 
-\includegraphics[width=0.32\textwidth]{EPS/alberta3d}\ 
-\includegraphics[width=0.32\textwidth]{EPS/alusimplex3d}\ 
+\includegraphics[width=0.32\textwidth]{EPS/alberta3d}\
+\includegraphics[width=0.32\textwidth]{EPS/alusimplex3d}\
 \includegraphics[width=0.32\textwidth]{EPS/alucube3d}
 
 
 \includegraphics[width=0.32\textwidth]{EPS/ugsimplex3d}\
-\includegraphics[width=0.32\textwidth]{EPS/ugcube3d}\ 
+\includegraphics[width=0.32\textwidth]{EPS/ugcube3d}\
 \includegraphics[width=0.32\textwidth]{EPS/iso}
 
 \caption{Adaptive solution of an elliptic model problem with $P_1$
