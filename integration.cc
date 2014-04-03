@@ -4,6 +4,8 @@
 
 // Dune includes
 #include "config.h"           // file constructed by ./configure script
+#include <iomanip>
+#include <iostream>
 #include <dune/grid/sgrid.hh> // load sgrid definition
 #include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 
