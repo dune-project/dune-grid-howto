@@ -10,10 +10,7 @@ set(EPS_FILES
   EPS/conc.eps
   EPS/fem2d.eps
   EPS/fem3d.eps
-  EPS/intersection.eps
   EPS/iso.eps
-  EPS/islocalref.eps
-  EPS/partitionsingle.eps
   EPS/ug2dquad-view1.eps
   EPS/ug2dquad-view2.eps
   EPS/ug2dtri-view1.eps
@@ -68,7 +65,10 @@ set(IMAGES
   EPS/conc.jpg
   EPS/fem2d.jpg
   EPS/fem3d.jpg
+  EPS/intersection.eps
   EPS/iso.jpg
+  EPS/islocalref.eps
+  EPS/partitionsingle.eps
   EPS/ug2dquad-view1.jpg
   EPS/ug2dquad-view2.jpg
   EPS/ug2dtri-view1.jpg
@@ -88,7 +88,7 @@ dune_add_latex_document(grid-howto.tex
   FATHER_TARGET doc
   DEFAULT_SAFEPDF
   INPUTS config.inc ${SOURCES}
-  IMAGES ${EPS_FILES})
+  IMAGES ${IMAGES})
 
 # Install documentation
 # We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
