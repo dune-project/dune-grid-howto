@@ -1,6 +1,4 @@
-# $Id$
-
-SUBDIRS = cmake doc grids
+SUBDIRS = doc grids
 
 GRIDTYPE=YASPGRID
 GRIDDIM=2
