@@ -1,4 +1,4 @@
-\documentclass[11pt,a4paper,headinclude,footinclude,DIV16,normalheadings]{scrreprt}
+\documentclass[11pt,a4paper,headinclude,footinclude,DIV16,headings=normal]{scrreprt}
 \usepackage[automark]{scrpage2}
 \usepackage[ansinew]{inputenc}
 \usepackage{amsmath}
@@ -149,11 +149,13 @@ as separate packages.  The current core modules are:
   \Dune{}-modules.  It provides some infrastructural classes for
   debugging and exception handling as well as a library to handle
   dense matrices and vectors.
-\item \texttt{dune-grid} is the most mature module and is covered in
+\item \texttt{dune-geometry} provides element geometry classes and
+  quadrature rules.
+\item \texttt{dune-grid} is the grid interface and is covered in
   this document. It defines nonconforming, hierarchically nested,
   multi-element-type, parallel grids in arbitrary space dimensions.
   Graphical output with several packages is available, e.~g.~file
-  output to IBM data explorer and VTK (parallel XML format for
+  output to VTK (parallel XML format for
   unstructured grids). The graphics package Grape, \cite{Grape} has
   been integrated in interactive mode.
 \item \texttt{dune-istl} -- \textit{Iterative Solver Template
@@ -191,7 +193,7 @@ These are available on the \Dune{} download page:
 %
 
 Alternatively, you can download the latest development version via
-anonymous SVN.  For further information, please see the web page.
+anonymous Git.  For further information, please see the web page.
 
 \section{Installation}
 
@@ -204,23 +206,24 @@ The official installation instructions are available on the web page
 Obviously, we do not want to copy all this information because it might
 get outdated and inconsistent then. To make this document
 self-contained, we describe only how to install \Dune{} from the
-tarballs.  If you prefer to use the version from SVN, see the web page
+tarballs.  If you prefer to use the version from Git, see the web page
 for further information.  Moreover, we assume that you use a UNIX
-system. If you have the Redmond system then ask them how to install
-it.
+system (usually Linux or OS X). If you have the Redmond system then
+you have to explore new horizons.
 
 In order to build the \Dune{} framework, you need a standards
 compliant C++ compiler.  We tested compiling with GNU \texttt{g++} in
-version $\geq 4.1$. Recent versions of Intel \texttt{icc} and clang
-($\geq 3.0$) should work, too.
+version 4.4 or newer. Recent versions of Intel \texttt{icc}
+($\geq 13$) and Clang ($\geq 3.2$) should work, too.
 
-Now extract the tarballs of \texttt{dune-common}, \texttt{dune-grid}
-and \texttt{dune-grid-howto} into a common directory, say
+Now extract the tarballs of \texttt{dune-common},
+\texttt{dune-geometry}, \texttt{dune-istl}, \texttt{dune-grid},
+and \texttt{dune-grid\-howto} into a common directory, say
 \texttt{dune-home}.  Change to this directory and call
 \begin{lstlisting}
-> dune-common-1.0/bin/dunecontrol all
+> dune-common-2.3/bin/dunecontrol all
 \end{lstlisting}
-Replace ``\texttt{1.0}'' by the actual version number of the package
+Replace ``\texttt{2.3}'' by the actual version number of the package
 you downloaded if necessary.  This should configure and build all
 \Dune{} modules in \texttt{dune-home} with a basic configuration.
 
@@ -230,11 +233,11 @@ install one of the external grid packages which \Dune{} provides
 interfaces for, for instance Alberta, UG and ALUGrid.
 \begin{itemize}
 \item Alberta -- \url{http://www.alberta-fem.de/}
-\item UG -- \url{http://sit.iwr.uni-heidelberg.de/~ug/}
+\item UG -- \url{http://www.iwr.uni-heidelberg.de/frame/iwrwikiequipment/software/ug}
 \item ALUGrid -- \url{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}
 \end{itemize}
 To use the parallel code of \Dune{}, you need an implementation of the
-Message Passing Interface (MPI), for example MPICH or LAM.  For the
+Message Passing Interface (MPI), for example MPICH or Open MPI.  For the
 \Dune{} build system to find these libraries, the \texttt{configure}
 scripts of the particular \Dune{} modules must be passed the locations
 of the respective installations.  The \texttt{dunecontrol} script
@@ -249,7 +252,7 @@ MAKE_FLAGS="-j 2"
 If this is saved under the name \texttt{dunecontrol.opts}, you
 can tell \texttt{dunecontrol} to consider the file by calling
 \begin{lstlisting}
-> dune-common-1.0/bin/dunecontrol --opts=dunecontrol.opts all
+> dune-common-2.3/bin/dunecontrol --opts=dunecontrol.opts all
 \end{lstlisting}
 
 For information on how to build and configure the respective grids,
@@ -259,15 +262,13 @@ please see the \Dune{} web page.
 
 Documentation of the files and classes in \Dune{} is provided in code and
 can be extracted using the
-doxygen\footnote{\url{http://www.doxygen.org/}}
+Doxygen\footnote{\url{http://www.doxygen.org/}}
 software available elsewhere. The code documentation can either be built
-locally on your machine (in html and other formats, e.\,g.~\LaTeX)
+locally on your machine (in HTML and other formats, e.\,g.~\LaTeX)
 or its latest version is available at
 \begin{center}
-\url{http://www.dune-project.org/doc/}
+\url{http://www.dune-project.org/doc/doxygen.html}
 \end{center}
-
-%\section{How to start a new DUNE project}
 
 \section{Licence}
 
@@ -2022,9 +2023,9 @@ Simultaneously, the right side b is treated in the same manner. As we might want
 
 In our implementation we will of course not compute the matrix entries one after another but rather iterate over all elements of the grid and update all matrix entries with a non-vanishing contribution on that element.
 
-After assembling the matrix we implement the Dirichlet boundary conditions by overwriting the lines of the equation system associated with boundary nodes with trivial lines:
+After assembling the matrix we implement the Dirichlet boundary conditions by overwriting the lines of the equation system associated with boundary nodes with trivial lines, see figure~\ref{Fig:dirichlet}.
 
-\begin{figure}[h]
+\begin{figure}
 \centering
 \begin{tabular}{ccl}
 & $\begin{array}{cccccccc}
