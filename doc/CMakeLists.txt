@@ -1,12 +1,28 @@
-# $id: $
-
-set(EPS_FILES  EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3d.eps
-    EPS/alberta2d.eps EPS/alberta2d-view1.eps EPS/alberta2d-view2.eps EPS/alberta3d.eps
-    EPS/alucube3d.eps EPS/alusimplex3d.eps EPS/conc.eps EPS/fem2d.eps EPS/fem3d.eps EPS/iso.eps EPS/ug2dquad-view1.eps
-    EPS/ug2dquad-view2.eps EPS/ug2dtri-view1.eps EPS/ug2dtri-view2.eps EPS/ugcube2d.eps
-    EPS/ugcube3d.eps EPS/ugsimplex2d.eps EPS/ugsimplex3d.eps EPS/yasp3d.eps)
-
-# Install documentation
+set(EPS_FILES
+  EPS/adaptiveintegration_alberta2d.eps
+  EPS/adaptiveintegration_ug3d.eps
+  EPS/alberta2d.eps
+  EPS/alberta2d-view1.eps
+  EPS/alberta2d-view2.eps
+  EPS/alberta3d.eps
+  EPS/alucube3d.eps
+  EPS/alusimplex3d.eps
+  EPS/conc.eps
+  EPS/fem2d.eps
+  EPS/fem3d.eps
+  EPS/intersection.eps
+  EPS/iso.eps
+  EPS/islocalref.eps
+  EPS/partitionsingle.eps
+  EPS/ug2dquad-view1.eps
+  EPS/ug2dquad-view2.eps
+  EPS/ug2dtri-view1.eps
+  EPS/ug2dtri-view2.eps
+  EPS/ugcube2d.eps
+  EPS/ugcube3d.eps
+  EPS/ugsimplex2d.eps
+  EPS/ugsimplex3d.eps
+  EPS/yasp3d.eps)
 
 set(SOURCES
   ../adaptivefinitevolume.cc
@@ -52,10 +68,7 @@ set(IMAGES
   EPS/conc.jpg
   EPS/fem2d.jpg
   EPS/fem3d.jpg
-  EPS/intersection.eps
-  EPS/islocalref.eps
   EPS/iso.jpg
-  EPS/partitionsingle.eps
   EPS/ug2dquad-view1.jpg
   EPS/ug2dquad-view2.jpg
   EPS/ug2dtri-view1.jpg
@@ -71,12 +84,15 @@ set(IMAGES
 set(PACKAGE_VERSION ${DUNE_MOD_VERSION})
 configure_file(config.inc.in config.inc)
 
-# Install documentation
-# We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
 dune_add_latex_document(grid-howto.tex
   FATHER_TARGET doc
-  DEFAULT_SAFE_PDF
+  DEFAULT_SAFEPDF
   INPUTS config.inc ${SOURCES}
   IMAGES ${EPS_FILES})
-create_doc_install(${CMAKE_CURRENT_BINARY_DIR}/grid-howto.pdf  ${CMAKE_INSTALL_DOCDIR})
-install(FILES navigation.html css.html DESTINATION ${CMAKE_INSTALL_DOCDIR})
+
+# Install documentation
+# We assume that ${DOCFILES} and ${DOCFILES_EXTRA} are targets
+create_doc_install(${CMAKE_CURRENT_BINARY_DIR}/grid-howto.pdf
+  ${CMAKE_INSTALL_DOCDIR})
+install(FILES navigation.html css.html
+  DESTINATION ${CMAKE_INSTALL_DOCDIR})
