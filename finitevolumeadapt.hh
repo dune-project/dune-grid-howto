@@ -72,8 +72,8 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       int indexj = mapper.map( outside );
 
       // handle face from one side only
-      if ( it.level() > outside.level() ||
-           (it.level() == outside.level() && indexi<indexj) )
+      if ( it->level() > outside.level() ||
+           (it->level() == outside.level() && indexi < indexj) )
       {
         double localdelta = std::abs(c[indexj]-c[indexi]);
         indicator[indexi] = std::max(indicator[indexi],localdelta);
@@ -89,7 +89,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
        it!=leafView.template end<0>(); ++it)
   {
     if (indicator[mapper.map(*it)]>refinetol*globaldelta
-        && (it.level()<lmax || !it->isRegular()))
+        && (it->level() < lmax || !it->isRegular()))
     {
       const Entity &entity = *it;
       grid.mark( 1, entity );
@@ -107,7 +107,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
           grid.mark( 1, outside );
       }
     }
-    if (indicator[mapper.map(*it)]<coarsentol*globaldelta && it.level()>lmin)
+    if (indicator[mapper.map(*it)] < coarsentol*globaldelta && it->level() > lmin)
     {
       grid.mark( -1, *it );
       ++marked;
@@ -139,7 +139,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       }
 
       // average in father
-      if (it.level()>0)
+      if (it->level() > 0)
       {
         EntityPointer ep = it->father();
         RestrictedValue& rvf = restrictionmap[*ep];
@@ -178,7 +178,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       else
       {
         // value is not in map, interpolate from father element
-        assert (it.level()>0);
+        assert (it->level() > 0);
         EntityPointer ep = it->father();
         RestrictedValue& rvf = restrictionmap[*ep];
         if (it->isLeaf())
