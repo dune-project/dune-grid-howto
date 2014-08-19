@@ -1944,7 +1944,8 @@ The function \lstinline!timeloop! constructs a mapper and allocates the
 concentration vector with one entry per element in the leaf grid. In
 line \ref{fvc:init} this vector is initialized with the initial
 concentration and the loop in line \ref{fvc:loop0}-\ref{fvc:loop1}
-evolves the concentration in time. Finally, the simulation result is
+evolves the concentration in time. Every time the current time crosses a multiple of 
+\lstinline!saveStep!\,$=0.1$, the simulation result is
 written to a file in line \ref{fvc:file}.
 
 \section{A FEM example: The Poisson equation}

@@ -52,7 +52,7 @@ void timeloop (const G& grid, double tend)
     if (t >= saveStep)
     {
       // write data
-      vtkout(grid,c,"concentration",counter,t);
+      vtkout(grid,c,"concentration",counter,t);     /*@\label{fvc:file}@*/
 
       // increase counter and saveStep for next interval
       saveStep += saveInterval;
@@ -63,9 +63,6 @@ void timeloop (const G& grid, double tend)
     std::cout << "s=" << grid.size(0)
               << " k=" << k << " t=" << t << " dt=" << dt << std::endl;
   }                                                    /*@\label{fvc:loop1}@*/
-
-  // output results
-  vtkout(grid,c,"concentration",counter,tend);     /*@\label{fvc:file}@*/
 }
 
 //===============================================================
