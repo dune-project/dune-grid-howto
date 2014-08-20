@@ -1836,21 +1836,15 @@ numberstyle=\tiny, numbersep=5pt]{../evolve.hh}
 \end{lst}
 
 \begin{figure}
+\begin{center}
 \begin{overpic}[width=0.48\textwidth]{EPS/intersection}
 \put(60,38){$\omega_i$}
 \put(22,55){$\omega_j$}
 \put(43,46){$\gamma_{ij}$}
 \put(82,52){$\gamma_{ik}$}
 \end{overpic}
-\hfill
-\begin{overpic}[width=0.48\textwidth]{EPS/islocalref}
-\put(18,3){$\omega_i$}
-\put(52,19){$\omega_j$}
-\put(60,3){$\omega_k$}
-\put(74,19){$\omega_m$}
-\end{overpic}
-\caption{Left: intersection with other elements and the boundary,
-  right: intersections in the case of locally refined grids.}
+\end{center}
+\caption{Intersection with other elements and the boundary}
 \label{Fig:IsIt}
 \end{figure}
 
@@ -1870,7 +1864,7 @@ An Intersection is with another element $\omega_j$ if the
 \lstinline!neighbor()! method of the iterator returns true (line
 \ref{evh:neighbor}) or with the external boundary if
 \lstinline!boundary()! returns true (line \ref{evh:bndry}), see also
-left part of Figure \ref{Fig:IsIt}. An intersection $\gamma_{ij}$ is
+Figure~\ref{Fig:IsIt}. An intersection $\gamma_{ij}$ is
 described by several mappings: (i) from a reference element of the
 intersection (with a dimension equal to the grid's dimension minus 1)
 to the reference elements of the two elements $\omega_i$ and
@@ -1879,32 +1873,6 @@ the global coordinate system (with the world dimension). If an
 intersection is with another element then the \lstinline!outside()!
 method returns an \lstinline!EntityPointer! to an entity of
 codimension 0.
-
-In the case of a locally refined grid special care has to be taken in
-the flux evaluation because the intersection iterator is not
-symmetric. This is illustrated for a one-dimensional situation in
-the right part of Figure \ref{Fig:IsIt}. Element
-$\omega_j$ is a leaf element on level $l+1$. The intersection iterator
-on $\omega_j$ delivers two intersections, one with $\omega_i$ which is
-on level $l$ and one with $\omega_m$ which is also on level
-$l+1$. However, the intersection iterator started on $\omega_i$ will
-deliver an intersection with $\omega_k$ and one with the external
-boundary (which is not shown). This means that the correct flux for
-the intersection $\partial\omega_i\cap\partial\omega_j$ can only be
-evaluated from the intersection $\gamma_{ji}$ visited by the
-intersection iterator started on $\omega_j$, because only there the
-two concentration values $C_j$ and $C_i$ are both accessibly. Note
-also that the outside element delivered by an intersection
-iterator need not be a leaf element (such as $\omega_k$).
-
-Therefore, in the code it is first checked that the outside element is
-actually a leaf element (line 89). Then the flux can be evaluated if
-the level of the outside element is smaller than that of the element
-where the intersection iterator was started (this corresponds the the
-situation of $\omega_j$ referring to $\omega_i$ in the right part of Figure
-\ref{Fig:IsIt}) or when the levels are equal and the index of
-the outside element is larger. The latter condition with the indices
-just ensures that the flux is only computed once.
 
 The $\Delta t^n$ calculation is done in line \ref{evh:dt} where the
 minimum over all cells is taken. Then, line \ref{evh:.99} multiplies

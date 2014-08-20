@@ -91,9 +91,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
         int indexj = mapper.map(*outside);
 
         // compute flux from one side only
-        // this should become easier with the new IntersectionIterator functionality!
-        if ( it->level()>outside->level() ||
-             (it->level()==outside->level() && indexi<indexj) )
+        if (indexi<indexj)
         {
           // compute factor in neighbor
           const LeafGeometry nbgeo = outside->geometry();
