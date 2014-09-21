@@ -52,43 +52,43 @@ set(TESTS
   visualization)
 
 add_executable(adaptivefinitevolume adaptivefinitevolume.cc)
-target_link_libraries(adaptivefinitevolume dunecommon dunegeometry dunegrid)
+target_link_libraries(adaptivefinitevolume ${DUNE_LIBS})
 add_dune_mpi_flags(adaptivefinitevolume)
 
 add_executable(adaptiveintegration adaptiveintegration.cc)
-target_link_libraries(adaptiveintegration dunecommon dunegeometry dunegrid)
+target_link_libraries(adaptiveintegration ${DUNE_LIBS})
 add_dune_mpi_flags(adaptiveintegration)
 
 add_executable(finiteelements finiteelements.cc)
-target_link_libraries(finiteelements dunecommon dunegeometry dunegrid)
+target_link_libraries(finiteelements ${DUNE_LIBS})
 add_dune_mpi_flags(finiteelements)
 
 add_executable(finitevolume finitevolume.cc)
-target_link_libraries(finitevolume dunecommon dunegeometry dunegrid)
+target_link_libraries(finitevolume ${DUNE_LIBS})
 add_dune_mpi_flags(finitevolume)
 
 add_executable(integration integration.cc)
-target_link_libraries(integration dunecommon dunegeometry dunegrid)
+target_link_libraries(integration ${DUNE_LIBS})
 add_dune_mpi_flags(integration)
 
 add_executable(gettingstarted gettingstarted.cc)
-target_link_libraries(gettingstarted dunecommon dunegeometry dunegrid)
+target_link_libraries(gettingstarted ${DUNE_LIBS})
 add_dune_mpi_flags(gettingstarted)
 
 add_executable(othergrids othergrids.cc)
-target_link_libraries(othergrids dunecommon dunegeometry dunegrid)
+target_link_libraries(othergrids ${DUNE_LIBS})
 add_dune_mpi_flags(othergrids)
 
 add_executable(parfinitevolume parfinitevolume.cc)
-target_link_libraries(parfinitevolume dunecommon dunegeometry dunegrid)
+target_link_libraries(parfinitevolume ${DUNE_LIBS})
 add_dune_mpi_flags(parfinitevolume)
 
 add_executable(traversal traversal.cc)
-target_link_libraries(traversal dunecommon dunegeometry dunegrid)
+target_link_libraries(traversal ${DUNE_LIBS})
 add_dune_mpi_flags(traversal)
 
 add_executable(visualization visualization.cc)
-target_link_libraries(visualization dunecommon dunegeometry dunegrid)
+target_link_libraries(visualization ${DUNE_LIBS})
 add_dune_mpi_flags(visualization)
 
 set_property(TARGET
