@@ -1,6 +1,5 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
-// $Id$
 
 #include <config.h>
 #include <iostream>
@@ -75,7 +74,7 @@ int main(int argc, char **argv)
     UnitCube< Dune::SGrid< dimGrid, dimGrid >, 1 > uc4;
     dowork( uc4.grid(), 3 );
 
-#if HAVE_ALUGRID
+#if HAVE_ALUGRID || HAVE_DUNE_ALUGRID
     UnitCube< Dune::ALUGrid< dimGrid, dimGrid, Dune::simplex,
             Dune::nonconforming > , 1 > uc5;
     dowork( uc5.grid(), 3 );

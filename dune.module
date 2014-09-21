@@ -4,5 +4,5 @@ Maintainer: dune-devel@dune-project.org
 Version: 3.0-git
 Depends: dune-grid (>= 3.0)
 # Needed for finiteelements.cc
-Suggests: dune-istl (>= 3.0)
+Suggests: dune-istl (>= 3.0) dune-alugrid
 Whitespace-Hook: Yes
