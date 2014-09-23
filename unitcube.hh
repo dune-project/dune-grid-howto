@@ -3,6 +3,9 @@
 #ifndef UNITCUBE_HH
 #define UNITCUBE_HH
 
+#include <array>
+#include <memory>
+
 #include <dune/common/exceptions.hh>
 #include <dune/common/fvector.hh>
 #include <dune/grid/utility/structuredgridfactory.hh>
@@ -21,7 +24,7 @@ public:
   {
     Dune::FieldVector<typename GridType::ctype,dim> lowerLeft(0);
     Dune::FieldVector<typename GridType::ctype,dim> upperRight(1);
-    Dune::array<unsigned int,dim> elements;
+    std::array<unsigned int,dim> elements;
     std::fill(elements.begin(), elements.end(), 1);
 
     switch (variant) {
@@ -44,7 +47,7 @@ public:
 
 private:
   // the constructed grid object
-  Dune::shared_ptr<T> grid_;
+  std::shared_ptr<T> grid_;
 };                                                     /*@\label{uc:uc1}@*/
 
 

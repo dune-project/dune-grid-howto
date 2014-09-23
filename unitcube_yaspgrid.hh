@@ -3,9 +3,12 @@
 #ifndef UNITCUBE_YASPGRID_HH
 #define UNITCUBE_YASPGRID_HH
 
-#include "unitcube.hh"
+#include <array>
+#include <memory>
 
 #include <dune/grid/yaspgrid.hh>
+
+#include "unitcube.hh"
 
 // YaspGrid specialization
 template<int dim, int size>
@@ -17,7 +20,7 @@ public:
   UnitCube ()
   {
     Dune::FieldVector<double,dim> length(1.0);
-    Dune::array<int,dim> elements;
+    std::array<int,dim> elements;
     std::fill(elements.begin(), elements.end(), size);
     std::bitset<dim> periodicity(0);
 

@@ -3,6 +3,9 @@
 #ifndef UNITCUBE_ALUGRID_HH
 #define UNITCUBE_ALUGRID_HH
 
+#include <array>
+#include <memory>
+
 #include "unitcube.hh"
 
 #if HAVE_ALUGRID
@@ -23,14 +26,14 @@ public:
   typedef Dune::ALUGrid<dim,dim,Dune::simplex,Dune::nonconforming> GridType;
 
 private:
-  Dune::shared_ptr<GridType> grid_;
+  std::shared_ptr<GridType> grid_;
 
 public:
   UnitCube ()
   {
     Dune::FieldVector<typename GridType::ctype,dim> lowerLeft(0);
     Dune::FieldVector<typename GridType::ctype,dim> upperRight(1);
-    Dune::array<unsigned int,dim> elements;
+    std::array<unsigned int,dim> elements;
     std::fill(elements.begin(), elements.end(), 1);
 
     grid_ = Dune::StructuredGridFactory<GridType>::createSimplexGrid(lowerLeft, upperRight, elements);
@@ -50,14 +53,14 @@ public:
   typedef Dune::ALUGrid<3,3,Dune::cube,Dune::nonconforming> GridType;
 
 private:
-  Dune::shared_ptr<GridType> grid_;
+  std::shared_ptr<GridType> grid_;
 
 public:
   UnitCube ()
   {
     Dune::FieldVector<GridType::ctype,3> lowerLeft(0);
     Dune::FieldVector<GridType::ctype,3> upperRight(1);
-    Dune::array<unsigned int,3> elements = { {1,1,1} };
+    std::array<unsigned int,3> elements = { {1,1,1} };
 
     grid_ = Dune::StructuredGridFactory<GridType>::createCubeGrid(lowerLeft, upperRight, elements);
   }
