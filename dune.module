@@ -1,8 +1,8 @@
 # parameters for dune control
 Module: dune-grid-howto
 Maintainer: dune-devel@dune-project.org
-Version: 3.0-git
-Depends: dune-grid (>= 3.0)
+Version: 2.4-git
+Depends: dune-grid (>= 2.4)
 # Needed for finiteelements.cc
-Suggests: dune-istl (>= 3.0) dune-alugrid
+Suggests: dune-istl (>= 2.4) dune-alugrid
 Whitespace-Hook: Yes
