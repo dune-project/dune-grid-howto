@@ -1,5 +1,6 @@
 \documentclass[11pt,a4paper,headinclude,footinclude,DIV16,headings=normal]{scrreprt}
 \usepackage[automark]{scrpage2}
+\usepackage{scrhack}
 \usepackage[ansinew]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -312,7 +313,7 @@ the different classes before we go into the details.
 
 \section{Creating your first grid}
 
-Let us start with a replacement of the famous ``hello world''
+Let us start with a replacement of the famous \emph{hello world}
 program given below.
 
 \begin{lst}[File dune-grid-howto/gettingstarted.cc] \mbox{}
@@ -326,8 +327,8 @@ produced by the \lstinline!configure! script in the application's
 build system. It contains the current configuration and can be used to
 compile different versions of your code depending on the configuration
 selected. It is important that this file is included before any other
-\Dune{} header files. The next file \lstinline!dune/grid/sgrid.hh!
-includes the headers for the \lstinline!SGrid! class which provides a
+\Dune{} header files. The file \lstinline!dune/grid/yaspgrid.hh!
+includes the headers for the \lstinline!YaspGrid! class which provides a
 special implementation of the \Dune{} grid interface with a
 structured mesh of arbitrary dimension. Then
 \lstinline!dune/grid/common/gridinfo.hh!  loads the headers of some
@@ -335,7 +336,7 @@ functions which print useful information about a grid.
 
 Since the dimension will be used as a template parameter in many
 places below we define it as a constant in line number \ref{gs:dim}.
-The \lstinline!SGrid! class template takes two template parameters
+The \lstinline!YaspGrid! class template takes two template parameters
 which are the dimension of the grid and the
 dimension of the space where the grid is embedded in (its world
 dimension).   If the world dimension is strictly greater than the
@@ -346,17 +347,16 @@ the selected value for the dimension. All identifiers of the \Dune{}
 framework are within the \lstinline!Dune! namespace.
 
 Lines \ref{gs:par0}-\ref{gs:par1} prepare the arguments for the
-construction of an \lstinline!SGrid! object. These arguments use the
-class template \lstinline!FieldVector<T,n>! which is a vector with
+construction of a \lstinline!YaspGrid! object. The first argument use
+the class template \lstinline!FieldVector<T,n>! which is a vector with
 \lstinline!n!  components of type \lstinline!T!. You can either assign
 the same value to all components in the constructor (as is done here)
 or you could use \lstinline!operator[]! to assign values to individual
-components.  The variable \lstinline!N! defines the number of cells or
-elements to be used in the respective dimension of the grid.
-\lstinline!L! defines the coordinates of the lower left corner of the
-cube and \lstinline!H!  defines the coordinates of the upper right corner of the cube.
+components. The variable \lstinline!length! defines the lengths of
+the cube. The variable \lstinline!elements! defines the number of
+cells or elements to be used in the respective dimension of the grid.
 Finally in line \ref{gs:grid} we are now able to
-instantiate the \lstinline!SGrid!  object.
+instantiate the \lstinline!YaspGrid!  object.
 
 The only thing we do with the grid in this little example is printing
 some information about it. After successfully running the executable
@@ -365,14 +365,14 @@ some information about it. After successfully running the executable
 \begin{lst}[Output of gettingstarted] \mbox{}
 
 \begin{lstlisting}[basicstyle=\ttfamily\scriptsize]
-=> SGrid(dim=3,dimworld=3)
-level 0 codim[0]=27 codim[1]=108 codim[2]=144 codim[3]=64
-leaf    codim[0]=27 codim[1]=108 codim[2]=144 codim[3]=64
-leaf dim=3 geomTypes=((cube,3)[0]=27,(cube,2)[1]=108,(cube,1)[2]=144,(cube,0)[3]=64)
+=> Dune::YaspGrid<3, Dune::EquidistantCoordinates<double, 3> > (dim=3, dimworld=3)
+level 0 codim[0]=64 codim[1]=240 codim[2]=300 codim[3]=125
+leaf    codim[0]=64 codim[1]=240 codim[2]=300 codim[3]=125
+leaf dim=3 geomTypes=((cube, 3)[0]=64,(cube, 2)[1]=240,(simplex, 1)[2]=300,(simplex, 0)[3]=125)
 \end{lstlisting}
 \end{lst}
 
-The first line tells you that you are looking at an \lstinline!SGrid!
+The first line tells you that you are looking at an \lstinline!YaspGrid!
 object of the given dimensions. The \Dune{} grid interface supports
 unstructured, locally refined, logically nested grids. The coarsest
 grid is called level-0-grid or macro grid. Elements can be
@@ -385,13 +385,14 @@ output tells us that this grid object consists only of a single level
 (level $0$) while the next line tells us that that level 0 coincides
 also with the leaf grid in this case. Each line reports about the
 number of grid entities which make up the grid. We see that there are
-27 elements (codimension 0), 108 faces (codimension 1), 144 edges
-(codimension 2) and 64 vertices (codimension 3) in the grid. The last
+64 elements (codimension 0), 240 faces (codimension 1), 300 edges
+(codimension 2) and 125 vertices (codimension 3) in the grid. The last
 line reports on the different types of entities making up the grid. In
-this case all entities are of type ``cube''.
+this case all entities are of type \emph{cube}, as a line and a point
+are both \emph{cube} and \emph{simplex}.
 
 \begin{exc} Try to play around with different grid sizes by assigning
-  different values to the \lstinline!N! parameter. You can also change
+  different values to the \lstinline!element! parameter. You can also change
   the dimension of the grid by varying \lstinline!dim!. Don't be
   modest. Also try dimensions 4 and 5!
 \end{exc}
