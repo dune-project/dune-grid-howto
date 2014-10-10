@@ -964,21 +964,33 @@ As already seen int he introduction, the code to construct a sequential \
 
     YaspGrid<dim> grid(upper, n);
 \end{lstlisting}
-If you want to do the same for a sequential \lstinline!YaspGrid! the code is
+Note that for an equidistant grid, you do not have to specify the lower left
+corner as \lstinline!YaspGrid! hardwires it to zero. This limitation can be
+overcome by using another feature of \lstinline!YaspGrid!:
+
+\lstinline!YaspGrid! can also be used a tensorproduct grid. A tensorproduct grid
+is defined by a set of coordinates $\{ x_{i,0}, \dots ,x_{i,n_i}\}$ for each
+direction $i$. The vertices of the grid are then given by the tuples
+\begin{displaymath}
+ \{
+  (x_{0,i_0},\dots ,x_{d-1,i_{d-1}})\ \
+   with\ \  0\leq i_j\leq n_j \ \ \forall j\}
+\end{displaymath}
+Such tensorproduct grid is a structured non-equidistant grid. Having a non-zero
+lower left corner is possible by specifying coordinates accordingly. \lstinline!YaspGrid!s
+tensorproduct features are enabled by using \lstinline!TensorProductCoordinates<ctype,dim>!
+as the second template paramter. Coordinates are given as as a \lstinline!Dune::array<std::vector<ctype>,dim>!.
+See the following example which initializes a grid is one cell, that covers $[-1,1]^2$:
+
 \begin{lstlisting}
-    Dune::FieldVector<int,2> n;
-    n[0] = n[1] = 10;
+ Dune::array<std::vector<ctype,2> > coords;
+ coords[0] = {-1., 1.};
+ coords[1] = {-1., 1.};
 
-    Dune::FieldVector<double,2> upper;
-    upper[0] = upper[1] = 1.0;
-
-    Dune::FieldVector<bool,dim> periodic(false);
-
-    YaspGrid<2> grid(upper, n, periodic, 0);
+ YaspGrid<dim, TensorProductCoordinates<ctype,dim> > grid(coords);
 \end{lstlisting}
-Note that you do not have to specify the lower left corner as \lstinline!YaspGrid!
-hardwires it to zero.  The unstructured one-dimensional \lstinline!OneDGrid!
-also has a constructor
+
+Another unstructured is the one-dimensional \lstinline!OneDGrid!, which has a constructor
 \begin{lstlisting}
     OneDGrid grid(10,    // number of elements
                   0.0,   // left domain boundary
