@@ -474,6 +474,24 @@ like a pointer to an entity of dimension \lstinline!dim! and
 codimension 0. The exact type would be
 \lstinline!typename G::template Codim<0>::Entity! just to mention it.
 
+Please note, that from Dune 2.4 on, C++11 range based for statements will
+be used to iterate over entities of a grid. To enable this feature, you will
+need \texttt{g++} version 4.6 or higher. There are no issues with the mentioned
+version of \texttt{icc} or \texttt{clang}. The entire iteration loop,
+will then boil down to
+\begin{lstlisting}[basicstyle=\ttfamily\scriptsize,numbers=left,
+numberstyle=\tiny, numbersep=5pt]
+ for (auto&& e : elements(leafView))
+ {
+   // the iteration loop
+ }
+\end{lstlisting}
+
+There is no more need of getting the iterator type by hand. Note that you
+should always write \lstinline!auto&&! !In contrast to the above procedure you don't
+get an \lstinline!EntityPointer!, but a reference to the \lstinline!Entity!
+itself.
+
 An important part of an entity is its geometrical shape and position.
 All geometrical information is factored out into a sub-object that can
 be accessed via the \lstinline!geometry()!  method. The geometry
@@ -504,6 +522,10 @@ codimensions. You can also access the codimensions between 0 and
 grid interface support these intermediate codimensions (though this
 does not restrict the implementation of finite element methods with
 degrees of freedom associated to, say, faces).
+
+Again, above task, can be done with a range based for statement by
+using the function \lstinline!vertices! instead of \lstinline!elements!
+in the above code snippet.
 
 Finally, we show in lines \ref{tc:level0}-\ref{tc:level1} how the
 hierarchic structure of the mesh can be accessed. To that end a
