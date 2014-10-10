@@ -5,7 +5,7 @@ GRIDDIM=2
 
 examplesdir=$(datadir)/doc/dune-grid-howto/examples
 
-examples_HEADERS = elementdata.hh parfvdatahandle.hh unitcube_sgrid.hh \
+examples_HEADERS = elementdata.hh parfvdatahandle.hh \
 	evolve.hh transportproblem2.hh \
 	finitevolumeadapt.hh transportproblem.hh unitcube_yaspgrid.hh \
 	functors.hh unitcube_albertagrid.hh vertexdata.hh \

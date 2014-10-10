@@ -126,7 +126,6 @@ install(FILES
   transportproblem2.hh
   unitcube.hh
   unitcube_alugrid.hh
-  unitcube_sgrid.hh
   unitcube_yaspgrid.hh
   vertexdata.hh
   vtkout.hh

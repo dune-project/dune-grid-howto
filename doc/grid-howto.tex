@@ -1065,7 +1065,7 @@ required header files for the grid manager are included.
 Through the module \Dune{}-grid the following grid managers can be used
 (for \lstinline!MYGROD! in the example above):
 \\
-\lstinline!ALBERTAGRID,ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM,ONEDGRID,SGRID,UGGRID!,
+\lstinline!ALBERTAGRID,ALUGRID_CUBE,ALUGRID_SIMPLEX,ALUGRID_CONFORM,ONEDGRID,UGGRID!,
 \\
 and \lstinline!YASPGRID!.
 \\
@@ -1285,18 +1285,6 @@ type.  We now look at each specialization in turn.
 
 For historic reasons, there are also specializations for
 \lstinline!ALUGrid! and \lstinline!AlbertaGrid!.
-
-\minisec{SGrid}
-
-The following listing creates an \lstinline!SGrid! object. This class
-template also has a constructor without arguments that results in a
-cube with a single element. \lstinline!SGrid! supports all dimensions.
-
-\begin{lst}[File dune-grid-howto/unitcube\_sgrid.hh] \mbox{}
-\nopagebreak
-\lstinputlisting[basicstyle=\ttfamily\scriptsize,numbers=left,
-numberstyle=\tiny, numbersep=5pt]{../unitcube_sgrid.hh}
-\end{lst}
 
 \minisec{YaspGrid}
 
