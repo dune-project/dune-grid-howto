@@ -22,13 +22,8 @@ public:
     Dune::FieldVector<double,dim> length(1.0);
     std::array<int,dim> elements;
     std::fill(elements.begin(), elements.end(), size);
-    std::bitset<dim> periodicity(0);
 
-    grid_ = std::unique_ptr<Dune::YaspGrid<dim> >(new Dune::YaspGrid<dim>(
-#if HAVE_MPI
-                                                                        MPI_COMM_WORLD,
-#endif
-                                                                        length,elements,periodicity,1));
+    grid_ = std::unique_ptr<Dune::YaspGrid<dim> >(new Dune::YaspGrid<dim>(length,elements));
   }
 
   Dune::YaspGrid<dim>& grid ()
