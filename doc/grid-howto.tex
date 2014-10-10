@@ -338,12 +338,11 @@ functions which print useful information about a grid.
 
 Since the dimension will be used as a template parameter in many
 places below we define it as a constant in line number \ref{gs:dim}.
-The \lstinline!YaspGrid! class template takes two template parameters
-which are the dimension of the grid and the
-dimension of the space where the grid is embedded in (its world
-dimension).   If the world dimension is strictly greater than the
-grid dimension the surplus coordinates of each grid vertex
-are set to zero.  For ease of writing we
+The \lstinline!YaspGrid! class template takes its dimension as a
+template parameter.  Technically, \lstinline!YaspGrid! has a second template
+parameter, that defines how it stores coordinates. In this example, we
+use an equidistant grid, which allows us to stay with the default value
+\lstinline!EquidistantCoordinates!. For ease of writing we
 define in line \ref{gs:gridtype} the type \lstinline!GridType! using
 the selected value for the dimension. All identifiers of the \Dune{}
 framework are within the \lstinline!Dune! namespace.

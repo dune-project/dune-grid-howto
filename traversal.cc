@@ -7,7 +7,7 @@
 
 // Dune includes
 #include "config.h"           // file constructed by ./configure script
-#include <dune/grid/sgrid.hh> // load sgrid definition
+#include <dune/grid/yaspgrid.hh> // load yaspgrid definition
 #include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 
 
@@ -119,11 +119,11 @@ int main(int argc, char **argv)
   try {
     // make a grid
     const int dim=2;
-    typedef Dune::SGrid<dim,dim> GridType;
-    Dune::FieldVector<int,dim> N(1);
-    Dune::FieldVector<GridType::ctype,dim> L(-1.0);
+    typedef Dune::YaspGrid<dim> GridType;
+    Dune::array<int,dim> N;
+    std::fill(N.begin(), N.end(), 1);
     Dune::FieldVector<GridType::ctype,dim> H(1.0);
-    GridType grid(N,L,H);
+    GridType grid(H,N);
 
     // refine all elements once using the standard refinement rule
     grid.globalRefine(1);                                /*@\label{tc:refine}@*/
