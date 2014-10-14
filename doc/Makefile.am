@@ -1,5 +1,3 @@
-# $id: $
-
 EPS_FILES = EPS/adaptiveintegration_alberta2d.eps EPS/adaptiveintegration_ug3d.eps \
     EPS/alberta2d.eps EPS/alberta2d-view1.eps EPS/alberta2d-view2.eps EPS/alberta3d.eps \
     EPS/alucube3d.eps EPS/alusimplex3d.eps EPS/conc.eps EPS/fem2d.eps EPS/fem3d.eps EPS/iso.eps EPS/ug2dquad-view1.eps \
