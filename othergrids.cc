@@ -22,9 +22,6 @@ int main(int argc, char **argv)
 
     UnitCube<Dune::YaspGrid<3>,1> uc1;
     UnitCube<Dune::YaspGrid<2>,1> uc2;
-    UnitCube<Dune::SGrid<1,1>,1> uc3;
-    UnitCube<Dune::SGrid<2,2>,1> uc4;
-    UnitCube<Dune::SGrid<3,3>,1> uc5;
 #if HAVE_UG
     UnitCube<Dune::UGGrid<3>,2> uc6;
 #endif

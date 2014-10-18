@@ -55,8 +55,12 @@ int main(int argc, char **argv)
 
     /*
        UnitCube<Dune::OneDGrid,1> uc0;
-       UnitCube<Dune::YaspGrid<dimGrid>,1> uc1;
+     */
 
+       UnitCube<Dune::YaspGrid<dimGrid>,1> uc1;
+       dowork( uc1.grid(), 3 );
+
+    /*
        #if HAVE_UG
        UnitCube< Dune::UGGrid< dimGrid >, 2 > uc2;
        dowork( uc2.grid(), 3 );
@@ -70,9 +74,6 @@ int main(int argc, char **argv)
        }
        #endif // #if HAVE_ALBERTA
      */
-
-    UnitCube< Dune::SGrid< dimGrid, dimGrid >, 1 > uc4;
-    dowork( uc4.grid(), 3 );
 
 #if HAVE_ALUGRID || HAVE_DUNE_ALUGRID
     UnitCube< Dune::ALUGrid< dimGrid, dimGrid, Dune::simplex,
