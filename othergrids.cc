@@ -1,14 +1,15 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
 
-#include "config.h"
-#include "unitcube.hh"
+#include <config.h>
 #include <dune/common/parallel/mpihelper.hh> // include mpi helper class
 
 #include <dune/grid/onedgrid.hh>
 #if HAVE_UG
 #include <dune/grid/uggrid.hh>
 #endif
+
+#include "unitcube.hh"
 
 int main(int argc, char **argv)
 {

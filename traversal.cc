@@ -1,14 +1,13 @@
 // -*- tab-width: 4; indent-tabs-mode: nil; c-basic-offset: 2 -*-
 // vi: set et ts=4 sw=2 sts=2:
+#include <config.h>           // file constructed by ./configure script
 
 // C/C++ includes
 #include <iostream>           // for standard I/O
 
 // Dune includes
-#include "config.h"           // file constructed by ./configure script
 #include <dune/grid/yaspgrid.hh> // load yaspgrid definition
 #include <dune/common/parallel/mpihelper.hh> // include mpi helper class
-
 
 // example for a generic algorithm that traverses
 // the entities of a given mesh in various ways

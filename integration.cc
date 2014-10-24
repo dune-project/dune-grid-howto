@@ -2,7 +2,7 @@
 // vi: set et ts=4 sw=2 sts=2:
 
 // Dune includes
-#include "config.h"           // file constructed by ./configure script
+#include <config.h>           // file constructed by ./configure script
 #include <iomanip>
 #include <iostream>
 #include <dune/grid/yaspgrid.hh> // load yaspgrid definition
