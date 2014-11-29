@@ -26,11 +26,10 @@ struct P1Layout
 template<class G, class F>
 void vertexdata (const G& grid, const F& f)
 {
-  // get dimension and coordinate type from Grid
+  // get dimension from Grid
   const int dim = G::dimension;
-  typedef typename G::ctype ct;
   typedef typename G::LeafGridView GridView;
-  // dertermine type of LeafIterator for codimension = dimension
+  // determine type of LeafIterator for codimension = dimension
   typedef typename GridView::template Codim<dim>::Iterator VertexLeafIterator;
 
   // get grid view on the leaf part
@@ -52,7 +51,6 @@ void vertexdata (const G& grid, const F& f)
   }
 
   // generate a VTK file
-  //   Dune::LeafP1Function<G,double> cc(grid,c);
   Dune::VTKWriter<typename G::LeafGridView> vtkwriter(grid.leafGridView());
   vtkwriter.addVertexData(c,"data");
   vtkwriter.write( "vertexdata", Dune::VTK::appendedraw );

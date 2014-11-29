@@ -24,9 +24,6 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   const double refinetol  = 0.05;
   const double coarsentol = 0.001;
 
-  // type used for coordinates in the grid
-  typedef typename G::ctype ct;
-
   // grid view types
   typedef typename G::LeafGridView LeafGridView;
   typedef typename G::LevelGridView LevelGridView;
