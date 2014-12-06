@@ -47,7 +47,7 @@ void vertexdata (const G& grid, const F& f)
        it!=gridView.template end<dim>(); ++it)
   {
     // evaluate functor and store value
-    c[mapper.map(*it)] = f(it->geometry().corner(0));
+    c[mapper.index(*it)] = f(it->geometry().corner(0));
   }
 
   // generate a VTK file

@@ -65,7 +65,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     double volume = geo.volume();
 
     // cell index
-    int indexi = mapper.map(*it);
+    int indexi = mapper.index(*it);
 
     // variable to compute sum of positive factors
     double sumfactor = 0.0;
@@ -101,7 +101,7 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       {
         // access neighbor
         EntityPointer outside = intersection.outside();
-        int indexj = mapper.map(*outside);
+        int indexj = mapper.index(*outside);
 
         const int insideLevel = it->level();
         const int outsideLevel = outside->level();

@@ -41,7 +41,7 @@ public:
   template<class MessageBuffer, class EntityType>
   void gather (MessageBuffer& buff, const EntityType& e) const
   {
-    buff.write(c[mapper.map(e)]);
+    buff.write(c[mapper.index(e)]);
   }
 
   /*! unpack data from message buffer to user
@@ -53,7 +53,7 @@ public:
   {
     DataType x;
     buff.read(x);
-    c[mapper.map(e)]=x;
+    c[mapper.index(e)]=x;
   }
 
   //! constructor

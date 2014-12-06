@@ -39,7 +39,7 @@ void initialize (const G& grid, const M& mapper, V& c)
     Dune::FieldVector<ct,dimworld> global = geo.center();
 
     // initialize cell concentration
-    c[mapper.map(*it)] = c0(global);
+    c[mapper.index(*it)] = c0(global);
   }
 }
 

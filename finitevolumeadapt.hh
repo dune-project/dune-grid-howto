@@ -50,7 +50,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
        it!=leafView.template end<0>(); ++it)
   {
     // my index
-    int indexi = mapper.map(*it);
+    int indexi = mapper.index(*it);
 
     // global min/max
     globalmax = std::max(globalmax,c[indexi]);
@@ -66,7 +66,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       // access neighbor
       const EntityPointer pOutside = intersection.outside();
       const Entity &outside = *pOutside;
-      int indexj = mapper.map( outside );
+      int indexj = mapper.index(outside);
 
       // handle face from one side only
       if ( it->level() > outside.level() ||
@@ -85,7 +85,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
   for (LeafIterator it = leafView.template begin<0>(); /*@\label{fah:loop2}@*/
        it!=leafView.template end<0>(); ++it)
   {
-    if (indicator[mapper.map(*it)]>refinetol*globaldelta
+    if (indicator[mapper.index(*it)]>refinetol*globaldelta
         && (it->level() < lmax || !it->isRegular()))
     {
       const Entity &entity = *it;
@@ -104,7 +104,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
           grid.mark( 1, outside );
       }
     }
-    if (indicator[mapper.map(*it)] < coarsentol*globaldelta && it->level() > lmin)
+    if (indicator[mapper.index(*it)] < coarsentol*globaldelta && it->level() > lmin)
     {
       grid.mark( -1, *it );
       ++marked;
@@ -130,7 +130,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       // put your value in the map
       if (it->isLeaf())
       {
-        int indexi = mapper.map(*it);
+        int indexi = mapper.index(*it);
         rv.value = c[indexi];
         rv.count = 1;
       }
@@ -168,7 +168,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         if (it->isLeaf())
         {
           RestrictedValue& rv = restrictionmap[*it];
-          int indexi = mapper.map(*it);
+          int indexi = mapper.index(*it);
           c[indexi] = rv.value/rv.count;
         }
       }
@@ -180,7 +180,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         RestrictedValue& rvf = restrictionmap[*ep];
         if (it->isLeaf())
         {
-          int indexi = mapper.map(*it);
+          int indexi = mapper.index(*it);
           c[indexi] = rvf.value/rvf.count;
         }
         else

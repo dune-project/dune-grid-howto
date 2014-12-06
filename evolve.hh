@@ -54,7 +54,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
     double volume = geo.volume();
 
     // cell index
-    int indexi = mapper.map(*it);
+    int indexi = mapper.index(*it);
 
     // variable to compute sum of positive factors
     double sumfactor = 0.0;
@@ -88,7 +88,7 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       {
         // access neighbor
         EntityPointer outside = is->outside();
-        int indexj = mapper.map(*outside);
+        int indexj = mapper.index(*outside);
 
         // compute flux from one side only
         if (indexi<indexj)

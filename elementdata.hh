@@ -55,7 +55,7 @@ void elementdata (const G& grid, const F& f)
     Dune::FieldVector<ct,dimworld> global = geo.center();
 
     // evaluate functor and store value
-    c[mapper.map(*it)] = f(global);                    /*@\label{edh:feval}@*/
+    c[mapper.index(*it)] = f(global);                  /*@\label{edh:feval}@*/
   }                                                    /*@\label{edh:loop1}@*/
 
   // generate a VTK file
