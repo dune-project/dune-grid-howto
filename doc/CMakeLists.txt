@@ -46,7 +46,6 @@ set(SOURCES
   ../unitcube_albertagrid.hh
   ../unitcube_alugrid.hh
   ../unitcube.hh
-  ../unitcube_sgrid.hh
   ../unitcube_yaspgrid.hh
   ../vertexdata.hh
   ../visualization.cc
@@ -67,7 +66,6 @@ set(IMAGES
   EPS/fem3d.jpg
   EPS/intersection.eps
   EPS/iso.jpg
-  EPS/islocalref.eps
   EPS/partitionsingle.eps
   EPS/ug2dquad-view1.jpg
   EPS/ug2dquad-view2.jpg
