@@ -270,7 +270,7 @@ public:
 int main(int argc, char** argv)
 {
 #if HAVE_ALBERTA && ALBERTA_DIM==2
-  static const int dim = 2;             /*@\label{fem:dim}@*/
+  static const int dim = 2;                             /*@\label{fem:dim}@*/
   const char* gridfile = "grids/2dgrid.al";             /*@\label{fem:file}@*/
 
   typedef Dune::AlbertaGrid<dim,dim> GridType;
@@ -311,5 +311,7 @@ int main(int argc, char** argv)
 #else
   std::cout << "for solving and visualizing dune-istl is necessary." << "\n";
 #endif // HAVE_DUNE_ISTL
+#else
+  std::cerr << "You need Alberta in 2d for this program." << std::endl;
 #endif // HAVE_ALBERTA && ALBERTA_DIM==2
 }

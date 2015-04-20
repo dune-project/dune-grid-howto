@@ -53,6 +53,7 @@ set(TESTS
 
 add_executable(adaptivefinitevolume adaptivefinitevolume.cc)
 add_dune_all_flags(adaptivefinitevolume)
+add_dune_alberta_flags(adaptivefinitevolume WORLDDIM 2)
 add_dune_mpi_flags(adaptivefinitevolume)
 
 add_executable(adaptiveintegration adaptiveintegration.cc)
