@@ -237,7 +237,7 @@ interfaces for, for instance Alberta, UG and ALUGrid.
 \begin{itemize}
 \item Alberta -- \url{http://www.alberta-fem.de/}
 \item UG -- \url{http://www.iwr.uni-heidelberg.de/frame/iwrwikiequipment/software/ug}
-\item ALUGrid -- \url{http://www.mathematik.uni-freiburg.de/IAM/Research/alugrid/}
+\item \Dune{}-ALUGrid -- \url{http://users.dune-project.org/projects/dune-alugrid}
 \end{itemize}
 To use the parallel code of \Dune{}, you need an implementation of the
 Message Passing Interface (MPI), for example MPICH or Open MPI.  For the
@@ -247,8 +247,7 @@ of the respective installations.  The \texttt{dunecontrol} script
 facilitates to pass options to the \texttt{configure} via a
 configuration file.  Such a configuration file might look like this:
 \begin{lstlisting}
-CONFIGURE_FLAGS="--with-alugrid=/path/to/alugrid/ "\
-"--with-alberta=/path/to/alberta "\
+CONFIGURE_FLAGS="--with-alberta=/path/to/alberta "\
 "--with-ug=/path/to/ug --enable-parallel"
 MAKE_FLAGS="-j 2"
 \end{lstlisting}
@@ -1322,12 +1321,13 @@ numberstyle=\tiny, numbersep=5pt]{../unitcube_albertagrid.hh}
 
 \minisec{ALUGrid}
 
-The next listing shows the instantiation of \lstinline!ALUSimplexGrid!\ or
-\lstinline!ALUCubeGrid!\ objects.
+The next listing shows the instantiation of \lstinline!ALUGrid!\ for
+simplices and cubes.
 The ALUGrid implementation supports either simplicial grids, i.e.\
 tetrahedral or triangular grids, and hexahedral grids and the
 element type has to be chosen at compile-time. This is done by choosing
-either \lstinline!ALUSimplexGrid! or \lstinline!ALUCubeGrid!.
+either \lstinline!Dune::cube! or \lstinline!Dune::simplex! as the third
+template argument for \lstinline!ALUGrid!.
 The \lstinline!variant!\ parameter must be 1.
 As in the default implementation, grid objects are set up with help of the
 \lstinline!StructuredGridFactory!\ class.
