@@ -1,13 +1,9 @@
 # set up project
-project("dune-grid-howto" C CXX)
-
-#circumvent not building docs
-set(BUILD_DOCS 1)
+project(dune-grid-howto C CXX)
 
 # general stuff
 cmake_minimum_required(VERSION 2.8.12)
 
-# guesse dune-common build directory
 if(NOT (dune-common_DIR OR dune-common_ROOT OR
         "${CMAKE_PREFIX_PATH}" MATCHES ".*dune-common.*"))
     string(REPLACE  ${CMAKE_PROJECT_NAME} dune-common dune-common_DIR
@@ -15,18 +11,14 @@ if(NOT (dune-common_DIR OR dune-common_ROOT OR
 endif()
 
 #find dune-common and set the module path
-find_package(dune-common)
-list(APPEND CMAKE_MODULE_PATH ${dune-common_MODULE_PATH}
-  "${PROJECT_SOURCE_DIR}/cmake/modules")
+find_package(dune-common REQUIRED)
+list(APPEND CMAKE_MODULE_PATH ${dune-common_MODULE_PATH})
 
 #include the dune macros
 include(DuneMacros)
 
 # start a dune project with information from dune.module
 dune_project()
-
-add_subdirectory("doc")
-add_subdirectory("grids")
 
 set(GRIDTYPE YASPGRID)
 set(GRIDDIM 2)
@@ -35,9 +27,6 @@ set(GRIDDIM 2)
 set_property(DIRECTORY APPEND PROPERTY
   COMPILE_DEFINITIONS "DUNE_GRID_HOWTO_EXAMPLE_GRIDS_PATH=\"${PROJECT_SOURCE_DIR}/grids/\"")
 
-set(examples_DATA  gettingstarted.cc traversal.cc integration.cc othergrids.cc
-         adaptiveintegration.cc finitevolume.cc adaptivefinitevolume.cc
-         parfinitevolume.cc visualization.cc finiteelements.cc)
 
 set(TESTS
   adaptivefinitevolume
@@ -92,6 +81,9 @@ add_executable(visualization visualization.cc)
 add_dune_all_flags(visualization)
 add_dune_mpi_flags(visualization)
 
+add_subdirectory(doc)
+add_subdirectory(grids)
+
 set_property(TARGET
   adaptivefinitevolume
   adaptiveintegration
@@ -111,8 +103,6 @@ add_dependencies(${_test_target} ${TESTS})
 foreach(_test ${TESTS})
   add_test(${_test} ${_test})
 endforeach(_test ${TESTS})
-
-# install the header as done for the auto-tools
 install(FILES
   basicunitcube.hh
   elementdata.hh
@@ -130,10 +120,27 @@ install(FILES
   unitcube_yaspgrid.hh
   vertexdata.hh
   vtkout.hh
+  adaptivefinitevolume.cc
+  adaptivefinitevolume
+  adaptiveintegration.cc
+  adaptiveintegration
+  gettingstarted.cc
+  gettingstarted
+  integration.cc
+  integration
+  othergrids.cc
+  othergrids
+  finiteelements.cc
+  finiteelements
+  finitevolume.cc
+  finitevolume
+  parfinitevolume.cc
+  parfinitevolume
+  traversal.cc
+  traversal
+  visualization.cc
+  visualization
   DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
-
-install(FILES ${examples_DATA} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
-install(TARGETS ${TESTS} DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
 
 # finalize the dune project, e.g. generating config.h etc.
 finalize_dune_project(GENERATE_CONFIG_H_CMAKE)
