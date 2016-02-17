@@ -34,7 +34,6 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
 
   // entity and entity pointer
   typedef typename G::template Codim<0>::Entity Entity;
-  typedef typename G::template Codim<0>::EntityPointer EntityPointer;
 
   // intersection iterator type
   typedef typename LeafGridView::IntersectionIterator LeafIntersectionIterator;
@@ -64,8 +63,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         continue;
 
       // access neighbor
-      const EntityPointer pOutside = intersection.outside();
-      const Entity &outside = *pOutside;
+      const Entity &outside = intersection.outside();
       int indexj = mapper.index(outside);
 
       // handle face from one side only
@@ -98,8 +96,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
         if( !intersection.neighbor() )
           continue;
 
-        const EntityPointer pOutside = intersection.outside();
-        const Entity &outside = *pOutside;
+        const Entity &outside = intersection.outside();
         if( (outside.level() < lmax) || !outside.isRegular() )
           grid.mark( 1, outside );
       }
@@ -138,8 +135,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       // average in father
       if (it->level() > 0)
       {
-        EntityPointer ep = it->father();
-        RestrictedValue& rvf = restrictionmap[*ep];
+        RestrictedValue& rvf = restrictionmap[it->father()];
         rvf.value += rv.value/rv.count;
         rvf.count += 1;
       }
@@ -176,8 +172,7 @@ bool finitevolumeadapt (G& grid, M& mapper, V& c, int lmin, int lmax, int k)
       {
         // value is not in map, interpolate from father element
         assert (it->level() > 0);
-        EntityPointer ep = it->father();
-        RestrictedValue& rvf = restrictionmap[*ep];
+        RestrictedValue& rvf = restrictionmap[it->father()];
         if (it->isLeaf())
         {
           int indexi = mapper.index(*it);

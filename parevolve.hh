@@ -40,8 +40,8 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   // intersection geometry
   typedef typename Intersection::Geometry IntersectionGeometry;
 
-  // entity pointer type
-  typedef typename G::template Codim<0>::EntityPointer EntityPointer;
+  // entity type
+  typedef typename G::template Codim<0>::Entity Entity;
 
   // allocate a temporary vector for the update
   V update(c.size());
@@ -100,18 +100,18 @@ void parevolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if( intersection.neighbor() )
       {
         // access neighbor
-        EntityPointer outside = intersection.outside();
-        int indexj = mapper.index(*outside);
+        Entity outside = intersection.outside();
+        int indexj = mapper.index(outside);
 
         const int insideLevel = it->level();
-        const int outsideLevel = outside->level();
+        const int outsideLevel = outside.level();
 
         // handle face from one side
         if( (insideLevel > outsideLevel)
             || ((insideLevel == outsideLevel) && (indexi < indexj)) )
         {
           // compute factor in neighbor
-          const LeafGeometry nbgeo = outside->geometry();
+          const LeafGeometry nbgeo = outside.geometry();
           double nbvolume = nbgeo.volume();
           double nbfactor = velocity*integrationOuterNormal/nbvolume;
 

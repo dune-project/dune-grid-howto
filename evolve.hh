@@ -29,8 +29,8 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
   // intersection geometry
   typedef typename IntersectionIterator::Intersection::Geometry IntersectionGeometry;
 
-  // entity pointer type
-  typedef typename G::template Codim<0>::EntityPointer EntityPointer;
+  // entity type
+  typedef typename G::template Codim<0>::Entity Entity;
 
   // get grid view on leaf part
   GridView gridView = grid.leafGridView();
@@ -87,14 +87,14 @@ void evolve (const G& grid, const M& mapper, V& c, double t, double& dt)
       if (is->neighbor())             // "correct" version /*@\label{evh:neighbor}@*/
       {
         // access neighbor
-        EntityPointer outside = is->outside();
-        int indexj = mapper.index(*outside);
+        Entity outside = is->outside();
+        int indexj = mapper.index(outside);
 
         // compute flux from one side only
         if (indexi<indexj)
         {
           // compute factor in neighbor
-          const LeafGeometry nbgeo = outside->geometry();
+          const LeafGeometry nbgeo = outside.geometry();
           double nbvolume = nbgeo.volume();
           double nbfactor = velocity*integrationOuterNormal/nbvolume;
 
