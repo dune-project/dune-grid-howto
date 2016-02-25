@@ -70,7 +70,7 @@ else
 navigation.html:
 	echo > navigation.html
 css.html:
-    echo > css.html
+	echo > css.html
 endif
 
 EXTRA_TEXINPUTS:=$(top_srcdir)
