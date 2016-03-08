@@ -118,11 +118,7 @@ int main (int argc , char ** argv)
 
   }
   catch (std::exception & e) {
-    std::cout << "STL ERROR: " << e.what() << std::endl;
-    return 1;
-  }
-  catch (Dune::Exception & e) {
-    std::cout << "DUNE ERROR: " << e.what() << std::endl;
+    std::cout << "ERROR: " << e.what() << std::endl;
     return 1;
   }
   catch (...) {
