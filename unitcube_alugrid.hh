@@ -8,15 +8,10 @@
 
 #include "unitcube.hh"
 
-#if HAVE_ALUGRID
-#include <dune/grid/alugrid.hh>
-#include <dune/grid/alugrid/3d/alu3dgridfactory.hh>
-#elif HAVE_DUNE_ALUGRID
+#if HAVE_DUNE_ALUGRID
 #include <dune/alugrid/grid.hh>
 #include <dune/alugrid/3d/gridfactory.hh>
-#endif
 
-#if HAVE_ALUGRID || HAVE_DUNE_ALUGRID
 // ALU3dGrid and ALU2dGrid simplex specialization.
 // Note: element type determined by type
 template<int dim>
@@ -70,6 +65,6 @@ public:
     return *grid_;
   }
 };
-#endif // HAVE_ALUGRID || HAVE_DUNE_ALUGRID
+#endif // HAVE_DUNE_ALUGRID
 
 #endif // UNITCUBE_ALUGRID_HH
