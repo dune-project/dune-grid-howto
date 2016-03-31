@@ -34,7 +34,7 @@ int main(int argc, char **argv)
     UnitCube<Dune::AlbertaGrid<3,3>,1> uc9;
 #endif
 #endif
-#if HAVE_ALUGRID || HAVE_DUNE_ALUGRID
+#if HAVE_DUNE_ALUGRID
     UnitCube<Dune::ALUGrid<2,2,Dune::cube,Dune::nonconforming>,1> uc8;
     UnitCube<Dune::ALUGrid<3,3,Dune::cube,Dune::nonconforming>,1> uc10;
 #endif

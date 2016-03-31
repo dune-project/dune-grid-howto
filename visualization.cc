@@ -75,7 +75,7 @@ int main(int argc, char **argv)
        #endif // #if HAVE_ALBERTA
      */
 
-#if HAVE_ALUGRID || HAVE_DUNE_ALUGRID
+#if HAVE_DUNE_ALUGRID
     UnitCube< Dune::ALUGrid< dimGrid, dimGrid, Dune::simplex,
             Dune::nonconforming > , 1 > uc5;
     dowork( uc5.grid(), 3 );
@@ -85,7 +85,7 @@ int main(int argc, char **argv)
             Dune::nonconforming > , 1 > uc6;
     dowork( uc6.grid(), 3 );
 #endif // #if GRIDDIM == 2 || GRIDDIM == 3
-#endif // #if HAVE_ALUGRID
+#endif // #if HAVE_DUNE_ALUGRID
   }
   catch (std::exception & e) {
     std::cout << "ERROR: " << e.what() << std::endl;
