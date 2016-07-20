@@ -83,8 +83,7 @@ set(PACKAGE_VERSION ${DUNE_MOD_VERSION})
 configure_file(config.inc.in config.inc)
 
 dune_add_latex_document(grid-howto.tex
-  FATHER_TARGET doc
-  DEFAULT_SAFEPDF
+  FORCE_DVI
   INPUTS config.inc ${SOURCES}
   IMAGES ${IMAGES})
 
