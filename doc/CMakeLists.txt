@@ -83,11 +83,10 @@ set(PACKAGE_VERSION ${DUNE_MOD_VERSION})
 configure_file(config.inc.in config.inc)
 
 dune_add_latex_document(grid-howto.tex
-  FATHER_TARGET doc
-  DEFAULT_SAFEPDF
+  FORCE_DVI
   INPUTS config.inc ${SOURCES}
   IMAGES ${IMAGES})
 
 # Install documentation
 create_doc_install(${CMAKE_CURRENT_BINARY_DIR}/grid-howto.pdf
-  ${CMAKE_INSTALL_DOCDIR})
+  ${CMAKE_INSTALL_DOCDIR} grid-howto_safepdf)
