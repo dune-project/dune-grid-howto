@@ -14,6 +14,8 @@ endif()
 find_package(dune-common REQUIRED)
 list(APPEND CMAKE_MODULE_PATH ${dune-common_MODULE_PATH})
 
+option(DUNE_GRID_GRIDTYPE_SELECTOR "" ON)
+
 #include the dune macros
 include(DuneMacros)
 
