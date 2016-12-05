@@ -50,6 +50,7 @@ dune_add_test(SOURCES integration.cc
 dune_add_test(SOURCES gettingstarted.cc)
 
 dune_add_test(SOURCES othergrids.cc)
+add_dune_ug_flags(othergrids)
 
 dune_add_test(SOURCES parfinitevolume.cc)
 
