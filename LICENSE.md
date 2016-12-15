@@ -14,13 +14,13 @@ Copyright holders:
 2010--2014    Dominic Kempf
 2006--2011    Robert Klöfkorn
 2016          Timo Koch
+2006--2007    Sreejith Pulloor Kuttanikkad
 2011          Arne Morten Kvarving
 2006--2010    Sven Marnach
 2013          Steffen Müthing
 2008--2012    Martin Nolte
 2011          Elias Pipping
 2010          Dan Popovic
-2006--2007    Sreejith Pulloor Kuttanikkad
 2006--2013    Oliver Sander
 
 The DUNE library and headers are licensed under version 2 of the GNU
