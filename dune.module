@@ -1,7 +1,7 @@
 Module: dune-grid-howto
 Maintainer: dune-devel@dune-project.org
-Version: 2.5-git
-Depends: dune-grid (>= 2.5)
+Version: 2.5.0
+Depends: dune-grid (>= 2.5.0)
 # Needed for finiteelements.cc
-Suggests: dune-istl (>= 2.5) dune-alugrid
+Suggests: dune-istl (>= 2.5.0) dune-alugrid
 Whitespace-Hook: Yes
