@@ -9,19 +9,6 @@
 #include <dune/grid/io/visual/grapedatadisplay.hh>
 #endif
 
-//! Parameter for mapper class
-/** This class is only here to show what such a class looks like -- it does
-    exactly the same as Dune::MCMGVertexLayout. */
-template<int dimgrid>
-struct P1Layout
-{
-  bool contains (Dune::GeometryType gt)
-  {
-    if (gt.dim()==0) return true;
-    return false;
-  }
-};
-
 // demonstrate attaching data to elements
 template<class G, class F>
 void vertexdata (const G& grid, const F& f)
@@ -36,8 +23,8 @@ void vertexdata (const G& grid, const F& f)
   GridView gridView = grid.leafGridView();
 
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,P1Layout>
-  mapper(grid);
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G>
+  mapper(grid, Dune::mcmgVertexLayout());
 
   // allocate a vector for the data
   std::vector<double> c(mapper.size());
