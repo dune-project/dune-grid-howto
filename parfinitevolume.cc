@@ -25,8 +25,8 @@ template<class G>
 void partimeloop (const G& grid, double tend)
 {
   // make a mapper for codim 0 entities in the leaf grid
-  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G,Dune::MCMGElementLayout>
-  mapper(grid);
+  Dune::LeafMultipleCodimMultipleGeomTypeMapper<G>
+  mapper(grid, Dune::mcmgElementLayout());
 
   // allocate a vector for the concentration
   std::vector<double> c(mapper.size());

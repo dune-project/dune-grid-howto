@@ -1619,13 +1619,11 @@ The class template
 \lstinline!Dune::LeafMultipleCodimMultipleGeomTypeMapper!  provides an
 index-based mapper where the entities in the subset $E^\prime$ are all
 leaf entities and can further be selected depending on the codimension
-and the geometry type. To that end the second template argument has to
-be a class template with one integer template parameter containing a
-method \lstinline!contains!. Just look at the example
-\lstinline!P0Layout!. When the method \lstinline!contains!  returns
-true for a combination of dimension, codimension and geometry type
-then all leaf entities with that dimension, codimension and geometry
-type will be in the subset $E^\prime$. The mapper object is
+and the geometry type. To that end the constructor takes a function object
+called with a geometry type and the grid dimension and returning a Boolean
+value. When the function object returns true for a combination of geometry
+type and grid dimension then all leaf entities with that geometry type
+will be in the subset $E^\prime$. The mapper object is
 constructed in line \ref{edh:mapper}. A similar mapper is available
 also for the entities of a grid level.
 
