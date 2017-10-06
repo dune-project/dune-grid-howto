@@ -956,7 +956,7 @@ and hence they are all slightly different for different grid implementations.
 As already seen int he introduction, the code to construct a sequential \
 \lstinline!YaspGrid! with 10 cells in each direction is
 \begin{lstlisting}
-    Dune::array<int,dim> n;
+    std::array<int,dim> n;
     std::fill(n.begin(). n.end(), 10);
 
     Dune::FieldVector<double,dim> upper(1.0);
@@ -978,11 +978,11 @@ direction $i$. The vertices of the grid are then given by the tuples
 Such tensorproduct grid is a structured non-equidistant grid. Having a non-zero
 lower left corner is possible by specifying coordinates accordingly. \lstinline!YaspGrid!s
 tensorproduct features are enabled by using \lstinline!TensorProductCoordinates<ctype,dim>!
-as the second template paramter. Coordinates are given as as a \lstinline!Dune::array<std::vector<ctype>,dim>!.
+as the second template paramter. Coordinates are given as as a \lstinline!std::array<std::vector<ctype>,dim>!.
 See the following example which initializes a grid is one cell, that covers $[-1,1]^2$:
 
 \begin{lstlisting}
- Dune::array<std::vector<ctype,2> > coords;
+ std::array<std::vector<ctype,2> > coords;
  coords[0] = {-1., 1.};
  coords[1] = {-1., 1.};
 
