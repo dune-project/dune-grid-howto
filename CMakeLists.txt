@@ -81,24 +81,27 @@ install(FILES
   vertexdata.hh
   vtkout.hh
   adaptivefinitevolume.cc
-  adaptivefinitevolume
   adaptiveintegration.cc
-  adaptiveintegration
   gettingstarted.cc
-  gettingstarted
   integration.cc
-  integration
   othergrids.cc
-  othergrids
   finiteelements.cc
-  finiteelements
   finitevolume.cc
-  finitevolume
   parfinitevolume.cc
-  parfinitevolume
   traversal.cc
-  traversal
   visualization.cc
+  DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
+
+install(TARGETS
+  adaptivefinitevolume
+  adaptiveintegration
+  gettingstarted
+  integration
+  othergrids
+  finiteelements
+  finitevolume
+  parfinitevolume
+  traversal
   visualization
   DESTINATION ${CMAKE_INSTALL_DOCDIR}/examples)
 
