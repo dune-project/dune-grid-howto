@@ -3,11 +3,11 @@ Copyright holders:
 2006--2010    Peter Bastian
 2006--2016    Markus Blatt
 2013          Andreas Buhr
-2016          Ansgar Burchardt
-2007--2012    Andreas Dedner
+2016--2017    Ansgar Burchardt
+2007--2017    Andreas Dedner
 2009--2010    Martin Drohmann
-2006--2013    Christian Engwer
-2010--2012    Jorrit Fahlke
+2006--2014    Christian Engwer
+2010--2017    Jorrit Fahlke
 2011          Carsten Gräser
 2012--2016    Christoph Grüninger
 2011          Olaf Ippisch
@@ -18,10 +18,10 @@ Copyright holders:
 2011          Arne Morten Kvarving
 2006--2010    Sven Marnach
 2013          Steffen Müthing
-2008--2012    Martin Nolte
+2008--2017    Martin Nolte
 2011          Elias Pipping
 2010          Dan Popovic
-2006--2013    Oliver Sander
+2006--2014    Oliver Sander
 
 The DUNE library and headers are licensed under version 2 of the GNU
 General Public License (see below), with a special exception for
