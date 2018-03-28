@@ -9,7 +9,7 @@ Copyright holders:
 2006--2014    Christian Engwer
 2010--2017    Jorrit Fahlke
 2011          Carsten Gräser
-2012--2016    Christoph Grüninger
+2012--2018    Christoph Grüninger
 2011          Olaf Ippisch
 2010--2014    Dominic Kempf
 2006--2011    Robert Klöfkorn
@@ -18,7 +18,7 @@ Copyright holders:
 2011          Arne Morten Kvarving
 2006--2010    Sven Marnach
 2013          Steffen Müthing
-2008--2017    Martin Nolte
+2008--2018    Martin Nolte
 2011          Elias Pipping
 2010          Dan Popovic
 2006--2014    Oliver Sander
