@@ -238,7 +238,7 @@ void P1Elements<GV, E>::solve()
   Dune::MatrixAdapter<Matrix,ScalarField,ScalarField> op(A);
 
   // initialize preconditioner
-  Dune::SeqILUn<Matrix,ScalarField,ScalarField> ilu1(A, 1, 0.92);
+  Dune::SeqILU<Matrix,ScalarField,ScalarField> ilu1(A, 1, 0.92);
 
   // the inverse operator
   Dune::BiCGSTABSolver<ScalarField> bcgs(op, ilu1, 1e-15, 5000, 0);
