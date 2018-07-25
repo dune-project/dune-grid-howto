@@ -116,7 +116,7 @@ void P1Elements<GV, F>::assemble()
 #if HAVE_DUNE_ISTL
   A.setSize(N, N, N + 2*gv.size(dim-1));
   A.setBuildMode(Matrix::random);
-  b.resize(N, false);
+  b.resize(N);
 
   for (int i = 0; i < N; i++)
     A.setrowsize(i,adjacencyPattern[i].size());
@@ -245,7 +245,7 @@ void P1Elements<GV, E>::solve()
 
   // initialize u to some arbitrary value to avoid u being the exact
   // solution
-  u.resize(b.N(), false);
+  u.resize(b.N());
   u = 2.0;
 
   // finally solve the system
