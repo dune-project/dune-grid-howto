@@ -40,6 +40,7 @@ dune_add_test(SOURCES adaptiveintegration.cc
   COMPILE_DEFINITIONS "GRIDDIM=2" "WORLDDIM=2" "YASPGRID")
 
 dune_add_test(SOURCES finiteelements.cc)
+add_dune_alberta_flags(finiteelements WORLDDIM 2)
 
 dune_add_test(SOURCES finitevolume.cc
   COMPILE_DEFINITIONS "GRIDDIM=2" "WORLDDIM=2" "YASPGRID")
