@@ -270,7 +270,9 @@ int main(int argc, char** argv)
 {
 #if HAVE_ALBERTA && ALBERTA_DIM==2
   static const int dim = 2;                             /*@\label{fem:dim}@*/
-  const char* gridfile = "grids/2dgrid.al";             /*@\label{fem:file}@*/
+  std::stringstream gridfile;
+    gridfile << DUNE_GRID_HOWTO_EXAMPLE_GRIDS_PATH
+      << "2dgrid.al";                                   /*@\label{fem:file}@*/
 
   typedef Dune::AlbertaGrid<dim,dim> GridType;
   typedef GridType::LeafGridView GV;
@@ -278,7 +280,7 @@ int main(int argc, char** argv)
   typedef GridType::ctype ctype;
   typedef Bump<ctype,dim> Func;
 
-  GridType grid(gridfile);
+  GridType grid(gridfile.str());
   const GV& gv = grid.leafGridView();
 
   Func f;
