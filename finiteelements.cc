@@ -7,6 +7,7 @@
 #include <dune/common/fvector.hh>
 #include <dune/common/fmatrix.hh>
 #include <dune/geometry/quadraturerules.hh>
+#include <dune/geometry/referenceelements.hh>
 #include <dune/grid/io/file/vtk/vtkwriter.hh>
 #include <dune/grid/albertagrid.hh>
 
@@ -81,9 +82,8 @@ void P1Elements<GV, F>::determineAdjacencyPattern()
 
   for (LeafIterator it = gv.template begin<0>(); it != itend; ++it)
   {
-    Dune::GeometryType gt = it->type();
-    const Dune::template ReferenceElement<ctype,dim> &ref =
-      Dune::ReferenceElements<ctype,dim>::general(gt);
+    auto geo = it->geometry();
+    auto ref = referenceElement(geo);
 
     // traverse all codim-1-entities of the current element and store all
     // pairs of vertices in adjacencyPattern
@@ -146,13 +146,13 @@ void P1Elements<GV, F>::assemble()
 
   for (LeafIterator it = gv.template begin<0>(); it != itend; ++it)   /*@\label{fem:loop1}@*/
   {
-    // determine geometry type of the current element and get the matching reference element
-    Dune::GeometryType gt = it->type();
-    const Dune::template ReferenceElement<ctype,dim> &ref =
-      Dune::ReferenceElements<ctype,dim>::general(gt);
+    // determine geometry of the current element and get the matching reference element
+    auto geo = it->geometry();
+    auto ref = referenceElement(geo);
     int vertexsize = ref.size(dim);
 
     // get a quadrature rule of order one for the given geometry type
+    Dune::GeometryType gt = it->type();
     const Dune::QuadratureRule<ctype,dim>& rule = Dune::QuadratureRules<ctype,dim>::rule(gt,1);
     for (typename Dune::QuadratureRule<ctype,dim>::const_iterator r = rule.begin();
          r != rule.end() ; ++r)
@@ -207,10 +207,9 @@ void P1Elements<GV, F>::assemble()
     const IntersectionIterator isend = gv.iend(*it);
     for (IntersectionIterator is = gv.ibegin(*it) ; is != isend ; ++is)
     {
-      // determine geometry type of the current element and get the matching reference element
-      Dune::GeometryType gt = it->type();
-      const Dune::template ReferenceElement<ctype,dim> &ref =
-        Dune::ReferenceElements<ctype,dim>::general(gt);
+      // determine geometry of the current element and get the matching reference element
+      auto geo = it->geometry();
+      auto ref = referenceElement(geo);
 
       // check whether current intersection is on the boundary
       if ( is->boundary() )
