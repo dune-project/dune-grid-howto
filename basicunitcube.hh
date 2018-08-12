@@ -3,6 +3,7 @@
 #ifndef  BASICUNITCUBE_HH
 #define  BASICUNITCUBE_HH
 
+#include <dune/geometry/type.hh>
 #include <dune/grid/common/gridfactory.hh>
 
 // declaration of a basic unit cube that uses the GridFactory
@@ -35,7 +36,7 @@ protected:
   template< class Grid >
   static void insertSimplices ( Dune::GridFactory< Grid > &factory )
   {
-    const Dune::GeometryType type( Dune::GeometryType::simplex, 2 );
+    const Dune::GeometryType type( Dune::GeometryTypes::triangle );
     std::vector< unsigned int > cornerIDs( 3 );
 
     cornerIDs[0] = 0;  cornerIDs[1] = 1;  cornerIDs[2] = 2;
@@ -48,7 +49,7 @@ protected:
   template< class Grid >
   static void insertCubes ( Dune::GridFactory< Grid > &factory )
   {
-    const Dune::GeometryType type( Dune::GeometryType::cube, 2 );
+    const Dune::GeometryType type( Dune::GeometryTypes::quadrilateral );
     std::vector< unsigned int > cornerIDs( 4 );
     for( int i = 0; i < 4; ++i )
       cornerIDs[ i ] = i;
@@ -79,7 +80,7 @@ protected:
   template< class Grid >
   static void insertSimplices ( Dune::GridFactory< Grid > &factory )
   {
-    const Dune::GeometryType type( Dune::GeometryType::simplex, 3 );
+    const Dune::GeometryType type( Dune::GeometryTypes::tetrahedron );
     std::vector< unsigned int > cornerIDs( 4 );
 
     cornerIDs[0] = 0;  cornerIDs[1] = 1;  cornerIDs[2] = 2;  cornerIDs[3] = 4;
@@ -101,7 +102,7 @@ protected:
   template< class Grid >
   static void insertCubes ( Dune::GridFactory< Grid > &factory )
   {
-    const Dune::GeometryType type( Dune::GeometryType::cube, 3 );
+    const Dune::GeometryType type( Dune::GeometryTypes::hexahedron );
     std::vector< unsigned int > cornerIDs( 8 );
     for( int i = 0; i < 8; ++i )
       cornerIDs[ i ] = i;
