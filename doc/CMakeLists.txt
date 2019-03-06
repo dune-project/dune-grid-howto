@@ -1,4 +1,4 @@
-add_subdirectory(EPS)
+add_subdirectory(img)
 
 # create file config.inc containing the version of this module
 set(PACKAGE_VERSION ${DUNE_MOD_VERSION})
