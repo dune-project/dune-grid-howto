@@ -267,7 +267,7 @@ software available elsewhere. The code documentation can either be built
 locally on your machine (in HTML and other formats, e.\,g.~\LaTeX)
 or its latest version is available at
 \begin{center}
-\url{http://www.dune-project.org/doc/doxygen.html}
+\url{http://www.dune-project.org/doxygen/master/index.html}
 \end{center}
 
 \section{Licence}
@@ -776,7 +776,7 @@ define the concepts. In order to avoid any inconsistencies we refer as
 much as possible to the doxygen-generated documentation. For an
 overview of the grid interface see the web page
 \begin{center}
-\url{http://www.dune-project.org/doc/doxygen/html/group__Grid.html}.
+\url{http://www.dune-project.org/doxygen/master/group__Grid.html}.
 \end{center}
 
 
@@ -785,17 +785,17 @@ overview of the grid interface see the web page
 Some types in the grid interface do not depend on a specific model,
 i.~e.~they are shared by all implementations.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1ReferenceElement.html}{Dune::ReferenceElement}}
+\minisec{\href{https://www.dune-project.org/doxygen/master/group__GeometryReferenceElements.html}{Dune::ReferenceElement}}
 
 describes the topology and geometry of standard entities. Any given
 entity of the grid can be completely specified by a reference element
 and a map from this reference element to world coordinate space.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1GeometryType.html}{Dune::GeometryType}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1GeometryType.html}{Dune::GeometryType}}
 
 defines names for the reference elements.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1CollectiveCommunication.html}{Dune::CollectiveCommunication}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1CollectiveCommunication.html}{Dune::CollectiveCommunication}}
 
 defines an interface to global communication operations in a portable
 and transparent way. In particular also for sequential grids.
@@ -808,7 +808,7 @@ grid interface is given. For the details click on the link that leads
 you to the documentation of the corresponding wrapper class template
 (in the engine sense).
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Grid.html}{Grid}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1Grid.html}{Grid}}
 
     The grid
     is a container of entities that allows to access these entities
@@ -817,7 +817,7 @@ you to the documentation of the corresponding wrapper class template
     classes are typically aggregated in the grid class and accessed via
     iterators.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1GridView.html}{GridView}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1GridView.html}{GridView}}
 
     The GridView gives a view on a level or the leaf part of a grid. It
     provides iterators for access to the elements of this view and a
@@ -825,7 +825,7 @@ you to the documentation of the corresponding wrapper class template
     LevelIterator of a LeafIterator  can be directly accessed from a grid.
     These iterator types are described below.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Entity.html}{Entity}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1Entity.html}{Entity}}
 
     The entity class encapsulates
     the topological part of an entity, i.\,e. its hierarchical
@@ -833,28 +833,28 @@ you to the documentation of the corresponding wrapper class template
     entities. Entities cannot be created, copied or modified by the
     user. They can only be read-accessed through immutable iterators.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Geometry.html}{Geometry}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1Geometry.html}{Geometry}}
 
     Geometry
     encapsulates the geometric part of an entity by mapping local
     coordinates in a reference element to world coordinates.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1EntityPointer.html}{EntityPointer}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1EntityPointer.html}{EntityPointer}}
 
     EntityPointer  is a
     dereferenceable type that delivers a reference to an
     entity. Moreover it is immutable, i.\,e. the referenced entity can
     not be modified.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1Iterator.html}{Iterator}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1EntityIterator.html}{EntityIterator}}
 
-    Iterator is an
+    EntityIterator is an
     immutable iterator that provides access to an entity. It can by
     incremented to visit all entities of a given
     codimension of a GridView. An EntityPointer is assignable
     from an Iterator.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}{IntersectionIterator}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1IntersectionIterator.html}{IntersectionIterator}}
 
     IntersectionIterator provides access to all entities of
     codimension 0 that have an intersection of codimension 1 with a
@@ -869,7 +869,7 @@ you to the documentation of the corresponding wrapper class template
     The IntersectionIterator provides intersections between
     codimension 0 entities among the same GridView.
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IndexSet.html}{LeafIndexSet}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1IndexSet.html}{LevelIndexSet}, \href{http://www.dune-project.org/doxygen/master/classDune_1_1IndexSet.html}{LeafIndexSet}}
 
     LevelIndexSet and LeafIndexSet, which are both models of
     Dune::IndexSet, are used to attach any kind of user-defined data to
@@ -878,7 +878,7 @@ you to the documentation of the corresponding wrapper class template
     usually not used directly but through a Mapper (c.f.~chapter
     \ref{ch:mappers}).
 
-\minisec{\href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IdSet.html}{LocalIdSet}, \href{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IdSet.html}{GlobalIdSet}}
+\minisec{\href{http://www.dune-project.org/doxygen/master/classDune_1_1IdSet.html}{LocalIdSet}, \href{http://www.dune-project.org/doxygen/master/classDune_1_1IdSet.html}{GlobalIdSet}}
 
     LocalIdSet and GlobalIdSet which are both models of Dune::IdSet
     are used to save user data during a grid refinement phase and
@@ -1048,7 +1048,7 @@ variable \lstinline!DUNE_GRID_EXAMPLE_GRIDS_PATH!.
 Dune has its own macro grid format, the \underline{D}une \underline{G}rid \underline{F}ormat.
 A detailed description of the DGF and how to use it can be found on the
 homepage of \Dune%
-\footnote{\url{http://www.dune-project.org/doc/doxygen/html/classDune_1_1DuneGridFormatParser.html}}.
+\footnote{\url{http://www.dune-project.org/doxygen/master/classDune_1_1DuneGridFormatParser.html}}.
 
 Here we only give a short introduction.
 Basically one can choose the grid manager during the make process of
@@ -1876,7 +1876,7 @@ The computation of the fluxes is done in lines
 is used to access all intersections $\gamma_{ij}$ of a leaf element
 $\omega_i$. For a full documentation on the
 \lstinline!Intersection!\ class, we refer to the doxygen module page on
-Intersections\footnote{\url{http://www.dune-project.org/doc/doxygen/html/classDune_1_1IntersectionIterator.html}}
+Intersections\footnote{\url{http://www.dune-project.org/doxygen/master/classDune_1_1IntersectionIterator.html}}
 An Intersection is with another element $\omega_j$ if the
 \lstinline!neighbor()! method of the iterator returns true (line
 \ref{evh:neighbor}) or with the external boundary if
