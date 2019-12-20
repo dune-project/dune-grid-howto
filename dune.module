@@ -1,6 +1,6 @@
 Module: dune-grid-howto
 Maintainer: dune-devel@lists.dune-project.org
-Version: 2.7
+Version: 2.7.0
 Depends: dune-grid (>= 2.7)
 # Needed for finiteelements.cc
 Suggests: dune-istl (>= 2.7) dune-alugrid
