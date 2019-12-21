@@ -1,1 +1,1 @@
-# Master (will become release 2.7)
+# Master (will become release 2.8)
