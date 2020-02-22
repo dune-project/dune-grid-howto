@@ -4,6 +4,11 @@ project(dune-grid-howto C CXX)
 # general stuff
 cmake_minimum_required(VERSION 3.1)
 
+message("\n\
+        DUNE-grid-howto is deprecated. Changes in the DUNE core modules are\n\
+        no longer reflected in this module, so it might break any time.\n\
+        Release 2.7 was the last release, there will be no 2.8 release.\n")
+
 if(NOT (dune-common_DIR OR dune-common_ROOT OR
         "${CMAKE_PREFIX_PATH}" MATCHES ".*dune-common.*"))
     string(REPLACE  ${CMAKE_PROJECT_NAME} dune-common dune-common_DIR
